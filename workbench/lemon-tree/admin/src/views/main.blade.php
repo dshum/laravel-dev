@@ -117,9 +117,11 @@ $(function() {
 @foreach ($itemList as $itemName => $item)
 @include('admin::list')
 @endforeach
-@else
+@elseif ($currentElement)
 <p>В данном разделе элементы отсутствуют.<br>
 Вы можете <a href="{{ URL::route('admin.edit', array('class' => $currentElement->getClass(), 'id' => $currentElement->id)) }}">редактировать</a> раздел.</p>
+@else
+<p>В данном разделе элементы отсутствуют.</p>
 @endif
 @stop
 
