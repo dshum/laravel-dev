@@ -1,0 +1,28 @@
+{
+	"name": "lemon-tree/admin",
+	"description": "",
+	"authors": [
+		{
+			"name": "LemonTree",
+			"email": "denis-shumeev@yandex.ru"
+		}
+    ],
+	"require": {
+		"php": ">=5.3.0",
+		"illuminate/support": "4.1.*"
+	},
+	"autoload": {
+		"classmap": [
+			"src/lib",
+			"src/lib/properties",
+			"src/controllers",
+			"src/migrations",
+			"src/seeds",
+			"src/views"
+		],
+		"psr-0": {
+			"LemonTree\\Admin\\": "src/"
+		}
+	},
+	"minimum-stability": "stable"
+}

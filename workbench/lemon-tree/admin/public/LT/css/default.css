@@ -1,0 +1,326 @@
+html, body {
+
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	background: #FFF;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 100%;
+	font-weight: 400;
+	color: #000;
+}
+
+#wrapper {
+
+}
+
+#tab-wrapper {
+	background: #FFF;
+}
+
+#tab-wrapper ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#tab-wrapper ul li {
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0px 5px;
+}
+
+#menu-wrapper {
+	background: #EEE;
+}
+
+#menu-wrapper ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#menu-wrapper ul li {
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0px 5px;
+}
+
+#page {
+
+}
+
+#tree {
+	width: 20%;
+	float: left;
+	white-space: nowrap;
+}
+
+#tree div.container {
+	margin: 5px;
+	padding: 5px;
+	border-right: 1px solid #CCC;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+#tree div.padding {
+	margin-left: 5px;
+	padding-left: 20px;
+//	border-left: 1px solid #CCC;
+}
+
+#tree div.plus {
+	width: 9px;
+	height: 9px;
+	float: left;
+	background: #FFF;
+	border: 1px solid #999;
+	margin: 6px 5px 0 0;
+	cursor: pointer;
+	cursor: hand;
+}
+
+#tree div.plus div {
+	position: relative;
+	top: -4px;
+	left: 0px;
+	font-family: Courier New;
+	font-size: 15px;
+	color: #000;
+}
+
+#tree div.plus-empty {
+	width: 11px;
+	height: 11px;
+	float: left;
+	background: #FFF;
+	margin-left: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+#browse {
+	width: 80%;
+	float: left;
+}
+
+#browse div.container {
+	margin: 5px 5px 5px 0px;
+}
+
+#log {
+	clear: both;
+	position: fixed;
+	left: 0; bottom: 0;
+	width: 100%;
+	padding: 2px 10px;
+	background: #DDD;
+	color: #000;
+	cursor: pointer;
+	cursor: hand;
+}
+
+#log ol, ul, p {
+	padding: 0px;
+}
+
+input[type="text"], input[type="password"], textarea {
+	width: 90%;
+	border: 1px solid #999;
+	padding-left: 3px;
+}
+
+input.btn, button.btn {
+	padding: 5px 10px;
+	font-size: 120%;
+}
+
+input.prop-time {
+	width: 20px;
+	padding-left: 5px;
+}
+
+input.prop-number, input[type="password"].prop-pass {
+	width: 150px;
+}
+
+input.prop-mini {
+	width: 300px;
+}
+
+span.richtext {
+	display: block;
+	width: 90%;
+	height: 250px;
+	overflow-y: auto;
+	border: 1px solid #999;
+	background: #FFF;
+	padding: 2px 5px;
+}
+
+textarea.richtext {
+	width: 90%;
+	height: 350px;
+}
+
+span.blank {
+	display: block;
+	width: 90%;
+	border: 1px solid #999;
+	background: #FFF;
+	padding: 2px 5px;
+}
+
+span.error {
+	color: #C00;
+	font-weight: 800;
+}
+
+p.error span {
+	text-align: left;
+	background: orange;
+	color: #FFF;
+	font-weight: 800;
+	padding: 5px 10px;
+}
+
+p.ok {
+	color: green;
+	font-weight: 800;
+}
+
+img {
+	border: none;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+	color: #999;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+h1 b {
+	font-weight: normal;
+	color: #666;
+}
+
+span.create {
+	display: inline;
+	margin: 0 10px;
+	font-size: 80%;
+}
+
+div.href {
+	float: right;
+	padding-top: 28px;
+}
+
+small {
+	font-size: 80%;
+}
+
+label {
+	cursor: pointer;
+	cursor: hand;
+}
+
+div.path {
+	background: #F0F0F0;
+	padding: 1px 10px;
+}
+
+div.form-edit {
+	border: 1px solid #CCC;
+	background: #F0F0F0;
+	margin: 15px 0px;
+	padding: 5px 10px 10px 10px;
+}
+
+div.form-edit .main input {
+	font-size: 120%;
+}
+
+table.element-list {
+	border-collapse: collapse;
+	width: 100%;
+	margin: 5px 0px 20px 0px;
+}
+
+table.element-list th {
+	padding: 1px 5px;
+	text-align: left;
+	border-bottom: 3px solid #CCC;
+	color: #999;
+	font-weight: normal;
+}
+
+table.element-list td {
+	padding: 1px 5px;
+	text-align: left;
+	border-bottom: 1px solid #EEE;
+	vertical-align: top;
+}
+
+table.element-list th.first, td.first {
+	width: 20px;
+}
+
+table.element-list th.first, td.first a {
+	text-decoration: none;
+}
+
+table.element-list th.last, td.last {
+	width: 20px;
+}
+
+table.element-list tr.light {
+	background: #EEE;
+}
+
+table.element-list tr.light-hover {
+	background: #FAFAFA;
+}
+
+.dashed {
+	border-bottom: 1px dashed;
+}
+
+.hand {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.dnone {
+	display: none;
+}
+
+.grey {
+	color: #999;
+}
+
+.small {
+	font-size: 80%;
+}
+
+ul.pagination li {
+	display: inline;
+	margin: 0px 1px;
+	padding: 1px 7px;
+	background: #EEE;
+}
+
+ul.pagination li.active {
+	background: #DDD;
+}
+
+.ui-autocomplete {max-height: 140px; overflow-y: auto; overflow-x: hidden;}
+.ui-autocomplete-loading {background: white url('/LT/img/ac-loader.gif') right center no-repeat;}
+
+
+
