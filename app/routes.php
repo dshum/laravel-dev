@@ -14,3 +14,22 @@
 Route::get('/', function() {
 	return 'Hello World';
 });
+
+Route::get('/{section}', array('as' => 'section', function($url) {
+
+	$section =
+		Section::where('url', $url)->
+		cacheTags('Section')->rememberForever()->
+		first();
+
+	if (!$section) App::abort(404);
+
+	View::share('currentElement', $section);
+
+	switch ($url) :
+		default: $controller = 'CommonController'; break;
+	endswitch;
+
+	return App::make($controller)->getIndex($section);
+
+}));
