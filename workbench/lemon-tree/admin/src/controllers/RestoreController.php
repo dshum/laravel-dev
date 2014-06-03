@@ -15,11 +15,10 @@ class RestoreController extends BaseController {
 		$password = \Input::get('password');
 
 		if ( ! $login || ! $code) {
-			return \Redirect::route('admin.reset');
+			return \Redirect::route('admin.login.reset');
 		}
 
 		if (! $password) {
-			$scope = TreeFilter::apply($scope);
 			$scope['mode'] = null;
 			$scope['error'] = 'password';
 			$scope['login'] = \Input::get('login');
@@ -30,25 +29,23 @@ class RestoreController extends BaseController {
 		try {
 			$user = \Sentry::findUserByLogin($login);
 		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-			return \Redirect::route('admin.reset', array('error' => 'login'));
+			return \Redirect::route('admin.login.reset', array('error' => 'login'));
 		}
 
 		if ( ! $user->checkResetPasswordCode($code)) {
-			return \Redirect::route('admin.reset', array('error' => 'code'));
+			return \Redirect::route('admin.login.reset', array('error' => 'code'));
 		}
 
 		if ( ! $user->attemptResetPassword($code, $password)) {
-			return \Redirect::route('admin.reset', array('error' => 'reset'));
+			return \Redirect::route('admin.login.reset', array('error' => 'reset'));
 		}
 
-		return \Redirect::route('admin.reset', array('mode' => 'ok'));
+		return \Redirect::route('admin.login.reset', array('mode' => 'ok'));
 	}
 
 	public function getReset()
 	{
 		$scope = array();
-
-		$scope = TreeFilter::apply($scope);
 
 		if (\Sentry::check()) {
 			return \Redirect::route('admin');
@@ -73,7 +70,6 @@ class RestoreController extends BaseController {
 		$login = \Input::get('login');
 
 		if ( ! $login) {
-			$scope = TreeFilter::apply($scope);
 			$scope['error'] = 'Введите логин.';
 			$scope['login'] = $login;
 			return \View::make('admin::restore', $scope);
@@ -82,7 +78,6 @@ class RestoreController extends BaseController {
 		try {
 			$user = \Sentry::findUserByLogin($login);
 		} catch (\Cartalyst\Sentry\Users\UserNotFoundException $e) {
-			$scope = TreeFilter::apply($scope);
 			$scope['error'] = 'Пользователь с таким логином не найден.';
 			$scope['login'] = $login;
 			return \View::make('admin::restore', $scope);
@@ -105,14 +100,12 @@ class RestoreController extends BaseController {
 			subject('Lemon Tree - восстановление пароля');
 		});
 
-		return \Redirect::route('admin.restore', array('email' => $user->email));
+		return \Redirect::route('admin.login.restore', array('email' => $user->email));
 	}
 
 	public function getIndex()
 	{
 		$scope = array();
-
-		$scope = TreeFilter::apply($scope);
 
 		if (\Sentry::check()) {
 			return \Redirect::route('admin');

@@ -10,7 +10,7 @@
 <p>Логин:<br>
 {{ Form::text('login', $login, array()) }}</p>
 <p>Пароль:<br>{{ Form::password('password', array()) }}<br>
-<a href="{{ URL::route('admin.restore') }}">Забыли пароль?</a></p>
+<a href="{{ URL::route('admin.login.restore') }}">Забыли пароль?</a></p>
 <p>{{ Form::submit('Войти', array('class' => 'btn')) }}</p>
 {{ Form::close() }}
 

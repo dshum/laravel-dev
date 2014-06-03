@@ -9,11 +9,11 @@ Route::post('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\Lo
 
 Route::get('/admin/logout', array('as' => 'admin.logout', 'uses' => 'LemonTree\LoginController@getLogout'));
 
-Route::get('/admin/restore', array('as' => 'admin.restore', 'uses' => 'LemonTree\RestoreController@getIndex'));
-Route::post('/admin/restore', array('as' => 'admin.restore', 'uses' => 'LemonTree\RestoreController@postRestore'));
+Route::get('/admin/login/restore', array('as' => 'admin.login.restore', 'uses' => 'LemonTree\RestoreController@getIndex'));
+Route::post('/admin/login/restore', array('as' => 'admin.login.restore', 'uses' => 'LemonTree\RestoreController@postRestore'));
 
-Route::get('/admin/reset', array('as' => 'admin.reset', 'uses' => 'LemonTree\RestoreController@getReset'));
-Route::post('/admin/reset', array('as' => 'admin.reset', 'uses' => 'LemonTree\RestoreController@postReset'));
+Route::get('/admin/login/reset', array('as' => 'admin.login.reset', 'uses' => 'LemonTree\RestoreController@getReset'));
+Route::post('/admin/login/reset', array('as' => 'admin.login.reset', 'uses' => 'LemonTree\RestoreController@postReset'));
 
 Route::get('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@getIndex'));
 Route::post('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@postUpdate'));

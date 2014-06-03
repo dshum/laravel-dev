@@ -15,7 +15,7 @@
 @endif
 
 @if (! $mode == 'ok')
-{{ Form::open(array('route' => 'admin.reset', 'method' => 'post')) }}
+{{ Form::open(array('route' => 'admin.login.reset', 'method' => 'post')) }}
 {{ Form::hidden('login', $login) }}
 {{ Form::hidden('code', $code) }}
 <p>Новый пароль:<br>{{ Form::password('password') }}</p>

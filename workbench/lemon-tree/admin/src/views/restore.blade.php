@@ -8,7 +8,7 @@
 <p class="ok">На <b>{{{ $email }}}</b> отправлена информация по восстановлению доступа.</p>
 @endif
 
-{{ Form::open(array('route' => 'admin.restore', 'method' => 'post')) }}
+{{ Form::open(array('route' => 'admin.login.restore', 'method' => 'post')) }}
 <p>Логин:<br>{{ Form::text('login', $login, array('class' => 'pass')) }}</p>
 <p>{{ Form::submit('Восстановить', array('class' => 'btn')) }}</p>
 {{ Form::close() }}
