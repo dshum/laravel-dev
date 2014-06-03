@@ -22,7 +22,7 @@ class CreateSectionTable extends Migration {
 			$table->string('meta_keywords');
 			$table->text('meta_description');
 			$table->text('shortcontent')->nullable();
-			$table->medium('fullcontent')->nullable();
+			$table->mediumText('fullcontent')->nullable();
 			$table->integer('section_id')->unsigned()->nullable()->default(null)->index();
 			$table->timestamps();
 			$table->softDeletes();
