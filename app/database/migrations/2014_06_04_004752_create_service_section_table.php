@@ -22,7 +22,7 @@ class CreateServiceSectionTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('service_sections');
 	}
 
 }

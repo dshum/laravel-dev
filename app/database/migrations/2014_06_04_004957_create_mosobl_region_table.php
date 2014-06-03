@@ -22,7 +22,7 @@ class CreateMosoblRegionTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('mosobl_regions');
 	}
 
 }

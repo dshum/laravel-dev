@@ -22,7 +22,7 @@ class CreateCounterTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('counters');
 	}
 
 }

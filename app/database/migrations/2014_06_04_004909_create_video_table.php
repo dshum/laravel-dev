@@ -22,7 +22,7 @@ class CreateVideoTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('videos');
 	}
 
 }

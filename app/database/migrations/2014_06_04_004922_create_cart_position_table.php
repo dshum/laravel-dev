@@ -22,7 +22,7 @@ class CreateCartPositionTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('cart_positions');
 	}
 
 }

@@ -22,7 +22,7 @@ class CreateOrderPositionTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('order_positions');
 	}
 
 }

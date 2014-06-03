@@ -22,7 +22,7 @@ class CreateExpenseCategoryTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('expense_categories');
 	}
 
 }

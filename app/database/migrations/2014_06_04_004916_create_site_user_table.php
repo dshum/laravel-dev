@@ -22,7 +22,7 @@ class CreateSiteUserTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('site_users');
 	}
 
 }

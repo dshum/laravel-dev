@@ -22,7 +22,7 @@ class CreateGoodBrandTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('good_brands');
 	}
 
 }

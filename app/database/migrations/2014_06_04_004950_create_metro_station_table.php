@@ -22,7 +22,7 @@ class CreateMetroStationTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('metro_stations');
 	}
 
 }

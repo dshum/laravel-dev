@@ -12,7 +12,21 @@ class CreateSectionTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('sections', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->string('url');
+			$table->string('title');
+			$table->string('h1')->nullable();
+			$table->string('meta_keywords');
+			$table->text('meta_description');
+			$table->text('shortcontent')->nullable();
+			$table->medium('fullcontent')->nullable();
+			$table->integer('section_id')->unsigned()->nullable()->default(null)->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**
@@ -22,7 +36,7 @@ class CreateSectionTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('sections');
 	}
 
 }

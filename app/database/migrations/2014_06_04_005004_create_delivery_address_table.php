@@ -22,7 +22,7 @@ class CreateDeliveryAddressTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('delivery_adresses');
 	}
 
 }

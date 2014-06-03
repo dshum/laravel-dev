@@ -22,7 +22,7 @@ class CreateSubcategoryTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('subcategories');
 	}
 
 }

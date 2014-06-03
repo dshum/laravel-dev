@@ -22,7 +22,7 @@ class CreateGoodTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('goods');
 	}
 
 }

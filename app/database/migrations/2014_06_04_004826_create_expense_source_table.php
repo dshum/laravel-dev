@@ -22,7 +22,7 @@ class CreateExpenseSourceTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('expense_sources');
 	}
 
 }

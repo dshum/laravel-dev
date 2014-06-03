@@ -22,7 +22,7 @@ class CreateOrderStateTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('order_states');
 	}
 
 }

@@ -22,7 +22,7 @@ class CreateCourierTable extends Migration {
 	 */
 	public function down()
 	{
-		//
+		Schema::drop('couriers');
 	}
 
 }
