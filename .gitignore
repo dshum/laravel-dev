@@ -1,4 +1,3 @@
-/app/config/database.php
 /bootstrap/compiled.php
 /vendor
 composer.phar
@@ -8,4 +7,6 @@ composer.lock
 .DS_Store
 Thumbs.db
 /nbproject/private/
+/app/config/database.php
 /public/LT/
+/storage/
