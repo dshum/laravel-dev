@@ -34,7 +34,7 @@ class AdminServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->registerUrlGenerator();
+//		$this->registerUrlGenerator();
 
 		\App::singleton('site', function($app) {
 			return new \LemonTree\Site;
