@@ -12,7 +12,18 @@ class CreateSiteSettingsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('site_settings', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->string('title')->nullable();
+			$table->string('meta_keywords')->nullable();
+			$table->text('meta_description')->nullable();
+			$table->string('site_name')->nullable();
+			$table->string('phone')->nullable();
+			$table->string('icq')->nullable();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

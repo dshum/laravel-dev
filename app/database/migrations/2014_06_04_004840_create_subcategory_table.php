@@ -12,7 +12,18 @@ class CreateSubcategoryTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('subcategories', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->string('title')->nullable();
+			$table->mediumText('fullcontent')->nullable();
+			$table->string('image')->nullable();
+			$table->boolean('hide');
+			$table->integer('category_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

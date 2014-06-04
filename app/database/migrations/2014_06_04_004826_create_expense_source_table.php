@@ -12,7 +12,14 @@ class CreateExpenseSourceTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('expense_sources', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->integer('service_section_id')->unsigned()->nullable()->default(null)->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

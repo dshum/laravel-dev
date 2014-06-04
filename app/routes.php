@@ -11,9 +11,7 @@
   |
  */
 
-Route::get('/', function() {
-	return 'Hello World';
-});
+Route::get('/', array('as' => 'firstpage', 'uses' => 'FirstpageController@getIndex'));
 
 Route::get('/{section}', array('as' => 'section', function($url) {
 

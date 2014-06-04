@@ -12,7 +12,18 @@ class CreateCategoryTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('categories', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->string('title')->nullable();
+			$table->text('shortcontent')->nullable();
+			$table->mediumText('fullcontent')->nullable();
+			$table->string('image')->nullable();
+			$table->boolean('hide');
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

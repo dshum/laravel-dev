@@ -12,7 +12,16 @@ class CreateCounterTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('counters', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->text('code');
+			$table->text('logo');
+			$table->integer('service_section_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

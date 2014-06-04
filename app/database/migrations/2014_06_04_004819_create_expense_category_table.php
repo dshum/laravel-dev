@@ -12,7 +12,14 @@ class CreateExpenseCategoryTable extends Migration {
 	 */
 	public function up()
 	{
-		//
+		Schema::create('expense_categories', function ($table) {
+			$table->increments('id');
+			$table->string('name');
+			$table->integer('order');
+			$table->integer('service_section_id')->unsigned()->index();
+			$table->timestamps();
+			$table->softDeletes();
+		});
 	}
 
 	/**

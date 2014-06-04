@@ -12,6 +12,20 @@ class DatabaseSeeder extends Seeder {
 		Eloquent::unguard();
 
 		$this->call('SectionTableSeeder');
+
+		$this->call('ServiceSectionTableSeeder');
+
+		$this->call('SiteSettingsTableSeeder');
+
+		$this->call('CounterTableSeeder');
+
+		$this->call('ExpenseCategoryTableSeeder');
+
+		$this->call('ExpenseSourceTableSeeder');
+
+		$this->call('CategoryTableSeeder');
+
+		$this->call('SubcategoryTableSeeder');
 	}
 
 }
