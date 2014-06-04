@@ -77,6 +77,12 @@ class ServiceSectionTableSeeder extends Seeder {
 			'service_section_id' => 1,
 		));
 
+		ServiceSection::create(array(
+			'name' => 'Бренды товаров',
+			'order' => 14,
+			'service_section_id' => 1,
+		));
+
 	}
 
 }

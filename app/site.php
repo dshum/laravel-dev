@@ -104,6 +104,177 @@ $site->
 	)->
 
 	/*
+	 * Бренд товара
+	 */
+
+	addItem(
+		Item::create('GoodBrand')->
+		setTitle('Бренд товара')->
+		setMainProperty('name')->
+		addOrderBy('order', 'asc')->
+		addProperty(
+			TextfieldProperty::create('name')->
+			setTitle('Название')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('title')->
+			setTitle('Title')
+		)->
+		addProperty(
+			TextfieldProperty::create('h1')->
+			setTitle('H1')
+		)->
+		addProperty(
+			RichtextProperty::create('fullcontent')->
+			setTitle('Полное описание')
+		)->
+		addProperty(
+			TextfieldProperty::create('address')->
+			setTitle('Адрес поставщика')
+		)->
+		addProperty(
+			CheckboxProperty::create('hide')->
+			setTitle('Скрыть')->
+			setShow(true)
+		)->
+		addProperty(
+			OneToOneProperty::create('service_section_id')->
+			setTitle('Служебный раздел')->
+			setRelatedClass('ServiceSection')->
+			setDeleting(OneToOneProperty::RESTRICT)->
+			setReadonly(true)->
+			setParent(true)
+		)->
+		addProperty(
+			DatetimeProperty::create('created_at')->
+			setTitle('Дата создания')->
+			setReadonly(true)->
+			setShow(true)
+		)->
+		addProperty(
+			DatetimeProperty::create('updated_at')->
+			setTitle('Последнее изменение')->
+			setReadonly(true)->
+			setShow(true)
+		)
+	)->
+
+	/*
+	 * Товар
+	 */
+
+	addItem(
+		Item::create('Good')->
+		setTitle('Товар')->
+		setMainProperty('name')->
+		addOrderBy('order', 'asc')->
+		addProperty(
+			TextfieldProperty::create('name')->
+			setTitle('Название')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('code')->
+			setTitle('Артикул')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			FloatProperty::create('supplier_price')->
+			setTitle('Цена поставщика')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			FloatProperty::create('price')->
+			setTitle('Цена')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			FloatProperty::create('price2')->
+			setTitle('Цена 2')
+		)->
+		addProperty(
+			FloatProperty::create('price3')->
+			setTitle('Цена 3')
+		)->
+		addProperty(
+			TextfieldProperty::create('title')->
+			setTitle('Title')
+		)->
+		addProperty(
+			TextfieldProperty::create('meta_keywords')->
+			setTitle('META Keywords')
+		)->
+		addProperty(
+			TextareaProperty::create('meta_description')->
+			setTitle('META Description')
+		)->
+		addProperty(
+			TextareaProperty::create('shortcontent')->
+			setTitle('Краткое описание')
+		)->
+		addProperty(
+			RichtextProperty::create('fullcontent')->
+			setTitle('Полное описание')
+		)->
+		addProperty(
+			CheckboxProperty::create('special')->
+			setTitle('Спецпредложение')
+		)->
+		addProperty(
+			CheckboxProperty::create('novelty')->
+			setTitle('Новинка')
+		)->
+		addProperty(
+			CheckboxProperty::create('hide')->
+			setTitle('Скрыть')->
+			setShow(true)
+		)->
+		addProperty(
+			CheckboxProperty::create('absent')->
+			setTitle('Нет в наличии')->
+			setShow(true)
+		)->
+		addProperty(
+			OneToOneProperty::create('category_id')->
+			setTitle('Категория товара')->
+			setRelatedClass('Category')->
+			setDeleting(OneToOneProperty::RESTRICT)->
+			setRequired(true)->
+			setParent(true)
+		)->
+		addProperty(
+			OneToOneProperty::create('subcategory_id')->
+			setTitle('Подкатегория товара')->
+			setRelatedClass('Subcategory')->
+			setDeleting(OneToOneProperty::RESTRICT)
+		)->
+		addProperty(
+			OneToOneProperty::create('good_brand_id')->
+			setTitle('Бренд товара')->
+			setRelatedClass('GoodBrand')->
+			setDeleting(OneToOneProperty::RESTRICT)
+		)->
+		addProperty(
+			DatetimeProperty::create('created_at')->
+			setTitle('Дата создания')->
+			setReadonly(true)->
+			setShow(true)
+		)->
+		addProperty(
+			DatetimeProperty::create('updated_at')->
+			setTitle('Последнее изменение')->
+			setReadonly(true)->
+			setShow(true)
+		)
+	)->
+
+	/*
 	 * Раздел сайта
 	 */
 
@@ -435,6 +606,8 @@ $site->
 
 	bind(Site::ROOT, 'Category')->
 	bind('Category', 'Subcategory')->
+	bind('Category', 'Good')->
+	bind('Subcategory', 'Good')->
 	bind(Site::ROOT, 'Section')->
 	bind(Site::ROOT, 'ServiceSection')->
 	bind('ServiceSection.1', 'ServiceSection')->
@@ -442,9 +615,12 @@ $site->
 	bind('ServiceSection.7', 'ServiceSection')->
 	bind('ServiceSection.12', 'ExpenseCategory')->
 	bind('ServiceSection.13', 'ExpenseSource')->
+	bind('ServiceSection.14', 'GoodBrand')->
 
 	bindTree(Site::ROOT, 'Category')->
 	bindTree('Category', 'Subcategory')->
+	bindTree('Category', 'Good')->
+	bindTree('Subcategory', 'Good')->
 	bindTree(Site::ROOT, 'Section')->
 	bindTree(Site::ROOT, 'ServiceSection')->
 	bindTree(Site::ROOT, 'SiteSettings')->
@@ -454,5 +630,6 @@ $site->
 	bindTree('ServiceSection.7', 'ServiceSection')->
 	bindTree('ServiceSection.12', 'ExpenseCategory')->
 	bindTree('ServiceSection.13', 'ExpenseSource')->
+	bindTree('ServiceSection.14', 'GoodBrand')->
 
 	end();
