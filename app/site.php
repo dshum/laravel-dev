@@ -23,6 +23,11 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			TextfieldProperty::create('url')->
+			setTitle('URL')->
+			setRequired(true)
+		)->
+		addProperty(
 			TextfieldProperty::create('title')->
 			setTitle('Title')
 		)->
@@ -68,6 +73,11 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('url')->
+			setTitle('URL')->
+			setRequired(true)
 		)->
 		addProperty(
 			TextfieldProperty::create('title')->
@@ -175,6 +185,11 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('url')->
+			setTitle('URL')->
+			setRequired(true)
 		)->
 		addProperty(
 			TextfieldProperty::create('code')->

@@ -5,7 +5,7 @@
 @stop
 
 @section('h1')
-{{ $currentElement->h2 }}
+{{ $currentElement->h1 }}
 @stop
 
 @section('fullcontent')

@@ -13,21 +13,68 @@
 
 Route::get('/', array('as' => 'firstpage', 'uses' => 'FirstpageController@getIndex'));
 
-Route::get('/{section}', array('as' => 'section', function($url) {
+Route::get('/novelty', array('as' => 'novelty', 'uses' => 'NoveltyController@getIndex'));
 
-	$section =
-		Section::where('url', $url)->
-		cacheTags('Section')->rememberForever()->
-		first();
+Route::get('/special', array('as' => 'special', 'uses' => 'SpecialController@getIndex'));
 
-	if (!$section) App::abort(404);
+Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@getIndex'));
 
-	View::share('currentElement', $section);
+Route::get('/register', array('as' => 'register', 'uses' => 'RegisterController@getIndex'));
 
-	switch ($url) :
-		default: $controller = 'CommonController'; break;
-	endswitch;
+Route::get('/cabinet', array('as' => 'cabinet', 'uses' => 'CabinetController@getIndex'));
 
-	return App::make($controller)->getIndex($section);
+Route::get('/cart', array('as' => 'cart', 'uses' => 'CartController@getIndex'));
+
+Route::get('/order', array('as' => 'order', 'uses' => 'OrderController@getIndex'));
+
+Route::get('/delivery', array('as' => 'delivery', function() {
+	$currentElement = Section::find(1);
+	View::share('currentElement', $currentElement);
+	$scope = CommonFilter::apply();
+	return View::make('common', $scope);
+}));
+
+Route::get('/payments', array('as' => 'payments', function() {
+	$currentElement = Section::find(2);
+	View::share('currentElement', $currentElement);
+	$scope = CommonFilter::apply();
+	return View::make('common', $scope);
+}));
+
+Route::get('/contacts', array('as' => 'contacts', function() {
+	$currentElement = Section::find(3);
+	View::share('currentElement', $currentElement);
+	$scope = CommonFilter::apply();
+	return View::make('common', $scope);
+}));
+
+Route::get('/{url1}/{url2?}', array('as' => 'catalogue', function($url1, $url2) {
+
+	$category =
+		Category::where('url', $url1)->
+		cacheTags('Category')->rememberForever()->first();
+
+	if ( ! $category) App::abort(404);
+
+	if ( ! $url2) {
+		return App::make('CategoryController')->getIndex($category);
+	}
+
+	$subcategory =
+		Subcategory::where('url', $url2)->
+		cacheTags('Subcategory')->rememberForever()->first();
+
+	if ($subcategory) {
+		return App::make('SubcategoryController')->getIndex($category, $subcategory);
+	}
+
+	$good =
+		Good::where('url', $url2)->
+		cacheTags('Good')->rememberForever()->first();
+
+	if ( ! $good) App::abort(404);
+
+	return App::make('GoodController')->getIndex($category, $good);
 
 }));
+
