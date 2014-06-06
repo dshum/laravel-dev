@@ -8,6 +8,9 @@
 {{ $currentElement->h1 }}
 @stop
 
-@section('fullcontent')
-{{ $currentElement->fullcontent }}
+@section('content')
+<h1>@yield('h1')</h1>
+<div class="info">
+	<p>{{ $currentElement->fullcontent }}</p>
+</div>
 @stop

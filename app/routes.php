@@ -48,7 +48,7 @@ Route::get('/contacts', array('as' => 'contacts', function() {
 	return View::make('common', $scope);
 }));
 
-Route::get('/{url1}/{url2?}', array('as' => 'catalogue', function($url1, $url2) {
+Route::get('/{url1}/{url2?}', array('as' => 'catalogue', function($url1, $url2 = null) {
 
 	$category =
 		Category::where('url', $url1)->

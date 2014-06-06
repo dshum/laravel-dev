@@ -14,13 +14,16 @@
 	<div>
 		<a href="{{ URL::route('firstpage') }}"><img src="/i/logo.gif" width="237" height="123" class="float" alt="setalpm" /></a>
 		<div class="topnav">
-			<span><strong>Welcome</strong> &nbsp;<a href="{{ URL::route('login') }}">Log in</a> &nbsp; | &nbsp; <a href="{{ URL::route('register') }}">Register</a></span>
+			@if (false)
+			<span><strong>Добро пожаловать</strong>, denis-shumeev@yandex.ru</span>
+			@else
+			<span><a href="{{ URL::route('login') }}">Войти</a> &nbsp; | &nbsp; <a href="{{ URL::route('register') }}">Зарегистрироваться</a></span>
+			@endif
 			<select>
-				<option>Type of Product</option>
-				<option>Clothing</option>
-				<option>Accessories</option>
-				<option>Clothing</option>
-				<option>Accessories</option>
+				<option>- Категория товара -</option>
+			@foreach ($categoryList as $k => $category)
+				<option value="{{ $category->id }}">{{ $category->name }}</option>
+			@endforeach
 			</select>
 		    <span>Language:</span> <a href="#"><img src="/i/flag1.jpg" alt="" width="21" height="13" /></a> <a href="#"><img src="/i/flag2.jpg" alt="" width="21" height="13" /></a> <a href="#"><img src="/i/flag3.jpg" alt="" width="21" height="13" /></a>
 		</div>
@@ -45,7 +48,7 @@
 					<li><a href="{{ URL::route('contacts') }}">Контакты</a></li>
 				</ul>
 				<div id="cart">
-					<strong>Shopping cart:</strong> <br /> 0 items
+					<strong>Корзина:</strong> <br /> 0 товаров
 				</div>
 			</div>
 			<div>
@@ -68,21 +71,7 @@
 			<img src="/i/photo.jpg" alt="" width="682" height="334" border="0" usemap="#Map" />
             <br />
 			<div id="inside">
-				<img src="/i/title3.gif" alt="" width="159" height="15" /><br />
-				<div class="info">
-					<img src="/i/pic2.jpg" alt="" width="159" height="132" />
-					<p>Dolor sit amet, consetetur sadipscing elitr, seddiam nonumy eirmod tempor. invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadip- scing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. Lorem ipsum dolor sit amet, consetetur. </p>
-					<a href="#" class="more"><img src="/i/more.gif" alt="" width="106" height="28" /></a>
-				</div>
-				<img src="/i/title4.gif" alt="" width="159" height="17" /><br />
-				<div id="items">
-@foreach ($categoryList as $k => $category)
-					<div class="item{{ $k % 3 == 1 ? ' center' : '' }}">
-						<a href="{{ $category->getHref() }}"><img src="/i/item1.jpg" width="213" height="192" /></a><br />
-						<p><a href="{{ $category->getHref() }}">{{ $category->name }}</a></p>
-					</div>
-@endforeach
-				</div>
+				@yield('content')
 			</div>
 		</div>
 	</div>

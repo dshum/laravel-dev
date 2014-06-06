@@ -75,7 +75,7 @@ padding:15px 0 0 4px
 }
 #navigation{
 background-color:#92A117;
-background-image:url(images/sidebar_bg.jpg);
+background-image:url(/i/sidebar_bg.jpg);
 background-position:top left;
 background-repeat:no-repeat;
 width:220px;
@@ -98,7 +98,7 @@ font-weight:bold;
 display:block;
 width:179px;
 line-height:28px;
-background-image:url(images/li_bg.jpg);
+background-image:url(/i/li_bg.jpg);
 background-position:top left;
 background-repeat:no-repeat;
 padding:0 0 0 30px;
@@ -108,7 +108,7 @@ height:38px;
 line-height:16px;
 margin:65px 0 0 0;
 padding:9px 0 0 50px;
-background-image:url(images/cart_bg.jpg);
+background-image:url(/i/cart_bg.jpg);
 background-position:top left;
 background-repeat:no-repeat;
 }
@@ -120,7 +120,7 @@ margin:0 0 1px 0
 }
 .categories li{
 list-style-type:none;
-background-image:url(images/bullet.gif);
+background-image:url(/i/bullet.gif);
 background-position:top left;
 background-repeat:no-repeat;
 padding:0 0 7px 25px;
