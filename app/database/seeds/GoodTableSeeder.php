@@ -9,6 +9,7 @@ class GoodTableSeeder extends Seeder {
 		Good::create(array(
 			'name' => 'Офисное массажное кресло MSO',
 			'order' => 1,
+			'url' => 'mso',
 			'code' => '92',
 			'supplier_price' => 15931,
 			'price' => 24255,
@@ -53,6 +54,7 @@ class GoodTableSeeder extends Seeder {
 		Good::create(array(
 			'name' => 'Массажное кресло Casada Senso 2',
 			'order' => 2,
+			'url' => 'senso2',
 			'code' => '18',
 			'supplier_price' => 35640,
 			'price' => 49000,
@@ -81,6 +83,7 @@ class GoodTableSeeder extends Seeder {
 		Good::create(array(
 			'name' => 'Массажное кресло Senator 2',
 			'order' => 3,
+			'url' => 'senator2',
 			'code' => '19',
 			'supplier_price' => 31590,
 			'price' => 45000,

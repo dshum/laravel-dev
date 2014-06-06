@@ -16,6 +16,7 @@ class CreateGoodTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('order');
+			$table->string('url');
 			$table->integer('code');
 			$table->double('supplier_price')->nullable();
 			$table->double('price')->nullable();

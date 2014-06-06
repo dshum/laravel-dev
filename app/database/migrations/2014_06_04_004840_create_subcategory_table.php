@@ -16,6 +16,7 @@ class CreateSubcategoryTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('order');
+			$table->string('url');
 			$table->string('title')->nullable();
 			$table->mediumText('fullcontent')->nullable();
 			$table->string('image')->nullable();
