@@ -110,7 +110,10 @@ class ImageProperty extends BaseProperty {
 
 	public function path()
 	{
-		return $this->getItemClass()->getFolderWebPath().$this->getValue();
+		return asset(
+			$this->getItemClass()->getFolder()
+			.$this->getValue()
+		);
 	}
 
 	public function abspath()
