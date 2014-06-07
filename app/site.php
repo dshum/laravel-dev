@@ -23,6 +23,11 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			ImageProperty::create('image')->
+			setTitle('Файл')->
+			setShow(true)
+		)->
+		addProperty(
 			TextfieldProperty::create('url')->
 			setTitle('URL')->
 			setRequired(true)

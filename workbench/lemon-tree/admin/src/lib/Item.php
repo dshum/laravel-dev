@@ -70,9 +70,9 @@ class Item {
 	{
 		return $this->root;
 	}
-	
+
 	public function bindItem($name)
-	{	
+	{
 		$this->binds[$name] = $name;
 
 		return $this;

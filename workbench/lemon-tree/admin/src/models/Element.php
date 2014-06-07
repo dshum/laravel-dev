@@ -7,6 +7,8 @@ abstract class Element extends \Eloquent {
 	protected static $cache = true;
 	protected static $map = array();
 
+	protected $item = null;
+	protected $assetsName = 'assets';
 	protected $softDelete = true;
 	protected $href = null;
 
@@ -156,6 +158,29 @@ abstract class Element extends \Eloquent {
 		return get_called_class().'.'.$id;
 	}
 
+	public static function getByClassId($classId)
+	{
+		try {
+			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
+			return $class::find($id);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
+	public function getItem()
+	{
+		if ($this->item) return $this->item;
+
+		$site = \App::make('site');
+
+		$class = $this->getClass();
+
+		$this->item = $site->getItemByName($class);
+
+		return $this->item;
+	}
+
 	public function getClass()
 	{
 		return get_class($this);
@@ -169,25 +194,44 @@ abstract class Element extends \Eloquent {
 			.$this->id;
 	}
 
-	public function getItem()
+	public function getProperty($name)
 	{
-		$site = \App::make('site');
+		$item = $this->getItem();
 
-		$class = $this->getClass();
+		$property = $item->getPropertyByName($name);
 
-		$item = $site->getItemByName($class);
-
-		return $item;
+		return $property->setElement($this);
 	}
 
-	public static function getByClassId($classId)
+	public function getAssetsName()
 	{
-		try {
-			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
-			return $class::find($id);
-		} catch (\Exception $e) {}
+		return $this->assetsName;
+	}
 
+	public function getFolderName()
+	{
+		return \DB::connection()->getTablePrefix().$this->getTable();
+	}
+
+	public function getFolderHash()
+	{
 		return null;
+	}
+
+	public function getFolderPath()
+	{
+		return
+			public_path().DIRECTORY_SEPARATOR
+			.$this->getAssetsName().DIRECTORY_SEPARATOR
+			.$this->getFolderName().DIRECTORY_SEPARATOR;
+	}
+
+	public function getFolderWebPath()
+	{
+		return asset(
+			$this->getAssetsName().DIRECTORY_SEPARATOR
+			.$this->getFolderName().DIRECTORY_SEPARATOR
+		);
 	}
 
 	public function setParent(Element $parent)

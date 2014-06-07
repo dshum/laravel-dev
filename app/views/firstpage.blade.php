@@ -8,7 +8,9 @@ Trilobite Group
 <div id="items">
 @foreach ($categoryList as $k => $category)
 	<div class="item{{ $k % 3 == 1 ? ' center' : '' }}">
-		<a href="{{ $category->getHref() }}"><img src="/i/item1.jpg" width="213" height="192" /></a><br />
+	@if ($category->image)
+		<a href="{{ $category->getHref() }}"><img src="{{ $category->getProperty('image')->src() }}" width="{{ $category->getProperty('image')->width() }}" height="{{ $category->getProperty('image')->height() }}" /></a><br />
+	@endif
 		<p><a href="{{ $category->getHref() }}">{{ $category->name }}</a></p>
 	</div>
 @endforeach

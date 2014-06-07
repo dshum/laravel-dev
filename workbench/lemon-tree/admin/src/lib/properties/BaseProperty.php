@@ -11,6 +11,7 @@ abstract class BaseProperty {
 	protected $readonly = false;
 	protected $hidden = false;
 
+	protected $itemClass = null;
 	protected $element = null;
 	protected $value = null;
 
@@ -26,16 +27,16 @@ abstract class BaseProperty {
 
 	public function getClassName()
 	{
-		$className = get_class($this);
-		$className = explode('\\', $className);
-		$className = end($className);
-
-		return $className;
+		return class_basename(get_class($this));
 	}
 
 	public function setItem(Item $item)
 	{
 		$this->item = $item;
+
+		$itemClass = $item->getName();
+
+		$this->itemClass = new $itemClass;
 
 		return $this;
 	}
@@ -43,6 +44,11 @@ abstract class BaseProperty {
 	public function getItem()
 	{
 		return $this->item;
+	}
+
+	public function getItemClass()
+	{
+		return $this->itemClass;
 	}
 
 	public function setName($name)

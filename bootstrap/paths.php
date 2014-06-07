@@ -46,4 +46,6 @@ return array(
 	  |
 	 */
 	'storage' => __DIR__ . '/../storage',
+
+	'assets' => __DIR__ . '/../public/assets',
 );
