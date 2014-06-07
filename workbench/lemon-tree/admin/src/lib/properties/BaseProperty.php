@@ -168,6 +168,8 @@ abstract class BaseProperty {
 		return $this;
 	}
 
+	public function drop() {}
+
 	public function getElementListView()
 	{
 		$scope = array(

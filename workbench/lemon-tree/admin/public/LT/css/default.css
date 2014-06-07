@@ -195,7 +195,7 @@ p.ok {
 }
 
 img {
-	border: none;
+	border: 1px solid #CCC;
 }
 
 h1, h2, h3 {

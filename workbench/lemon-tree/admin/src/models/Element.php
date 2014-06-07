@@ -335,6 +335,19 @@ abstract class Element extends \Eloquent {
 		return $childItemList;
 	}
 
+	public function forceDelete()
+	{
+		$item = $this->getItem();
+
+		$propertyList = $item->getPropertyList();
+
+		foreach ($propertyList as $propertyName => $property) {
+			$property->setElement($this)->drop();
+		}
+
+		return parent::forceDelete();
+	}
+
 	public function getHref()
 	{
 		return null;
