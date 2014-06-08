@@ -153,6 +153,12 @@ class TreeController extends BaseController {
 				}
 			);
 
+			$orderByList = $item->getOrderByList();
+
+			foreach ($orderByList as $field => $direction) {
+				$elementListCriteria->orderBy($field, $direction);
+			}
+
 			$elementListCriteria->
 			cacheTags($itemName)->
 			rememberForever();

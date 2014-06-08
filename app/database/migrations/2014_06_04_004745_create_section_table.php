@@ -19,8 +19,8 @@ class CreateSectionTable extends Migration {
 			$table->string('url');
 			$table->string('title')->nullable();
 			$table->string('h1')->nullable();
-			$table->string('meta_keywords');
-			$table->text('meta_description');
+			$table->string('meta_keywords')->nullable();
+			$table->text('meta_description')->nullable();
 			$table->text('shortcontent')->nullable();
 			$table->mediumText('fullcontent')->nullable();
 			$table->integer('section_id')->unsigned()->nullable()->default(null)->index();

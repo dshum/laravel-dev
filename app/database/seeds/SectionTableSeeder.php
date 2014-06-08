@@ -30,7 +30,7 @@ class SectionTableSeeder extends Seeder {
 		Section::create(array(
 			'name' => 'Способы оплаты',
 			'order' => 2,
-			'url' => 'payment',
+			'url' => 'payments',
 			'title' => 'Способы оплаты',
 			'h1' => 'Способы оплаты',
 			'shortcontent' => '',

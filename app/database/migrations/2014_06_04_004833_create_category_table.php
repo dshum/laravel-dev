@@ -21,7 +21,7 @@ class CreateCategoryTable extends Migration {
 			$table->text('shortcontent')->nullable();
 			$table->mediumText('fullcontent')->nullable();
 			$table->string('image')->nullable();
-			$table->boolean('hide');
+			$table->boolean('hide')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});

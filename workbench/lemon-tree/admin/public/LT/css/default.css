@@ -194,8 +194,8 @@ p.ok {
 	font-weight: 800;
 }
 
-img {
-	border: 1px solid #CCC;
+img.framed {
+	border: 1px solid #999;
 }
 
 h1, h2, h3 {

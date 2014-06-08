@@ -193,6 +193,7 @@ $(function() {
 		});
 		event.preventDefault();
 	});
+
 });
 </script>
 @stop

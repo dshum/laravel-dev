@@ -12,6 +12,11 @@ class Good extends LemonTree\Element {
 		return \URL::route('catalogue', array('url1' => $category->url, 'url2' => $this->url));
 	}
 
+	public function getFolderHash()
+	{
+		return substr(md5(rand()), 0, 2);
+	}
+
 	public function getCategory()
 	{
 		if ($this->category) return $this->category;

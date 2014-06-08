@@ -16,7 +16,7 @@ class CreateExpenseSourceTable extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->integer('order');
-			$table->integer('service_section_id')->unsigned()->nullable()->default(null)->index();
+			$table->integer('service_section_id')->unsigned()->index();
 			$table->timestamps();
 			$table->softDeletes();
 		});

@@ -24,7 +24,8 @@ $site->
 		)->
 		addProperty(
 			ImageProperty::create('image')->
-			setTitle('Файл')->
+			setTitle('Изображение')->
+			setResize(205, 139, 80)->
 			setShow(true)
 		)->
 		addProperty(
@@ -201,6 +202,13 @@ $site->
 			setTitle('Артикул')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			ImageProperty::create('image')->
+			setTitle('Изображение')->
+			setResize(300, 350, 80)->
+			addResize('spec', 150, 200, 80)->
+			addResize('other', 100, 100, 80)
 		)->
 		addProperty(
 			FloatProperty::create('supplier_price')->

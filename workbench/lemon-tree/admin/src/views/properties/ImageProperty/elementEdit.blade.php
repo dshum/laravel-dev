@@ -1,9 +1,16 @@
-<span error="{{ $name }}">{{ $title }}</span>:
+<span error="{{ $name }}">{{ $title }}</span>:<br />
 @if ($exists)
 <span class="grey">Загружено изображение: <a href="{{ $src }}" target="_blank">{{ $filename }}</a>, <span title="Размер изображения">{{ $width }}&#215;{{ $height }}</span> пикселов, {{ $filesize }} Кб<br /></span>
-<img class="pict" src="{{ $src }}" width="{{ $width }}" height="{{ $height }}" alt="{{ $value }}">
+<img class="framed" src="{{ $src }}" width="{{ $width }}" height="{{ $height }}" alt="{{ $filename }}"><br />
 @endif
-<br />
+@if (isset($resizes))
+	@foreach ($resizes as $resizeName => $resize)
+		@if ($resize['exists'])
+<span class="grey">Загружено изображение: <a href="{{ $resize['src'] }}" target="_blank">{{ $resize['filename'] }}</a>, <span title="Размер изображения">{{ $resize['width'] }}&#215;{{ $resize['height'] }}</span> пикселов, {{ $resize['filesize'] }} Кб<br /></span>
+<img class="framed" src="{{ $resize['src'] }}" width="{{ $resize['width'] }}" height="{{ $resize['height'] }}" alt="{{ $resize['filename'] }}"><br />
+		@endif
+	@endforeach
+@endif
 @if ( ! $readonly)
 {{ Form::file($name, array('class' => 'prop-file')) }}<br />
 <small class="red">Максимальный размер файла {{ $maxFilesize }} Кб</small><br />

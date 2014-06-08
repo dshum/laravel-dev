@@ -54,14 +54,26 @@ class FileProperty extends BaseProperty {
 	public function path()
 	{
 		return asset(
-			$this->getItemClass()->getFolder()
+			trim(
+				$this->getItemClass()->getFolder(),
+				DIRECTORY_SEPARATOR
+			)
+			.DIRECTORY_SEPARATOR
 			.$this->getValue()
 		);
 	}
 
 	public function abspath()
 	{
-		return $this->getItemClass()->getFolderPath().$this->getValue();
+		$folderPath =
+			public_path().DIRECTORY_SEPARATOR
+			.trim(
+				$this->getItemClass()->getFolder(),
+				'/\\'
+			)
+			.DIRECTORY_SEPARATOR;
+
+		return $folderPath.$this->getValue();
 	}
 
 	public function filename()
@@ -112,9 +124,22 @@ class FileProperty extends BaseProperty {
 					$extension
 				);
 
-				$folderHash = $this->element->getFolderHash();
+				$folderPath =
+					public_path().DIRECTORY_SEPARATOR
+					.trim(
+						$this->element->getFolder(),
+						DIRECTORY_SEPARATOR
+					)
+					.DIRECTORY_SEPARATOR;
 
-				$destination = $this->element->getFolderPath().$folderHash;
+				$folderHash =
+					trim(
+						$this->element->getFolderHash(),
+						DIRECTORY_SEPARATOR
+					)
+					.DIRECTORY_SEPARATOR;
+
+				$destination = $folderPath.$folderHash;
 
 				$file->move($destination, $filename);
 

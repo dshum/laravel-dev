@@ -218,19 +218,11 @@ abstract class Element extends \Eloquent {
 		return null;
 	}
 
-	public function getFolderPath()
-	{
-		return
-			public_path().DIRECTORY_SEPARATOR
-			.$this->getAssetsName().DIRECTORY_SEPARATOR
-			.$this->getFolderName().DIRECTORY_SEPARATOR;
-	}
-
 	public function getFolder()
 	{
 		return
 			$this->getAssetsName().DIRECTORY_SEPARATOR
-			.$this->getFolderName().DIRECTORY_SEPARATOR;
+			.$this->getFolderName();
 	}
 
 	public function setParent(Element $parent)

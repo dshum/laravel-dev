@@ -20,7 +20,7 @@ class CreateSubcategoryTable extends Migration {
 			$table->string('title')->nullable();
 			$table->mediumText('fullcontent')->nullable();
 			$table->string('image')->nullable();
-			$table->boolean('hide');
+			$table->boolean('hide')->nullable();
 			$table->integer('category_id')->unsigned()->index();
 			$table->timestamps();
 			$table->softDeletes();

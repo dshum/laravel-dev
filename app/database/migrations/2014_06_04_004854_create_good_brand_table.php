@@ -21,7 +21,7 @@ class CreateGoodBrandTable extends Migration {
 			$table->string('h1')->nullable();
 			$table->mediumText('fullcontent')->nullable();
 			$table->text('address')->nullable();
-			$table->boolean('hide');
+			$table->boolean('hide')->nullable();
 			$table->timestamps();
 			$table->softDeletes();
 		});
