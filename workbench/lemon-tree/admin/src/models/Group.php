@@ -13,7 +13,7 @@ class Group extends \Cartalyst\Sentry\Groups\Eloquent\Group {
 	{
 		$builder = parent::newQuery();
 
-		return $builder->rememberForever();
+		return $builder->cacheTags('Group')->rememberForever();
 	}
 
 }

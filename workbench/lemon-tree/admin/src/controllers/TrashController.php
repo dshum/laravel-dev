@@ -18,13 +18,23 @@ class TrashController extends BaseController {
 		\View::share('currentElement', $currentElement);
 		\View::share('loggedUser', $loggedUser);
 
-		$scope = TreeFilter::apply($scope);
+		$site = \App::make('site');
+
+		if ($currentElement) {
+			$currentItem = $site->getItemByName($currentElement->getClass());
+			$mainProperty = $currentItem->getMainProperty();
+			$scope['currentTitle'] = $currentElement->$mainProperty;
+			$scope['currentTabTitle'] = $currentElement->$mainProperty;
+		} else {
+			$scope['currentTitle'] = 'Корзина';
+			$scope['currentTabTitle'] = 'Корзина';
+		}
+
+		$scope = CommonFilter::apply($scope);
 
 		$parentList = $currentElement
 			? $currentElement->getParentList()
 			: array();
-
-		$site = \App::make('site');
 
 		$itemList = $site->getItemList();
 

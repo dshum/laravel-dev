@@ -20,9 +20,9 @@ class UserTableSeeder extends Seeder {
 			'activated' => true,
 		));
 
-		 $group = \Sentry::findGroupById(1);
+		$group = \Sentry::findGroupById(1);
 
-		 $user->addGroup($group);
+		$user->addGroup($group);
 
 	}
 

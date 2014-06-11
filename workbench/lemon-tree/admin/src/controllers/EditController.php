@@ -2,59 +2,6 @@
 
 class EditController extends BaseController {
 
-	const HINT_LIMIT = 20;
-
-	public function getHint($class)
-	{
-		$scope = array();
-
-		$site = \App::make('site');
-
-		$item = $site->getItemByName($class);
-		$mainProperty = $item->getMainProperty();
-
-		$term = \Input::get('term');
-
-		$elementListCriteria = $class::cacheTags($class)->rememberForever();
-
-		if ($term) {
-			$elementListCriteria->
-			where(
-				'id', 'like', '%'.$term.'%'
-			)->
-			orWhere(
-				$mainProperty, 'like', '%'.$term.'%'
-			);
-		}
-
-		$elementList =
-			$elementListCriteria->
-			limit(static::HINT_LIMIT)->
-			get();
-
-		$prev = null;
-		$k = 2;
-
-		foreach ($elementList as $element) {
-			$id = $element->id;
-			$name = $element->$mainProperty;
-			if ($prev == $name) {
-				$name = $name.' '.$k;
-				$k++;
-			} else {
-				$name = $name;
-				$k = 2;
-			}
-			$scope[] = array(
-				'id' => $id,
-				'value' => $name,
-			);
-			$prev = $element->$mainProperty;
-		}
-
-		return json_encode($scope);
-	}
-
 	public function postDelete(Element $currentElement)
 	{
 		$scope = array();
@@ -176,6 +123,13 @@ class EditController extends BaseController {
 		}
 
 		try {
+			$maxOrder = $currentItem->getClass()->max('order');
+			$currentElement->order = $maxOrder + 1;
+		} catch (\Exception $e) {
+			$currentElement->order = 1;
+		}
+
+		try {
 			$currentElement->save();
 			$scope['status'] = 'ok';
 			$parentElement = $currentElement->getParent();
@@ -281,22 +235,25 @@ class EditController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
+		$site = \App::make('site');
+
 		if ($parentElement) {
 			$currentElement->setParent($parentElement);
 		}
 
+		$currentItem = $site->getItemByName($currentElement->getClass());
+
 		\View::share('currentElement', $currentElement);
 		\View::share('loggedUser', $loggedUser);
 
-		$scope = TreeFilter::apply($scope);
+		$scope['currentTitle'] = $currentItem->getName().' - Добавление элемента';
+		$scope['currentTabTitle'] = $currentItem->getName();
+
+		$scope = CommonFilter::apply($scope);
 
 		$parentList = $currentElement
 			? $currentElement->getParentList()
 			: array();
-
-		$site = \App::make('site');
-
-		$currentItem = $site->getItemByName($currentElement->getClass());
 
 		$propertyList = $currentItem->getPropertyList();
 
@@ -335,18 +292,23 @@ class EditController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
+		$site = \App::make('site');
+
+		$currentItem = $site->getItemByName($currentElement->getClass());
+
+		$mainProperty = $currentItem->getMainProperty();
+
 		\View::share('currentElement', $currentElement);
 		\View::share('loggedUser', $loggedUser);
 
-		$scope = TreeFilter::apply($scope);
+		$scope['currentTitle'] = $currentElement->$mainProperty.' - Редактирование элемента';
+		$scope['currentTabTitle'] = $currentElement->$mainProperty;
+
+		$scope = CommonFilter::apply($scope);
 
 		$parentElement = $currentElement->getParent();
 
 		$parentList = $currentElement->getParentList();
-
-		$site = \App::make('site');
-
-		$currentItem = $site->getItemByName($currentElement->getClass());
 
 		$propertyList = $currentItem->getPropertyList();
 

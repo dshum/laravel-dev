@@ -91,7 +91,7 @@ $(function() {
 		);
 	});
 
-	$('p.main input').each(function () {
+	$('div.main input').each(function () {
 		var value = $(this).val();
 		$(this).val('').focus().val(value);
 	});
@@ -154,6 +154,51 @@ $(function() {
 		}
 
 		inputName.addClass('grey').val(defaultText);
+	});
+
+	$('body').on('click', 'span[onetoone="title"]', function() {
+		var name = $(this).attr('name');
+		$('#'+name+'_block').slideToggle('fast');
+	});
+
+	$('body').on('click', 'input:radio[onetoone="radio"]', function() {
+		var id = $(this).attr('id');
+		var name = $(this).attr('name');
+		var title = $('label[for="'+id+'"]').html();
+		$('#'+name+'_block').slideToggle('fast', function() {
+			$('#'+name+'_title').html(title);
+		});
+	});
+
+	$('body').on('click', 'div.plus[node1], span.plus[node1]', function() {
+		var node = $(this).attr('node1');
+		var itemName = $(this).attr('itemName');
+		var propertyName = $(this).attr('propertyName');
+		var opened = $(this).attr('opened');
+
+		if (opened == 'open') {
+			$.post(
+				"{{ URL::route('admin.tree.open1') }}",
+				{itemName: itemName, propertyName: propertyName, classId: node},
+				function(data) {
+					$('div.padding[node1="'+node+'"]').html(data).slideDown('fast', function() {
+						$('div.plus[node1="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
+						$('span.plus[node1="'+node+'"]').attr('opened', 'true');
+					});
+				},
+				'html'
+			);
+		} else if (opened == 'true') {
+			$('div.padding[node1="'+node+'"]').slideUp('fast', function() {
+				$('div.plus[node1="'+node+'"]').html('<div>+</div>').attr('opened', 'false');
+				$('span.plus[node1="'+node+'"]').attr('opened', 'false');
+			});
+		} else if (opened == 'false') {
+			$('div.padding[node1="'+node+'"]').slideDown('fast', function() {
+				$('div.plus[node1="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
+				$('span.plus[node1="'+node+'"]').attr('opened', 'true');
+			});
+		}
 	});
 
 	$("#editForm").submit(function(event) {
@@ -253,7 +298,7 @@ $(function() {
 @endif
 <div class="form-edit">
 @foreach ($propertyList as $propertyName => $property)
-<p id="{{ $propertyName }}_container"{{ $property->isMainProperty() ? ' class="main"' : '' }}>{{ $property->setElement($currentElement)->getElementEditView() }}</p>
+<div id="{{ $propertyName }}_container"{{ $property->isMainProperty() ? ' class="main"' : '' }}>{{ $property->setElement($currentElement)->getElementEditView() }}</div><br />
 @endforeach
 </div>
 <p>{{ Form::submit('Сохранить', array('class' => 'btn')) }}</p>

@@ -35,6 +35,15 @@ class LoginController extends BaseController {
 			return \View::make('admin::login', $scope);
 		}
 
+		$loggedUser = \Sentry::getUser();
+
+		$tabs = $loggedUser->getParameter('tabs');
+		$currentTab = $loggedUser->getParameter('currentTab');
+
+		if (isset($tabs[$currentTab]['url'])) {
+			return \Redirect::to($tabs[$currentTab]['url']);
+		}
+
 		return \Redirect::back();
 	}
 

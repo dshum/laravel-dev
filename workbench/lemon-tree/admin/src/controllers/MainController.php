@@ -13,16 +13,26 @@ class MainController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
-		$scope = TreeFilter::apply($scope);
-
 		\View::share('currentElement', $currentElement);
 		\View::share('loggedUser', $loggedUser);
+
+		$site = \App::make('site');
+
+		if ($currentElement) {
+			$currentItem = $site->getItemByName($currentElement->getClass());
+			$mainProperty = $currentItem->getMainProperty();
+			$scope['currentTitle'] = $currentElement->$mainProperty;
+			$scope['currentTabTitle'] = $currentElement->$mainProperty;
+		} else {
+			$scope['currentTitle'] = 'Lemon Tree';
+			$scope['currentTabTitle'] = 'Lemon Tree';
+		}
+
+		$scope = CommonFilter::apply($scope);
 
 		$parentList = $currentElement
 			? $currentElement->getParentList()
 			: array();
-
-		$site = \App::make('site');
 
 		$itemList = $site->getItemList();
 		$binds = $site->getBinds();

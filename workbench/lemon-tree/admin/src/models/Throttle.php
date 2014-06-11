@@ -13,7 +13,7 @@ class Throttle extends \Cartalyst\Sentry\Throttling\Eloquent\Throttle {
 	{
 		$builder = parent::newQuery();
 
-		return $builder->rememberForever();
+		return $builder->cacheTags('Throttle')->rememberForever();
 	}
 
 }

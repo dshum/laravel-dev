@@ -58,13 +58,16 @@ class ProfileController extends BaseController {
 	{
 		$scope = array();
 
-		$scope = TreeFilter::apply($scope);
-
 		if ( ! \Sentry::check()) {
 			return \Redirect::route('admin');
 		}
 
 		$loggedUser = \Sentry::getUser();
+
+		$scope['currentTitle'] = $loggedUser->login.' - Управление пользователями';
+		$scope['currentTabTitle'] = $loggedUser->login;
+
+		$scope = CommonFilter::apply($scope);
 
 		$groups = $loggedUser->getGroups();
 

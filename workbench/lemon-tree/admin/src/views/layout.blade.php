@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Lemon Tree</title>
+<title>{{ isset($currentTitle) ? $currentTitle : 'Lemon Tree' }}</title>
 {{ HTML::style('LT/css/default.css') }}
 {{ HTML::style('LT/js/jquery/jquery-ui-1.10.4.custom.min.css') }}
 {{ HTML::script('LT/js/jquery/jquery-2.1.1.min.js') }}
@@ -48,19 +48,14 @@ $(function() {
 <div id="wrapper">
 	<div id="tab-wrapper">
 		<ul>
-			<li class="tab-current">Lemon Tree</li>
-			<li><a href="#">+</a></li>
-		</ul>
-	</div>
-	<div id="menu-wrapper">
-		<ul>
-			@if (Route::currentRouteName() == 'admin')<li class="current_page_item"><a>Lemon Tree</a></li>@else<li><a href="{{ URL::route('admin') }}">Lemon Tree</a></li>@endif
-			<li><a href="{{ URL::current() }}">Обновить</a></li>
-			<li><a href="{{ URL::route('admin.search') }}">Поиск</a></li>
-			<li><a href="{{ URL::route('admin.trash') }}">Корзина</a></li>
-			<li><a href="{{ URL::route('admin.users') }}">Пользователи</a></li>
-			@if (strpos(Route::currentRouteName(), 'admin.profile') !== false)<li class="current_page_item"><a>{{ $loggedUser->login }}</a></li>@else<li><a href="{{ URL::route('admin.profile') }}">{{ $loggedUser->login }}</a></li>@endif
-			<li><a href="{{ URL::route('admin.logout') }}">Выйти</a></li>
+			@foreach ($tabs as $tab)
+				@if ($tab->is_active)
+					<li class="tab-current">{{ $tab->title }}&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}" class="btn">&#215;</a></li>
+				@else
+				<li><a href="{{ \URL::route('admin.tab', array('id' => $tab->id)) }}">{{ $tab->title }}</a>&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}" class="btn">&#215;</a></li>
+				@endif
+			@endforeach
+			<li><a href="{{ \URL::route('admin.tab.add') }}" class="btn blue">+</a></li>
 		</ul>
 	</div>
 	<div id="page">
@@ -71,6 +66,17 @@ $(function() {
 		</div>
 		<div id="browse">
 			<div id="browse-container" class="container">
+				<div id="menu-wrapper">
+					<ul>
+						@if (Route::currentRouteName() == 'admin')<li class="current_page_item"><a>Lemon Tree</a></li>@else<li><a href="{{ URL::route('admin') }}">Lemon Tree</a></li>@endif
+						<li><a href="{{ URL::current() }}">Обновить</a></li>
+						<li><a href="{{ URL::route('admin.search') }}">Поиск</a></li>
+						<li><a href="{{ URL::route('admin.trash') }}">Корзина</a></li>
+						<li><a href="{{ URL::route('admin.users') }}">Пользователи</a></li>
+						@if (strpos(Route::currentRouteName(), 'admin.profile') !== false)<li class="current_page_item"><a>{{ $loggedUser->login }}</a></li>@else<li><a href="{{ URL::route('admin.profile') }}">{{ $loggedUser->login }}</a></li>@endif
+						<li><a href="{{ URL::route('admin.logout') }}">Выйти</a></li>
+					</ul>
+				</div>
 				<div class="path">@yield('path')</div>
 				@yield('browse')
 				<div class="space"></div>

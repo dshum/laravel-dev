@@ -1,7 +1,3 @@
-html, body {
-
-}
-
 body {
 	margin: 0px;
 	padding: 0px;
@@ -17,6 +13,10 @@ body {
 }
 
 #tab-wrapper {
+	background: #DDD;
+}
+
+#tab-wrapper .tab-current {
 	background: #FFF;
 }
 
@@ -30,11 +30,33 @@ body {
 	display: inline-block;
 	list-style: none;
 	margin: 0;
-	padding: 0px 5px;
+	padding: 0 10px 3px 10px;
+	background: #EEE;
+	font-size: 80%;
+}
+
+#tab-wrapper a.btn {
+	text-decoration: none;
+	font-family: Courier New;
+	font-size: 20px;
+	font-weight: bold;
+	padding: 0;
+	position: relative;
+	top: 2px;
+	color: #666;
+}
+
+#tab-wrapper a.btn:hover {
+	color: orange;
+}
+
+#tab-wrapper a.blue:hover {
+	color: blue;
 }
 
 #menu-wrapper {
-	background: #EEE;
+	background: #FFF;
+	margin: 0 0 10px 0;
 }
 
 #menu-wrapper ul {
@@ -68,13 +90,13 @@ body {
 	overflow-y: hidden;
 }
 
-#tree div.padding {
+div.padding {
 	margin-left: 5px;
 	padding-left: 20px;
 //	border-left: 1px solid #CCC;
 }
 
-#tree div.plus {
+div.plus {
 	width: 9px;
 	height: 9px;
 	float: left;
@@ -85,7 +107,7 @@ body {
 	cursor: hand;
 }
 
-#tree div.plus div {
+div.plus div {
 	position: relative;
 	top: -4px;
 	left: 0px;
@@ -94,7 +116,7 @@ body {
 	color: #000;
 }
 
-#tree div.plus-empty {
+div.plus-empty {
 	width: 11px;
 	height: 11px;
 	float: left;
@@ -168,12 +190,11 @@ textarea.richtext {
 	height: 350px;
 }
 
-span.blank {
-	display: block;
+div.blank {
 	width: 90%;
 	border: 1px solid #999;
 	background: #FFF;
-	padding: 2px 5px;
+	padding: 5px 5px;
 }
 
 span.error {
