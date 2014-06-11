@@ -9,6 +9,7 @@ class OneToOneProperty extends BaseProperty {
 	protected $relatedClass = null;
 	protected $deleting = self::RESTRICT;
 	protected $parent = false;
+	protected $binds = array();
 
 	protected $rules = array('integer');
 
@@ -64,6 +65,29 @@ class OneToOneProperty extends BaseProperty {
 		return $this->parent;
 	}
 
+	public function bind()
+	{
+		$num = func_num_args();
+		$args = func_get_args();
+
+		if ($num < 1) return $this;
+
+		$name = array_shift($args);
+
+		if ( ! $args) $this->binds[null][$name] = $name;
+
+		foreach ($args as $arg) {
+			$this->binds[$name][$arg] = $arg;
+		}
+
+		return $this;
+	}
+
+	public function getBinds()
+	{
+		return $this->binds;
+	}
+
 	public function setElement(Element $element)
 	{
 		$this->element = $element;
@@ -112,9 +136,15 @@ class OneToOneProperty extends BaseProperty {
 			'title' => $this->getTitle(),
 			'value' => $this->getValue(),
 			'readonly' => $this->getReadonly(),
+			'required' => $this->getRequired(),
 			'mainProperty' => $mainProperty,
 			'relatedClass' => $relatedClass,
 		);
+
+		if ($this->getBinds()) {
+			$treeView = \App::make('LemonTree\TreeController')->show1($this);
+			$scope['treeView'] = $treeView;
+		}
 
 		try {
 			$view = $this->getClassName().'.elementEdit';
