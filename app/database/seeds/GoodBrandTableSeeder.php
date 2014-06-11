@@ -4,7 +4,7 @@ class GoodBrandTableSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('expense_categories')->truncate();
+		DB::table('good_brands')->truncate();
 
 		GoodBrand::create(array(
 			'name' => 'Casada',

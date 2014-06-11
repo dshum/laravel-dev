@@ -103,7 +103,9 @@ $site->
 			setTitle('Категория товаров')->
 			setRelatedClass('Category')->
 			setDeleting(OneToOneProperty::RESTRICT)->
-			setParent(true)
+			setParent(true)->
+			setRequired(true)->
+			bind('Category')
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->
@@ -127,7 +129,7 @@ $site->
 		Item::create('GoodBrand')->
 		setTitle('Бренд товара')->
 		setMainProperty('name')->
-		addOrderBy('order', 'asc')->
+		addOrderBy('name', 'asc')->
 		addProperty(
 			TextfieldProperty::create('name')->
 			setTitle('Название')->
@@ -274,19 +276,24 @@ $site->
 			setRelatedClass('Category')->
 			setDeleting(OneToOneProperty::RESTRICT)->
 			setRequired(true)->
-			setParent(true)
+			setParent(true)->
+			bind('Category')
 		)->
 		addProperty(
 			OneToOneProperty::create('subcategory_id')->
 			setTitle('Подкатегория товара')->
 			setRelatedClass('Subcategory')->
-			setDeleting(OneToOneProperty::RESTRICT)
+			setDeleting(OneToOneProperty::RESTRICT)->
+			bind('Category')->
+			bind('Category', 'Subcategory')
 		)->
 		addProperty(
 			OneToOneProperty::create('good_brand_id')->
 			setTitle('Бренд товара')->
 			setRelatedClass('GoodBrand')->
-			setDeleting(OneToOneProperty::RESTRICT)
+			setDeleting(OneToOneProperty::RESTRICT)->
+			setRequired(true)->
+			bind('GoodBrand')
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->
@@ -585,7 +592,7 @@ $site->
 		Item::create('Expense')->
 		setTitle('Расход')->
 		setMainProperty('name')->
-		addOrderBy('order', 'asc')->
+		addOrderBy('name', 'asc')->
 		addProperty(
 			TextfieldProperty::create('name')->
 			setTitle('Название')->
@@ -632,12 +639,9 @@ $site->
 		)
 	)->
 
-	bind(Site::ROOT, 'Category')->
-	bind('Category', 'Subcategory')->
-	bind('Category', 'Good')->
+	bind(Site::ROOT, 'Category', 'Section', 'ServiceSection')->
+	bind('Category', 'Subcategory', 'Good')->
 	bind('Subcategory', 'Good')->
-	bind(Site::ROOT, 'Section')->
-	bind(Site::ROOT, 'ServiceSection')->
 	bind('ServiceSection.1', 'ServiceSection')->
 	bind('ServiceSection.4', 'Counter')->
 	bind('ServiceSection.7', 'ServiceSection')->
@@ -645,13 +649,9 @@ $site->
 	bind('ServiceSection.13', 'ExpenseSource')->
 	bind('ServiceSection.14', 'GoodBrand')->
 
-	bindTree(Site::ROOT, 'Category')->
-	bindTree('Category', 'Subcategory')->
-	bindTree('Category', 'Good')->
+	bindTree(Site::ROOT, 'Category', 'Section', 'ServiceSection', 'SiteSettings')->
+	bindTree('Category', 'Subcategory', 'Good')->
 	bindTree('Subcategory', 'Good')->
-	bindTree(Site::ROOT, 'Section')->
-	bindTree(Site::ROOT, 'ServiceSection')->
-	bindTree(Site::ROOT, 'SiteSettings')->
 	bindTree('Section', 'Section')->
 	bindTree('ServiceSection.1', 'ServiceSection')->
 	bindTree('ServiceSection.4', 'Counter')->

@@ -37,7 +37,7 @@ class CounterTableSeeder extends Seeder {
 <noscript><div><img src="//mc.yandex.ru/watch/21307873" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->',
 			'logo' => '',
-			'service_section_id' => 4,
+			'service_section_id' => 5,
 		));
 
 		Counter::create(array(
@@ -54,7 +54,7 @@ screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
 <img src="//counter.yadro.ru/logo?45.13" title="LiveInternet" alt="" border="0" width="31" height="31"/>
 </a>
 <!--/LiveInternet-->',
-			'service_section_id' => 4,
+			'service_section_id' => 5,
 		));
 
 	}

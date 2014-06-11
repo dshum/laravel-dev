@@ -11,8 +11,9 @@ class SubcategoryTableSeeder extends Seeder {
 			'order' => 1,
 			'url' => 'chairs',
 			'title' => 'Купить массажное кресло для дома и офиса, цены, отзывы, доставка по Москве — бесплатно',
-			'fullcontent' => '',
+			'fullcontent' => null,
 			'category_id' => 1,
+			'hide' => false,
 		));
 
 		Subcategory::create(array(
@@ -20,8 +21,9 @@ class SubcategoryTableSeeder extends Seeder {
 			'order' => 2,
 			'url' => 'covers',
 			'title' => 'Массажная накидка на кресло и сиденье автомобиля, купить в интернет магазине GoToHealth.ru',
-			'fullcontent' => '',
+			'fullcontent' => null,
 			'category_id' => 1,
+			'hide' => false,
 		));
 
 		Subcategory::create(array(
@@ -29,8 +31,9 @@ class SubcategoryTableSeeder extends Seeder {
 			'order' => 3,
 			'url' => 'pillows',
 			'title' => 'Массажная подушка для спины, купить подушку для автомобиля, подушки Шиацу',
-			'fullcontent' => '',
+			'fullcontent' => null,
 			'category_id' => 1,
+			'hide' => false,
 		));
 
 	}

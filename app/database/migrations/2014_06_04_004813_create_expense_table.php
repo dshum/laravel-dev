@@ -15,6 +15,7 @@ class CreateExpenseTable extends Migration {
 		Schema::create('expenses', function ($table) {
 			$table->increments('id');
 			$table->string('name');
+			$table->integer('order');
 			$table->double('sum');
 			$table->text('comment')->nullable();
 			$table->integer('expense_category_id')->unsigned()->index();

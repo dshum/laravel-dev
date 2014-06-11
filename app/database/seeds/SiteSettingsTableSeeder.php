@@ -8,6 +8,7 @@ class SiteSettingsTableSeeder extends Seeder {
 
 		SiteSettings::create(array(
 			'name' => 'Настройки сайта',
+			'order' => 1,
 			'title' => 'Товары и гаджеты для здорового образа жизни &#151; интернет-магазин Trilobite Group',
 			'meta_keywords' => 'Trilobite Group',
 			'meta_description' => 'Trilobite Group',

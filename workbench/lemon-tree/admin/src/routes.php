@@ -30,6 +30,7 @@ Route::get('/admin/group/{id}', array('as' => 'admin.group', function($id) {
 }));
 
 Route::post('/admin/tree/open', array('as' => 'admin.tree.open', 'uses' => 'LemonTree\TreeController@postOpen'));
+Route::post('/admin/tree/open1', array('as' => 'admin.tree.open1', 'uses' => 'LemonTree\TreeController@postOpen1'));
 
 Route::get('/admin/browse/{class}.{id}', array('as' => 'admin.browse', function($class, $id) {
 	$element = $class::find($id);
@@ -127,7 +128,9 @@ Route::post('/admin/restore/{class}.{id}', array('as' => 'admin.restore', functi
 	}
 }));
 
-Route::get('/admin/hint/{class}', array('as' => 'admin.hint', 'uses' => 'LemonTree\EditController@getHint'));
+Route::get('/admin/hint/{class}', array('as' => 'admin.hint', 'uses' => 'LemonTree\HintController@getHint'));
+
+Route::get('/admin/multihint/{itemName}/{propertyName}', array('as' => 'admin.multihint', 'uses' => 'LemonTree\HintController@getMultiHint'));
 
 Route::get('/admin/trash/{class?}.{id?}', array('as' => 'admin.trash', function($class = null, $id = null) {
 	try {
@@ -141,3 +144,11 @@ Route::get('/admin/trash/{class?}.{id?}', array('as' => 'admin.trash', function(
 		return Redirect::route('admin.trash');
 	}
 }));
+
+Route::model('tab', 'LemonTree\Tab', function() {
+	return \Redirect::route('admin');
+});
+
+Route::get('/admin/tab/{tab}', array('as' => 'admin.tab', 'uses' => 'LemonTree\TabController@getIndex'))->where('tab', '[0-9]+');
+Route::get('/admin/tab/delete/{tab}', array('as' => 'admin.tab.delete', 'uses' => 'LemonTree\TabController@deleteTab'))->where('tab', '[0-9]+');
+Route::get('/admin/tab/add', array('as' => 'admin.tab.add', 'uses' => 'LemonTree\TabController@addTab'));

@@ -15,6 +15,7 @@ class CreateSiteSettingsTable extends Migration {
 		Schema::create('site_settings', function ($table) {
 			$table->increments('id');
 			$table->string('name');
+			$table->integer('order');
 			$table->string('title')->nullable();
 			$table->string('meta_keywords')->nullable();
 			$table->text('meta_description')->nullable();
