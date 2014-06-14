@@ -1,0 +1,35 @@
+.contextmenu {
+  display: none;
+  position: absolute;
+
+  min-width: 160px;
+
+  background-color: #FFF;
+  color: #000;
+  border: solid 1px #BABABA;
+  box-shadow: 2px 2px 4px #ABABAB;
+
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 12px;
+}
+
+.contextmenu-item {
+  cursor: default;
+  padding: 7px 25px;
+}
+
+.contextmenu-item:hover {
+  background-color: #EFEFEF;
+}
+
+.contextmenu-item-disabled {
+  cursor: default;
+  padding: 7px 25px;
+   color: #999;
+}
+
+.contextmenu-separator {
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: solid 1px #E9E9E9;
+}
