@@ -158,11 +158,13 @@ abstract class Element extends \Eloquent {
 		return get_called_class().'.'.$id;
 	}
 
-	public static function getByClassId($classId)
+	public static function getByClassId($classId, $withTrashed = false)
 	{
 		try {
 			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
-			return $class::find($id);
+			return $withTrashed
+				? $class::withTrashed()->find($id)
+				: $class::find($id);
 		} catch (\Exception $e) {}
 
 		return null;
@@ -284,12 +286,15 @@ abstract class Element extends \Eloquent {
 	public function getParentList()
 	{
 		$parentList = array();
+		$exists = array();
 
 		$count = 0;
 		$parent = $this->getParent();
 
 		while ($count < 100 && $parent instanceof Element) {
+			if (isset($exists[$parent->getClassId()])) break;
 			$parentList[] = $parent;
+			$exists[$parent->getClassId()] = $parent->getClassId();
 			$parent = $parent->getParent();
 			$count++;
 		}
@@ -352,10 +357,10 @@ abstract class Element extends \Eloquent {
 		);
 	}
 
-	public function getTrashUrl()
+	public function getEditUrl()
 	{
 		return \URL::route(
-			'admin.trash',
+			'admin.edit',
 			array('class' => $this->getClass(), 'id' => $this->id)
 		);
 	}
@@ -368,6 +373,14 @@ abstract class Element extends \Eloquent {
 		);
 	}
 
+	public function getTrashUrl()
+	{
+		return \URL::route(
+			'admin.trash',
+			array('class' => $this->getClass(), 'id' => $this->id)
+		);
+	}
+
 	public function getRestoreUrl()
 	{
 		return \URL::route(
@@ -376,11 +389,5 @@ abstract class Element extends \Eloquent {
 		);
 	}
 
-	public function getEditUrl()
-	{
-		return \URL::route(
-			'admin.edit',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
-	}
+
 }

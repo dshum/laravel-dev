@@ -154,4 +154,36 @@ class OneToOneProperty extends BaseProperty {
 		return null;
 	}
 
+	public function getElementMoveView()
+	{
+		$site = \App::make('site');
+
+		$relatedClass = $this->getRelatedClass();
+		$relatedItem = $site->getItemByName($relatedClass);
+		$mainProperty = $relatedItem->getMainProperty();
+
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'value' => $this->getValue(),
+			'element' => $this->getElement(),
+			'readonly' => $this->getReadonly(),
+			'required' => $this->getRequired(),
+			'mainProperty' => $mainProperty,
+			'relatedClass' => $relatedClass,
+		);
+
+		if ($this->getBinds()) {
+			$treeView = \App::make('LemonTree\TreeController')->show1($this);
+			$scope['treeView'] = $treeView;
+		}
+
+		try {
+			$view = $this->getClassName().'.elementMove';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
 }

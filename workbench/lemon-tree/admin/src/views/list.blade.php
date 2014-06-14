@@ -5,7 +5,7 @@
 	@foreach ($itemPropertyList[$itemName] as $propertyName => $property)
 		<th><a href="">{{ $property->getTitle() }}</a></th>
 	@endforeach
-		<th class="last">{{ Form::checkbox('checkAll', $item->getName(), false) }}</th>
+		<th class="last">{{ Form::checkbox('checkAll[]', $item->getName(), false, array('item' => $item->getName(), 'title' => 'Отметить все')) }}</th>
 	</tr>
 	@foreach ($itemElementList[$itemName] as $element)
 	<tr>
@@ -17,7 +17,7 @@
 		<td>{{ $property->setElement($element)->getElementListView() }}</td>
 			@endif
 		@endforeach
-		<td class="last">{{ Form::checkbox('check', $element->id, false, array('item' => $item->getName())) }}</td>
+		<td class="last">{{ Form::checkbox('check[]', $element->getClassId(), false, array('item' => $item->getName(), 'title' => 'Отметить')) }}</td>
 	</tr>
 	@endforeach
 </table>

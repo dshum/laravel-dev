@@ -2,6 +2,123 @@
 
 class MainController extends BaseController {
 
+	public function postDelete()
+	{
+		$scope = array();
+
+		if ( ! \Sentry::check()) {
+			$scope['logout'] = true;
+			return json_encode($scope);
+		}
+
+		$loggedUser = \Sentry::getUser();
+
+		$check = \Input::get('check');
+
+		if ( ! $check) {
+			return json_encode($scope);
+		}
+
+		$elementList = array();
+
+		foreach ($check as $classId) {
+			$element = Element::getByClassId($classId);
+			if ($element) {
+				$elementList[] = $element;
+			}
+		}
+
+		if ( ! $elementList) {
+			return json_encode($scope);
+		}
+
+		$scope['restricted'] = array();
+
+		try {
+			foreach ($elementList as $element) {
+				if ( ! $element->delete()) {
+					$scope['restricted'][] = $element;
+				}
+			}
+			if ($scope['restricted']) {
+				$scope['error'] = 'Невозможно удалить следующие элементы, пока существуют связанные с ними элементы: ';
+				foreach ($scope['restricted'] as $k => $element) {
+					$item = $element->getItem();
+					$scope['error'] .= ($k ? ', ' : '').'<a href="'.$element->getBrowseUrl().'">'.$element->{$item->getMainProperty()}.'</a>';
+				}
+			} else {
+				$scope['status'] = 'ok';
+			}
+		} catch (\Exception $e) {
+			$scope['error'] = $e->getMessage().PHP_EOL.$e->getTraceAsString();
+		}
+
+		return json_encode($scope);
+	}
+
+	public function postForceDelete()
+	{
+		$scope = array();
+
+		if ( ! \Sentry::check()) {
+			$scope['logout'] = true;
+			return json_encode($scope);
+		}
+
+		$loggedUser = \Sentry::getUser();
+
+		try {
+			$currentElement->forceDelete();
+			$scope['status'] = 'ok';
+		} catch (\Exception $e) {
+			$scope['error'] = $e->getMessage().PHP_EOL.$e->getTraceAsString();
+		}
+
+		return json_encode($scope);
+	}
+
+	public function postRestore()
+	{
+		$scope = array();
+
+		if ( ! \Sentry::check()) {
+			$scope['logout'] = true;
+			return json_encode($scope);
+		}
+
+		$loggedUser = \Sentry::getUser();
+
+		$check = \Input::get('check');
+
+		if ( ! $check) {
+			return json_encode($scope);
+		}
+
+		$elementList = array();
+
+		foreach ($check as $classId) {
+			$element = Element::getByClassId($classId, true);
+			if ($element) {
+				$elementList[] = $element;
+			}
+		}
+
+		if ( ! $elementList) {
+			return json_encode($scope);
+		}
+
+		try {
+			foreach ($elementList as $element) {
+				$element->restore();
+			}
+			$scope['status'] = 'ok';
+		} catch (\Exception $e) {
+			$scope['error'] = $e->getMessage();
+		}
+
+		return json_encode($scope);
+	}
+
 	public function getIndex($currentElement = null)
 	{
 		$scope = array();

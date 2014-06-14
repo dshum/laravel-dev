@@ -3,6 +3,9 @@
 Route::get('/admin', array('as' => 'admin', 'uses' => 'LemonTree\MainController@getIndex'));
 
 Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\MainController@getIndex'));
+Route::post('/admin/browse/save', array('as' => 'admin.browse.save', 'uses' => 'LemonTree\MainController@postSave'));
+Route::post('/admin/browse/delete', array('as' => 'admin.browse.delete', 'uses' => 'LemonTree\MainController@postDelete'));
+Route::post('/admin/browse/restore', array('as' => 'admin.browse.restore', 'uses' => 'LemonTree\MainController@postRestore'));
 
 Route::get('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\LoginController@getIndex'));
 Route::post('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\LoginController@postLogin'));
@@ -33,15 +36,19 @@ Route::post('/admin/tree/open', array('as' => 'admin.tree.open', 'uses' => 'Lemo
 Route::post('/admin/tree/open1', array('as' => 'admin.tree.open1', 'uses' => 'LemonTree\TreeController@postOpen1'));
 
 Route::get('/admin/browse/{class}.{id}', array('as' => 'admin.browse', function($class, $id) {
-	$element = $class::find($id);
-	return App::make('LemonTree\MainController')->getIndex($element);
+	try {
+		$element = $class::find($id);
+		return App::make('LemonTree\MainController')->getIndex($element);
+	} catch (Exception $e) {
+		return Redirect::route('admin');
+	}
 }));
 
 Route::post('/admin/list/{class}/{pclass?}.{pid?}', array('as' => 'admin.list', function($class, $pclass = null, $pid = null) {
 	try {
 		$parent = $pclass::find($pid);
 		return App::make('LemonTree\MainController')->postList($class, $parent);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage().PHP_EOL;
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 	}
@@ -55,7 +62,7 @@ Route::get('/admin/edit/{class}.{id}', array('as' => 'admin.edit', function($cla
 			rememberForever()->
 			find($id);
 		return App::make('LemonTree\EditController')->getEdit($element);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		return Redirect::route('admin');
 	}
@@ -69,7 +76,7 @@ Route::post('/admin/edit/{class}.{id}', array('as' => 'admin.save', function($cl
 			rememberForever()->
 			find($id);
 		return App::make('LemonTree\EditController')->postSave($element);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage().PHP_EOL;
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 	}
@@ -80,7 +87,7 @@ Route::get('/admin/create/{class}/{pclass?}.{pid?}', array('as' => 'admin.create
 		$element = new $class;
 		$parent = $pclass && $pid ? $pclass::find($pid) : null;
 		return App::make('LemonTree\EditController')->getCreate($element, $parent);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		return Redirect::route('admin');
 	}
@@ -90,7 +97,7 @@ Route::post('/admin/create/{class}', array('as' => 'admin.add', function($class)
 	try {
 		$element = new $class;
 		return App::make('LemonTree\EditController')->postAdd($element);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage().PHP_EOL;
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 	}
@@ -108,11 +115,16 @@ Route::post('/admin/delete/{class}.{id}', array('as' => 'admin.delete', function
 		} else {
 			return App::make('LemonTree\EditController')->postDelete($element);
 		}
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage().PHP_EOL;
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 	}
 }));
+
+Route::get('/admin/moving', function() { return \Redirect::route('admin'); });
+Route::get('/admin/move', function() { return \Redirect::route('admin'); });
+Route::post('/admin/moving', array('as' => 'admin.moving', 'uses' => 'LemonTree\MoveController@postMoving'));
+Route::post('/admin/move', array('as' => 'admin.move', 'uses' => 'LemonTree\MoveController@postMove'));
 
 Route::post('/admin/restore/{class}.{id}', array('as' => 'admin.restore', function($class, $id) {
 	try {
@@ -122,7 +134,7 @@ Route::post('/admin/restore/{class}.{id}', array('as' => 'admin.restore', functi
 			rememberForever()->
 			find($id);
 		return App::make('LemonTree\EditController')->postRestore($element);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage().PHP_EOL;
 		echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 	}
@@ -140,13 +152,13 @@ Route::get('/admin/trash/{class?}.{id?}', array('as' => 'admin.trash', function(
 			rememberForever()->
 			find($id);
 		return App::make('LemonTree\TrashController')->getIndex($element);
-	} catch (\Exception $e) {
+	} catch (Exception $e) {
 		return Redirect::route('admin.trash');
 	}
 }));
 
 Route::model('tab', 'LemonTree\Tab', function() {
-	return \Redirect::route('admin');
+	return Redirect::route('admin');
 });
 
 Route::get('/admin/tab/{tab}', array('as' => 'admin.tab', 'uses' => 'LemonTree\TabController@getIndex'))->where('tab', '[0-9]+');

@@ -358,7 +358,9 @@ $site->
 			setTitle('Раздел сайта')->
 			setRelatedClass('Section')->
 			setDeleting(OneToOneProperty::RESTRICT)->
-			setParent(true)
+			setParent(true)->
+			bind(Site::ROOT, 'Section')->
+			bind('Section', 'Section')
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->
@@ -395,7 +397,9 @@ $site->
 			setTitle('Служебный раздел')->
 			setRelatedClass('ServiceSection')->
 			setDeleting(OneToOneProperty::RESTRICT)->
-			setParent(true)
+			setParent(true)->
+			bind(Site::ROOT, 'ServiceSection')->
+			bind('ServiceSection', 'ServiceSection')
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->

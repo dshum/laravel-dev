@@ -4,12 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{{ isset($currentTitle) ? $currentTitle : 'Lemon Tree' }}</title>
 {{ HTML::style('LT/css/default.css') }}
+{{ HTML::style('LT/css/contextmenu.css') }}
 {{ HTML::style('LT/js/jquery/jquery-ui-1.10.4.custom.min.css') }}
 {{ HTML::script('LT/js/jquery/jquery-2.1.1.min.js') }}
 {{ HTML::script('LT/js/jquery/jquery.form.min.js') }}
 {{ HTML::script('LT/js/jquery/jquery.blockUI.js') }}
 {{ HTML::script('LT/js/jquery/jquery-ui-1.10.4.custom.min.js') }}
 {{ HTML::script('LT/js/common.js') }}
+{{ HTML::script('LT/js/contextmenu.js') }}
 <script type="text/javascript">
 $(function() {
 

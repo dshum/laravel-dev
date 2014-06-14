@@ -48,11 +48,15 @@ $(function() {
 
 @if ($parentElement)
 	$('#button-up').click(function() {
-		document.location.href = "{{ $parentElement->getBrowseUrl() }}";
+		document.location.href = '{{ $parentElement->getBrowseUrl() }}';
+	});
+@elseif ($currentElement->trashed())
+	$('#button-up').click(function() {
+		document.location.href = '{{ URL::route("admin.trash") }}';
 	});
 @else
 	$('#button-up').click(function() {
-		document.location.href = "{{ URL::route('admin') }}";
+		document.location.href = '{{ URL::route("admin") }}';
 	});
 @endif
 
@@ -60,8 +64,11 @@ $(function() {
 		$("#editForm").submit();
 	});
 
+@if ($currentElement->id)
 	$('#button-delete').click(function() {
 		$.blockUI();
+
+		$('#message').html('').hide();
 
 		$.post(
 			'{{ $currentElement->getDeleteUrl() }}',
@@ -71,11 +78,21 @@ $(function() {
 					$('#message').html(data.error).show();
 					$.unblockUI();
 				} else {
-					document.location.href = "{{ $urlOnDelete }}";
+					document.location.href = '{{ $urlOnDelete }}';
 				}
 			},
 			'json'
 		);
+	});
+
+	$('#button-move').click(function() {
+		var html =
+			'{{ Form::open(array("route" => "admin.moving", "method" => "post")) }}'
+			+'{{ Form::hidden("check[]", $currentElement->getClassId()) }}'
+			+'{{ Form::hidden("redirect", \Request::path()) }}'
+			+'{{ Form::close() }}';
+		var form = $(html);
+		form.submit();
 	});
 
 	$('#button-restore').click(function() {
@@ -90,6 +107,7 @@ $(function() {
 			'json'
 		);
 	});
+@endif
 
 	$('div.main input').each(function () {
 		var value = $(this).val();
@@ -201,7 +219,7 @@ $(function() {
 		}
 	});
 
-	$("#editForm").submit(function(event) {
+	$('#editForm').submit(function(event) {
 		$.blockUI();
 
 		$('textarea[tinymce="true"]').each(function() {
