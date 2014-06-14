@@ -19,11 +19,9 @@ class HintController extends BaseController {
 
 		if ($term) {
 			$elementListCriteria->
-			where(
-				'id', 'like', '%'.$term.'%'
-			)->
-			orWhere(
-				$mainProperty, 'like', '%'.$term.'%'
+			whereRaw(
+				"cast(id as text) like :term or $mainProperty like :term",
+				array('term' => '%'.$term.'%')
 			);
 		}
 
