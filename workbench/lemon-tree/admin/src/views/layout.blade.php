@@ -42,6 +42,16 @@ $(function() {
 
 	});
 
+	$('#tree-toggler').click(function() {
+		if ($(this).attr('showTree') == 'true') {
+			$('#tree').hide('fast');
+			$(this).attr('showTree', 'false');
+		} else {
+			$('#tree').show('fast');
+			$(this).attr('showTree', 'true');
+		}
+	});
+
 });
 </script>
 @yield('js')
@@ -61,7 +71,7 @@ $(function() {
 		</ul>
 	</div>
 	<div id="page">
-		<div id="tree">
+		<div id="tree"{{ $activeTab->show_tree ? '' : ' class="dnone"' }}>
 			<div id="tree-container" class="container">
 				{{ $treeView }}
 			</div>
@@ -70,6 +80,7 @@ $(function() {
 			<div id="browse-container" class="container">
 				<div id="menu-wrapper">
 					<ul>
+						<li><span id="tree-toggler" showTree="{{ $activeTab->show_tree ? 'true' : 'false' }}" class="hand">≡</span></li>
 						@if (Route::currentRouteName() == 'admin')<li class="current_page_item"><a>Lemon Tree</a></li>@else<li><a href="{{ URL::route('admin') }}">Lemon Tree</a></li>@endif
 						<li><a href="{{ URL::current() }}">Обновить</a></li>
 						<li><a href="{{ URL::route('admin.search') }}">Поиск</a></li>

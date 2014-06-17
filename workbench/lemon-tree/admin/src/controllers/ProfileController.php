@@ -64,14 +64,13 @@ class ProfileController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
-		$scope['currentTitle'] = $loggedUser->login.' - Управление пользователями';
+		$groups = $loggedUser->getGroups();
+
+		$scope['currentTitle'] = $loggedUser->login.' - Редактирование профиля';
 		$scope['currentTabTitle'] = $loggedUser->login;
 
 		$scope = CommonFilter::apply($scope);
 
-		$groups = $loggedUser->getGroups();
-
-		$scope['loggedUser'] = $loggedUser;
 		$scope['groups'] = $groups;
 		$scope['mode'] = \Input::get('mode');
 

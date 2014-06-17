@@ -25,6 +25,7 @@ class TabController extends BaseController {
 		$tab->title = 'Lemon Tree';
 		$tab->url = \URL::route('admin');
 		$tab->is_active = true;
+		$tab->show_tree = false;
 		$tab->save();
 
 		return \Redirect::to($tab->url);

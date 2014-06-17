@@ -131,7 +131,6 @@ class MainController extends BaseController {
 		$loggedUser = \Sentry::getUser();
 
 		\View::share('currentElement', $currentElement);
-		\View::share('loggedUser', $loggedUser);
 
 		$site = \App::make('site');
 
