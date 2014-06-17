@@ -14,23 +14,28 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User {
 		parent::boot();
 
 		static::created(function($element) {
-			\Cache::tags('User')->flush();
+			$element->flush();
 		});
 
 		static::saved(function($element) {
-			\Cache::tags('User')->flush();
+			$element->flush();
 		});
 
 		static::deleted(function($element) {
-			\Cache::tags('User')->flush();
+			$element->flush();
 		});
     }
+
+	public function flush()
+	{
+		\Cache::tags('User', 'Group')->flush();
+	}
 
 	public function newQuery($excludeDeleted = true)
 	{
 		$builder = parent::newQuery();
 
-		return $builder->cacheTags('User')->rememberForever();
+		return $builder->cacheTags('User', 'UserGroup')->rememberForever();
 	}
 
 	public function getUnserializedParameters()

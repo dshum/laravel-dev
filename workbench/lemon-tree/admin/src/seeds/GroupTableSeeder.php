@@ -7,13 +7,13 @@ class GroupTableSeeder extends Seeder {
 	public function run()
 	{
 		\DB::table('cytrus_users_groups')->truncate();
-		
+
 		\DB::table('cytrus_groups')->truncate();
 
 		\Sentry::createGroup(array(
 			'name'        => 'Системные пользователи',
 			'permissions' => array(
-				'is_admin' => 1,
+				'admin' => 1,
 				'element.create' => 1,
 				'element.owner.view' => 1,
 				'element.group.view' => 1,

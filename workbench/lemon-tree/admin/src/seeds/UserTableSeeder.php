@@ -16,7 +16,7 @@ class UserTableSeeder extends Seeder {
 			'first_name' => 'Denis',
 			'last_name' => 'Shumeev',
 			'parameters' => null,
-			'permissions' => array(),
+			'permissions' => array('superuser' => 1,),
 			'activated' => true,
 		));
 

@@ -27,27 +27,31 @@ $(function() {
 @stop
 
 @section('path')
-<a href="">Управление пользователями</a> &rarr;
+<a href="{{ \URL::route('admin.users') }}">Управление пользователями</a> &rarr;
 {{ $loggedUser->login }}
 @stop
 
 @section('browse')
 <h1>Профиль пользователя <b>{{ $loggedUser->login }}</b></h1>
-
 {{ Form::model($loggedUser, array('route' => 'admin.profile', 'method' => 'post', 'id' => 'profileForm')) }}
 <div class="form-edit">
-@if ($groups)
-<p>Состоит в {{ sizeof($groups) > 1 ? 'группах' : 'группе' }}:
+<span error="password">Пароль</span>:<br />{{ Form::password('password') }}<br /><br />
+<span error="email">E-mail</span>:<br />{{ Form::text('email') }}<br /><br />
+<span error="first_name">Имя</span>:<br />{{ Form::text('first_name') }}<br /><br />
+<span error="last_name">Фамилия</span>:<br />{{ Form::text('last_name') }}<br /><br />
+@if (sizeof($groups))
+Состоит в {{ sizeof($groups) > 1 ? 'группах' : 'группе' }}:
 	@foreach ($groups as $k => $group)
-	{{ $k ? ', ' : '' }}<a href="{{ URL::route('admin.group', array('id' => $group->id)) }}">{{ $group->name }}</a>
+		{{ $group->name }}{{ $k < sizeof($groups) - 1 ? ', ' : '' }}
 	@endforeach
+	<br /><br />
 @endif
-<p><span error="password">Пароль</span>:<br>{{ Form::password('password') }}</p>
-<p><span error="email">E-mail</span>:<br>{{ Form::text('email') }}</p>
-<p><span error="first_name">Имя</span>:<br>{{ Form::text('first_name') }}</p>
-<p><span error="last_name">Фамилия</span>:<br>{{ Form::text('last_name') }}</p>
-<p>Дата регистрации: {{ $loggedUser->created_at }}</p>
-<p>Дата последнего входа: {{ $loggedUser->last_login }}</p>
+@if ($loggedUser->isSuperUser())
+<b>Обладает правами суперпользователя</b><br /><br />
+@endif
+Дата регистрации: {{ $loggedUser->created_at }}<br /><br />
+Последнее изменение: {{ $loggedUser->updated_at }}<br /><br />
+Дата последнего входа: {{ $loggedUser->last_login }}<br /><br />
 </div>
 <p>{{ Form::submit('Сохранить', array('class' => 'btn')) }}</p>
 {{ Form::close() }}
