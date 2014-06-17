@@ -16,7 +16,10 @@ class GroupController extends BaseController {
 			return \Redirect::route('admin');
 		}
 
-		if ($loggedUser->inGroup($group)) {
+		if (
+			$loggedUser->inGroup($group)
+			&& ! $loggedUser->isSuperUser()
+		) {
 			return \Redirect::route('admin.users');
 		}
 
