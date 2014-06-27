@@ -1,7 +1,7 @@
 <?php namespace LemonTree;
 
 class TreeController extends BaseController {
-
+	
 	public function check(Element $element)
 	{
 		$total = 0;

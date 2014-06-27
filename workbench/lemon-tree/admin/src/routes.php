@@ -26,6 +26,12 @@ Route::filter('admin.auth.ajax', function() {
 	}
 });
 
+Route::filter('admin.auth.ajax.html', function() {
+	if ( ! \Sentry::check()) {
+		return null;
+	}
+});
+
 Route::group(array('before' => 'admin.guest'), function() {
 	
 	Route::get('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\LoginController@getIndex'));
@@ -209,12 +215,6 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 
 	Route::post('/admin/user/add', array('as' => 'admin.user.add', 'uses' => 'LemonTree\UserController@postAdd'));
 
-	Route::post('/admin/tree', array('as' => 'admin.tree', 'uses' => 'LemonTree\TreeController@show'));
-
-	Route::post('/admin/tree/open', array('as' => 'admin.tree.open', 'uses' => 'LemonTree\TreeController@postOpen'));
-
-	Route::post('/admin/tree/open1', array('as' => 'admin.tree.open1', 'uses' => 'LemonTree\TreeController@postOpen1'));
-
 	Route::post('/admin/browse/save', array('as' => 'admin.browse.save', 'uses' => 'LemonTree\MainController@postSave'));
 
 	Route::post('/admin/browse/delete', array('as' => 'admin.browse.delete', 'uses' => 'LemonTree\MainController@postDelete'));
@@ -287,5 +287,21 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 		}
 	}));
 	
+});
+
+Route::group(array('before' => 'admin.auth.ajax.html'), function() {
+	
+	Route::post('/admin/tree', array('as' => 'admin.tree', 'uses' => 'LemonTree\TreeController@show'));
+
+	Route::post('/admin/tree/open', array('as' => 'admin.tree.open', 'uses' => 'LemonTree\TreeController@postOpen'));
+
+	Route::post('/admin/tree/open1', array('as' => 'admin.tree.open1', 'uses' => 'LemonTree\TreeController@postOpen1'));
+
+	Route::model('tab', 'LemonTree\Tab', function() {
+		return null;
+	});
+	
+	Route::post('/admin/tab/toggle/{tab}', array('as' => 'admin.tab.toggle', 'uses' => 'LemonTree\TabController@postToggle'))->where('tab', '[0-9]+');
+
 });
 

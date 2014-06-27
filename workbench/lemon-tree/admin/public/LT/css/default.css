@@ -77,7 +77,6 @@ a.blue:hover {
 }
 
 #tree {
-	width: 20%;
 	float: left;
 	white-space: nowrap;
 }
@@ -88,6 +87,14 @@ a.blue:hover {
 	border-right: 1px solid #CCC;
 	overflow-x: auto;
 	overflow-y: hidden;
+}
+
+#tree.w0 {
+	width: 0%;
+}
+
+#tree.w20 {
+	width: 20%;
 }
 
 div.padding {
@@ -127,13 +134,20 @@ div.plus-empty {
 }
 
 #browse {
-	width: 80%;
 	float: left;
 }
 
 #browse div.container {
 	margin: 5px 5px 5px 0px;
 	padding: 5px 10px 5px 10px;
+}
+
+#browse.w80 {
+	width: 80%;
+}
+
+#browse.w100 {
+	width: 100%;
 }
 
 #log {

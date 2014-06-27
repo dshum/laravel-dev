@@ -1,6 +1,30 @@
 <?php namespace LemonTree;
 
 class TabController extends BaseController {
+	
+	public function postToggle(Tab $activeTab)
+	{
+		$scope = array();
+
+		$loggedUser = \Sentry::getUser();
+
+		$open = \Input::get('open');
+
+		$treeView = null;
+
+		if ($open == 'open') {
+			$treeView = \App::make('LemonTree\TreeController')->show();
+			$activeTab->show_tree = true;
+		} elseif ($open == 'false') {
+			$activeTab->show_tree = true;
+		} else {
+			$activeTab->show_tree = false;
+		}
+
+		$activeTab->save();
+
+		return $treeView;
+	}
 
 	public function getAddTab()
 	{

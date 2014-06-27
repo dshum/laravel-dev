@@ -33,7 +33,10 @@ class CommonFilter {
 			}
 		}
 
-		$treeView = \App::make('LemonTree\TreeController')->show();
+		$treeView = 
+			$activeTab->show_tree
+			? \App::make('LemonTree\TreeController')->show()
+			: null;
 
 		$scope['tabs'] = $tabs;
 		$scope['activeTab'] = $activeTab;
