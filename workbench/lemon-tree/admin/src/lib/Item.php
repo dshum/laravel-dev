@@ -8,6 +8,7 @@ class Item {
 	protected $title = null;
 	protected $mainProperty = null;
 	protected $root = false;
+	protected $elementPermissions = false;
 	protected $binds = false;
 	protected $perPage = null;
 	protected $orderBy = array();
@@ -69,6 +70,18 @@ class Item {
 	public function getRoot()
 	{
 		return $this->root;
+	}
+	
+	public function setElementPermissions($elementPermissions)
+	{
+		$this->elementPermissions = $elementPermissions;
+
+		return $this;
+	}
+	
+	public function getElementPermissions()
+	{
+		return $this->elementPermissions;
 	}
 
 	public function bindItem($name)

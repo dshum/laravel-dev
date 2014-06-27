@@ -318,6 +318,7 @@ $site->
 		setTitle('Раздел сайта')->
 		setMainProperty('name')->
 		setRoot(true)->
+		setElementPermissions(true)->
 		addOrderBy('order', 'asc')->
 		addProperty(
 			TextfieldProperty::create('name')->
@@ -385,6 +386,7 @@ $site->
 		setTitle('Служебный раздел')->
 		setMainProperty('name')->
 		setRoot(true)->
+		setElementPermissions(true)->
 		addOrderBy('order', 'asc')->
 		addProperty(
 			TextfieldProperty::create('name')->

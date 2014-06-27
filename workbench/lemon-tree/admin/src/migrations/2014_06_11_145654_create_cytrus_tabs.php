@@ -18,6 +18,7 @@ class CreateCytrusTabs extends Migration {
 			$table->string('title');
 			$table->string('url');
 			$table->boolean('is_active');
+			$table->boolean('show_tree');
 			$table->timestamps();
 		});
 	}

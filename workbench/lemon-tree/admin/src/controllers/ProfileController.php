@@ -6,11 +6,6 @@ class ProfileController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		$input = \Input::all();
@@ -58,20 +53,15 @@ class ProfileController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$loggedUser = \Sentry::getUser();
 
-		$scope['currentTitle'] = $loggedUser->login.' - Управление пользователями';
+		$groups = $loggedUser->getGroups();
+
+		$scope['currentTitle'] = $loggedUser->login.' - Редактирование профиля';
 		$scope['currentTabTitle'] = $loggedUser->login;
 
 		$scope = CommonFilter::apply($scope);
 
-		$groups = $loggedUser->getGroups();
-
-		$scope['loggedUser'] = $loggedUser;
 		$scope['groups'] = $groups;
 		$scope['mode'] = \Input::get('mode');
 

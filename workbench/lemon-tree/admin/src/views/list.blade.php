@@ -12,7 +12,7 @@
 		<td class="first"><a href="{{ URL::route($route, array('class' => get_class($element), 'id' => $element->id)) }}">▒</a></td>
 		@foreach ($itemPropertyList[$itemName] as $propertyName => $property)
 			@if ($property->isMainProperty())
-		<td>¶ <a href="{{ URL::route('admin.edit', array('class' => get_class($element), 'id' => $element->id)) }}">{{ $element->$propertyName }}</a></td>
+		<td>¶ <a href="{{ URL::route('admin.edit', array('class' => get_class($element), 'id' => $element->id)) }}" edit="true">{{ $element->$propertyName }}</a></td>
 			@else
 		<td>{{ $property->setElement($element)->getElementListView() }}</td>
 			@endif

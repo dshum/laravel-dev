@@ -6,11 +6,6 @@ class MainController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		$check = \Input::get('check');
@@ -60,11 +55,6 @@ class MainController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		try {
@@ -80,11 +70,6 @@ class MainController extends BaseController {
 	public function postRestore()
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 
@@ -123,15 +108,16 @@ class MainController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
+		$loggedUser = \Sentry::getUser();
+		
+		if (
+			$currentElement 
+			&& ! $loggedUser->hasViewAccess($currentElement)
+		) {
+			return \Redirect::route('admin');
 		}
 
-		$loggedUser = \Sentry::getUser();
-
 		\View::share('currentElement', $currentElement);
-		\View::share('loggedUser', $loggedUser);
 
 		$site = \App::make('site');
 
@@ -190,7 +176,7 @@ class MainController extends BaseController {
 						&& $property->getRelatedClass() == $currentElement->getClass()
 					) $flag = true;
 				}
-				if (! $flag) {
+				if ( ! $flag) {
 					unset($itemList[$itemName]);
 					continue;
 				}

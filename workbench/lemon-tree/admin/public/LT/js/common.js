@@ -6,14 +6,15 @@ LT.Edit = function() {
 	return {};
 };
 
+LT.Tree = function() {
+	return {};
+};
+
 LT.urldecode = function(str) {
 	return decodeURIComponent((str+'').replace(/\+/g, '%20'));
 };
 
 $(function() {
-	var height = $(window).height() - 100;
-
-//	$('#tree-container').css({height: height+'px'});
 
 	$.blockUI.defaults.message = '<img src="/LT/img/loader.gif" />';
 	$.blockUI.defaults.css.border = 'none';

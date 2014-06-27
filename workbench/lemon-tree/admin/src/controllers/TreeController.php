@@ -118,8 +118,6 @@ class TreeController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) return null;
-
 		$loggedUser = \Sentry::getUser();
 
 		$tree = $loggedUser->getParameter('tree');
@@ -152,8 +150,6 @@ class TreeController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) return null;
-
 		$loggedUser = \Sentry::getUser();
 
 		$itemName = \Input::get('itemName');
@@ -180,8 +176,6 @@ class TreeController extends BaseController {
 	public function show($currentElement = null)
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) return null;
 
 		$loggedUser = \Sentry::getUser();
 

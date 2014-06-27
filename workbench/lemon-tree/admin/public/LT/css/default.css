@@ -35,7 +35,7 @@ body {
 	font-size: 80%;
 }
 
-#tab-wrapper a.btn {
+a.btn {
 	text-decoration: none;
 	font-family: Courier New;
 	font-size: 20px;
@@ -46,11 +46,11 @@ body {
 	color: #666;
 }
 
-#tab-wrapper a.btn:hover {
+a.btn:hover {
 	color: orange;
 }
 
-#tab-wrapper a.blue:hover {
+a.blue:hover {
 	color: blue;
 }
 
@@ -133,6 +133,7 @@ div.plus-empty {
 
 #browse div.container {
 	margin: 5px 5px 5px 0px;
+	padding: 5px 10px 5px 10px;
 }
 
 #log {
@@ -300,12 +301,16 @@ table.element-list th.last, td.last {
 	width: 20px;
 }
 
-table.element-list tr.light {
+table.element-list .light {
 	background: #EEE;
 }
 
-table.element-list tr.light-hover {
+table.element-list .light-hover {
 	background: #FAFAFA;
+}
+
+table.element-list .center {
+	text-align: center;
 }
 
 .dashed {

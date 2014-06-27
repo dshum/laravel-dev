@@ -6,7 +6,9 @@ class CommonFilter {
 	{
 		$loggedUser = \Sentry::getUser();
 
-		$tabs = $loggedUser->getTabs();
+		\View::share('loggedUser', $loggedUser);
+
+		$tabs = $loggedUser->tabs;
 
 		if ( ! sizeof($tabs)) {
 			$tab = new Tab;
@@ -15,8 +17,10 @@ class CommonFilter {
 				? $scope['currentTabTitle'] : 'Lemon Tree';
 			$tab->url = \Request::path();
 			$tab->is_active = true;
+			$tab->show_tree = true;
 			$tab->save();
 			$tabs[] = $tab;
+			$activeTab = $tab;
 		} else {
 			foreach ($tabs as $tab) {
 				if ( ! $tab->is_active) continue;
@@ -24,6 +28,7 @@ class CommonFilter {
 					? $scope['currentTabTitle'] : 'Lemon Tree';
 				$tab->url = \Request::path();
 				$tab->save();
+				$activeTab = $tab;
 				break;
 			}
 		}
@@ -31,6 +36,7 @@ class CommonFilter {
 		$treeView = \App::make('LemonTree\TreeController')->show();
 
 		$scope['tabs'] = $tabs;
+		$scope['activeTab'] = $activeTab;
 		$scope['treeView'] = $treeView;
 
 		return $scope;

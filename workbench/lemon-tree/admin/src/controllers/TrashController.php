@@ -8,11 +8,6 @@ class TrashController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		\View::share('currentElement', $currentElement);
