@@ -181,7 +181,7 @@ $(function() {
 <p>Добавить:
 	{? $count = sizeof($bindItemList) ?}
 	@foreach ($bindItemList as $itemName => $item)
-<a href="{{ URL::route('admin.create', array('class' => $itemName, 'pclass' => $currentElement ? $currentElement->getClass() : null, 'pid' => $currentElement ? $currentElement->id : null)) }}">{{ $item->getTitle() }}</a>@if (--$count > 0), @endif
+<a href="{{ \URL::route('admin.create', array($itemName, $currentElement ? $currentElement->getClassId() : null)) }}">{{ $item->getTitle() }}</a>@if (--$count > 0), @endif
 	@endforeach
 </p>
 @endif

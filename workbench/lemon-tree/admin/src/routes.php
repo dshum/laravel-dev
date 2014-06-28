@@ -149,10 +149,10 @@ Route::group(array('before' => 'admin.auth'), function() {
 		}
 	}));
 
-	Route::get('/admin/create/{class}/{pclass?}.{pid?}', array('as' => 'admin.create', function($class, $pclass = null, $pid = null) {
+	Route::get('/admin/create/{class}/{classId?}', array('as' => 'admin.create', function($class, $classId = null) {
 		try {
 			$element = new $class;
-			$parent = $pclass && $pid ? $pclass::find($pid) : null;
+			$parent = Element::getByClassId($classId);
 			return App::make('LemonTree\EditController')->getCreate($element, $parent);
 		} catch (Exception $e) {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
