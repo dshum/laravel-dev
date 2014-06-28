@@ -116,6 +116,15 @@ Route::group(array('before' => 'admin.auth'), function() {
 			return Redirect::route('admin');
 		}
 	}));
+	
+	Route::get('/admin/browse/{class}.{id}/addtab', array('as' => 'admin.browse.addtab', function($class, $id) {
+		try {
+			$element = $class::find($id);
+			return App::make('LemonTree\MainController')->getAddTab($element);
+		} catch (Exception $e) {
+			return Redirect::route('admin');
+		}
+	}));
 
 	Route::get('/admin/edit/{class}.{id}', array('as' => 'admin.edit', function($class, $id) {
 		try {
@@ -127,6 +136,15 @@ Route::group(array('before' => 'admin.auth'), function() {
 			return App::make('LemonTree\EditController')->getEdit($element);
 		} catch (Exception $e) {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
+			return Redirect::route('admin');
+		}
+	}));
+	
+	Route::get('/admin/edit/{class}.{id}/addtab', array('as' => 'admin.edit.addtab', function($class, $id) {
+		try {
+			$element = $class::find($id);
+			return App::make('LemonTree\EditController')->getAddTab($element);
+		} catch (Exception $e) {
 			return Redirect::route('admin');
 		}
 	}));

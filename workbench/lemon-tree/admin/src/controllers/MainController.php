@@ -2,6 +2,34 @@
 
 class MainController extends BaseController {
 
+	public function getAddTab(Element $currentElement)
+	{
+		$loggedUser = \Sentry::getUser();
+		
+		$tabs = $loggedUser->tabs;
+
+		foreach ($tabs as $tab) {
+			if ($tab->is_active) {
+				$tab->is_active = false;
+				$tab->save();
+			}
+		}
+		
+		$site = \App::make('site');
+		$currentItem = $site->getItemByName($currentElement->getClass());
+		$mainProperty = $currentItem->getMainProperty();
+
+		$tab = new Tab;
+		$tab->user_id = $loggedUser->id;
+		$tab->title = $currentElement->$mainProperty;
+		$tab->url = $currentElement->getBrowseUrl();
+		$tab->is_active = true;
+		$tab->show_tree = false;
+		$tab->save();
+		
+		return \Redirect::to($currentElement->getBrowseUrl());
+	}
+	
 	public function postDelete()
 	{
 		$scope = array();

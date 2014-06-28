@@ -4,17 +4,56 @@ $(function() {
 
 	$('body').on('contextmenu', '#tree a', function(e) {
 
+		var browseUrl = $(this).attr('browseUrl');
+		var browseUrlAddTab = $(this).attr('browseUrlAddTab');
 		var editUrl = $(this).attr('editUrl');
+		var editUrlAddTab = $(this).attr('editUrlAddTab');
 		var deleteUrl = $(this).attr('deleteUrl');
 		var moveUrl = $(this).attr('moveUrl');
 		var classId = $(this).attr('classId');
 
 		var items = [
 			{
+				title: 'Открыть',
+				onclick: function () {
+					document.location.href = browseUrl;
+				}
+			},
+			{
+				title: 'Открыть в новой вкладке',
+				onclick: function () {
+					document.location.href = browseUrlAddTab;
+				}
+			},
+			{
+				separator: true
+			},
+			{
 				title: 'Редактировать',
 				onclick: function () {
 					document.location.href = editUrl;
 				}
+			},
+			{
+				title: 'Редактировать в новой вкладке',
+				onclick: function () {
+					document.location.href = editUrlAddTab;
+				}
+			},
+			{
+				title: 'Переместить',
+				onclick: function () {
+					var html =
+						'<form action="'+moveUrl+'" method="post">'
+						+'<input type="hidden" name="check[]" value="'+classId+'">'
+						+'<input type="hidden" name="redirect" value="'+document.location.href+'">'
+						+'</form>';
+					var form = $(html);
+					form.submit();
+				}
+			},
+			{
+				separator: true
 			},
 			{
 				title: 'Удалить',
@@ -36,18 +75,6 @@ $(function() {
 						},
 						'json'
 					);
-				}
-			},
-			{
-				title: 'Переместить',
-				onclick: function () {
-					var html =
-						'<form action="'+moveUrl+'" method="post">'
-						+'<input type="hidden" name="check[]" value="'+classId+'">'
-						+'<input type="hidden" name="redirect" value="'+document.location.href+'">'
-						+'</form>';
-					var form = $(html);
-					form.submit();
 				}
 			}
 		];
