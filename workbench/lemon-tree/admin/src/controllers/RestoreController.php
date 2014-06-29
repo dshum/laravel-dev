@@ -6,10 +6,6 @@ class RestoreController extends BaseController {
 	{
 		$scope = array();
 
-		if (\Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$login = \Input::get('login');
 		$code = \Input::get('code');
 		$password = \Input::get('password');
@@ -47,10 +43,6 @@ class RestoreController extends BaseController {
 	{
 		$scope = array();
 
-		if (\Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$scope['mode'] = \Input::get('mode');
 		$scope['error'] = \Input::get('error');
 		$scope['login'] = \Input::get('login');
@@ -62,10 +54,6 @@ class RestoreController extends BaseController {
 	public function postRestore()
 	{
 		$scope = array();
-
-		if (\Sentry::check()) {
-			return \Redirect::route('admin');
-		}
 
 		$login = \Input::get('login');
 
@@ -106,10 +94,6 @@ class RestoreController extends BaseController {
 	public function getIndex()
 	{
 		$scope = array();
-
-		if (\Sentry::check()) {
-			return \Redirect::route('admin');
-		}
 
 		$email = \Input::get('email');
 

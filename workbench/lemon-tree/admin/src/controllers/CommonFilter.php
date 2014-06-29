@@ -8,9 +8,12 @@ class CommonFilter {
 
 		\View::share('loggedUser', $loggedUser);
 
-		$tabs = $loggedUser->getTabs();
+		$tabs = $loggedUser->tabs;
+		
+		$activeTab = null;
 
 		if ( ! sizeof($tabs)) {
+			
 			$tab = new Tab;
 			$tab->user_id = $loggedUser->id;
 			$tab->title = isset($scope['currentTabTitle'])
@@ -21,7 +24,9 @@ class CommonFilter {
 			$tab->save();
 			$tabs[] = $tab;
 			$activeTab = $tab;
+			
 		} else {
+			
 			foreach ($tabs as $tab) {
 				if ( ! $tab->is_active) continue;
 				$tab->title = isset($scope['currentTabTitle'])
@@ -31,9 +36,17 @@ class CommonFilter {
 				$activeTab = $tab;
 				break;
 			}
+			
+		}
+		
+		if ( ! $activeTab) {
+			$activeTab = $tabs[0];
 		}
 
-		$treeView = \App::make('LemonTree\TreeController')->show();
+		$treeView = 
+			$activeTab->show_tree
+			? \App::make('LemonTree\TreeController')->show()
+			: null;
 
 		$scope['tabs'] = $tabs;
 		$scope['activeTab'] = $activeTab;

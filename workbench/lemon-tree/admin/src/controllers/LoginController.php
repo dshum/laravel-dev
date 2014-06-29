@@ -60,10 +60,6 @@ class LoginController extends BaseController {
 	{
 		$scope = array();
 
-		if (\Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$scope['login'] = null;
 
 		return \View::make('admin::login', $scope);

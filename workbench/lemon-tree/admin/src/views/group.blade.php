@@ -44,7 +44,18 @@ $(function() {
 @endif
 <div class="form-edit">
 <span error="name">Название</span>:<br />{{ Form::text('name') }}<br /><br />
-{{ Form::checkbox('admin', 1, $group->hasAccess('admin') ? true : false, array('id' => 'admin_permission')) }} <label for="admin_permission"><span error="admin_permission">Управление пользователями</span></label><br /><br />
+{{ Form::checkbox('admin', 1, $group->hasAccess('admin') ? true : false, array('id' => 'admin_permission')) }} 
+<label for="admin_permission"><span error="admin_permission">Управление пользователями</span></label><br /><br />
+<span error="default_permission">Доступ к элементам по умолчанию</span>:<br />
+{{ Form::radio('default_permission', 'deny', $group->default_permission == 'deny' ? true : false, array('id' => 'default_permission_deny')) }} 
+<label for="default_permission_deny">Доступ закрыт</label><br />
+{{ Form::radio('default_permission', 'view', $group->default_permission == 'view' ? true : false, array('id' => 'default_permission_view')) }} 
+<label for="default_permission_view">Просмотр</label><br />
+{{ Form::radio('default_permission', 'update', $group->default_permission == 'update' ? true : false, array('id' => 'default_permission_update')) }} 
+<label for="default_permission_update">Изменение</label><br />
+{{ Form::radio('default_permission', 'delete', $group->default_permission == 'delete' ? true : false, array('id' => 'default_permission_delete')) }} 
+<label for="default_permission_delete">Удаление</label><br />
+<br />
 @if ($group->id)
 Дата создания: {{ $group->created_at }}<br /><br />
 Последнее изменение: {{ $group->updated_at }}<br /><br />
@@ -53,4 +64,3 @@ $(function() {
 <p>{{ Form::submit('Сохранить', array('class' => 'btn')) }}</p>
 {{ Form::close() }}
 @stop
-

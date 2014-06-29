@@ -35,7 +35,7 @@ body {
 	font-size: 80%;
 }
 
-#tab-wrapper a.btn {
+a.btn {
 	text-decoration: none;
 	font-family: Courier New;
 	font-size: 20px;
@@ -46,11 +46,11 @@ body {
 	color: #666;
 }
 
-#tab-wrapper a.btn:hover {
+a.btn:hover {
 	color: orange;
 }
 
-#tab-wrapper a.blue:hover {
+a.blue:hover {
 	color: blue;
 }
 
@@ -77,7 +77,6 @@ body {
 }
 
 #tree {
-	width: 20%;
 	float: left;
 	white-space: nowrap;
 }
@@ -88,6 +87,14 @@ body {
 	border-right: 1px solid #CCC;
 	overflow-x: auto;
 	overflow-y: hidden;
+}
+
+#tree.w0 {
+	width: 0%;
+}
+
+#tree.w20 {
+	width: 20%;
 }
 
 div.padding {
@@ -127,13 +134,20 @@ div.plus-empty {
 }
 
 #browse {
-	width: 80%;
 	float: left;
 }
 
 #browse div.container {
 	margin: 5px 5px 5px 0px;
 	padding: 5px 10px 5px 10px;
+}
+
+#browse.w80 {
+	width: 80%;
+}
+
+#browse.w100 {
+	width: 100%;
 }
 
 #log {
@@ -301,12 +315,16 @@ table.element-list th.last, td.last {
 	width: 20px;
 }
 
-table.element-list tr.light {
+table.element-list .light {
 	background: #EEE;
 }
 
-table.element-list tr.light-hover {
+table.element-list .light-hover {
 	background: #FAFAFA;
+}
+
+table.element-list .center {
+	text-align: center;
 }
 
 .dashed {

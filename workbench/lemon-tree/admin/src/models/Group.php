@@ -43,5 +43,38 @@ class Group extends \Cartalyst\Sentry\Groups\Eloquent\Group {
 	{
 		return $this->belongsToMany('LemonTree\User', $this->pivotTable);
 	}
+	
+	public function itemPermissions()
+	{	
+		return $this->hasMany('LemonTree\GroupItemPermission');
+	}
+	
+	public function elementPermissions()
+	{	
+		return $this->hasMany('LemonTree\GroupElementPermission');
+	}
+	
+	public function getItemPermission($class)
+	{
+		return $this->itemPermissions()->where('class', $class)->first();
+	}
+	
+	public function getElementPermission($classId)
+	{
+		return $this->elementPermissions()->where('class_id', $classId)->first();
+	}
+	
+	public function getElementAccess(Element $element)
+	{
+		$elementPermission = $this->getElementPermission($element->getClassId());
+		
+		if ($elementPermission) return $elementPermission->permission;
+		
+		$itemPermission = $this->getItemPermission($element->getClass());
+		
+		if ($itemPermission) return $itemPermission->permission;
+		
+		return $this->default_permission;
+	}
 
 }

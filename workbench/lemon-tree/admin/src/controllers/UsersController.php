@@ -6,10 +6,6 @@ class UsersController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		if ( ! $loggedUser->hasAccess('admin')) {
@@ -46,10 +42,6 @@ class UsersController extends BaseController {
 	public function getIndex()
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
 
 		$loggedUser = \Sentry::getUser();
 

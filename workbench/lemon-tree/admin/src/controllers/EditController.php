@@ -2,14 +2,37 @@
 
 class EditController extends BaseController {
 
+	public function getAddTab(Element $currentElement)
+	{
+		$loggedUser = \Sentry::getUser();
+		
+		$tabs = $loggedUser->tabs;
+
+		foreach ($tabs as $tab) {
+			if ($tab->is_active) {
+				$tab->is_active = false;
+				$tab->save();
+			}
+		}
+		
+		$site = \App::make('site');
+		$currentItem = $site->getItemByName($currentElement->getClass());
+		$mainProperty = $currentItem->getMainProperty();
+
+		$tab = new Tab;
+		$tab->user_id = $loggedUser->id;
+		$tab->title = $currentElement->$mainProperty;
+		$tab->url = $currentElement->getEditUrl();
+		$tab->is_active = true;
+		$tab->show_tree = false;
+		$tab->save();
+		
+		return \Redirect::to($currentElement->getEditUrl());
+	}
+	
 	public function postDelete(Element $currentElement)
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 
@@ -30,11 +53,6 @@ class EditController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		try {
@@ -51,11 +69,6 @@ class EditController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		try {
@@ -71,11 +84,6 @@ class EditController extends BaseController {
 	public function postAdd(Element $currentElement)
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 
@@ -149,12 +157,12 @@ class EditController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
+		$loggedUser = \Sentry::getUser();
+		
+		if ( ! $loggedUser->hasUpdateAccess($currentElement)) {
+			$scope['redirect'] = \URL::route('admin');
 			return json_encode($scope);
 		}
-
-		$loggedUser = \Sentry::getUser();
 
 		$input = \Input::all();
 
@@ -228,12 +236,13 @@ class EditController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
+		
+		if (
+			$parentElement
+			&& ! $loggedUser->hasViewAccess($parentElement)) {
+			return \Redirect::route('admin');
+		}
 
 		$site = \App::make('site');
 
@@ -285,12 +294,11 @@ class EditController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
+		
+		if ( ! $loggedUser->hasViewAccess($currentElement)) {
+			return \Redirect::route('admin');
+		}
 
 		$site = \App::make('site');
 

@@ -39,49 +39,97 @@ class User extends \Cartalyst\Sentry\Users\Eloquent\User {
 	}
 
 	public function getUnserializedParameters()
-		{
-			try {
-				return unserialize($this->parameters);
-			} catch (\Exception $e) {}
+	{
+		try {
+			return unserialize($this->parameters);
+		} catch (\Exception $e) {}
 
-			return null;
+		return null;
+	}
+
+	public function parameterExists($name)
+	{
+		$unserializedParameters = $this->getUnserializedParameters();
+
+		return isset($unserializedParameters[$name]);
+	}
+
+	public function getParameter($name)
+	{
+		$unserializedParameters = $this->getUnserializedParameters();
+
+		return
+			isset($unserializedParameters[$name])
+			? $unserializedParameters[$name]
+			: null;
+	}
+
+	public function setParameter($name, $value)
+	{
+		$unserializedParameters = $this->getUnserializedParameters();
+
+		$unserializedParameters[$name] = $value;
+
+		$parameters = serialize($unserializedParameters);
+
+		$this->parameters = $parameters;
+
+		$this->save();
+
+		return $this;
+	}
+
+	public function tabs()
+	{
+		return $this->hasMany('LemonTree\Tab')->orderBy('id');
+	}
+		
+	public function hasViewAccess(Element $element)
+	{
+		if ($this->isSuperUser()) return true;
+		
+		$groups = $this->getGroups();
+		
+		foreach ($groups as $group) {
+			$access = $group->getElementAccess($element);
+			if (in_array($access, array('view', 'update', 'delete'))) {
+				return true;
+			}
 		}
-
-		public function parameterExists($name)
-		{
-			$unserializedParameters = $this->getUnserializedParameters();
-
-			return isset($unserializedParameters[$name]);
+		
+		return false;
+	}
+	
+	public function hasUpdateAccess(Element $element)
+	{
+		if ($this->isSuperUser()) return true;
+		
+		$groups = $this->getGroups();
+		
+		foreach ($groups as $group) {
+			$access = $group->getElementAccess($element);
+			if (in_array($access, array('update', 'delete'))) {
+				return true;
+			}
 		}
-
-		public function getParameter($name)
-		{
-			$unserializedParameters = $this->getUnserializedParameters();
-
-			return
-				isset($unserializedParameters[$name])
-				? $unserializedParameters[$name]
-				: null;
+		
+		return false;
+	}
+	
+	public function hasDeleteAccess(Element $element)
+	{
+		if ($this->isSuperUser()) return true;
+		
+		$groups = $this->getGroups();
+		
+		foreach ($groups as $group) {
+			$access = $group->getElementAccess($element);
+			if (in_array($access, array('delete'))) {
+				return true;
+			}
 		}
-
-		public function setParameter($name, $value)
-		{
-			$unserializedParameters = $this->getUnserializedParameters();
-
-			$unserializedParameters[$name] = $value;
-
-			$parameters = serialize($unserializedParameters);
-
-			$this->parameters = $parameters;
-
-			$this->save();
-
-			return $this;
-		}
-
-		public function getTabs()
-		{
-			return Tab::getByUser($this);
-		}
+		
+		return false;
+	}
 
 }

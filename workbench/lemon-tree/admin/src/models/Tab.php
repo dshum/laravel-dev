@@ -9,10 +9,4 @@ class Tab extends \Eloquent {
 	 */
 	protected $table = 'cytrus_tabs';
 
-	public static function getByUser(User $user)
-	{
-		return
-			static::where('user_id', $user->id)->orderBy('id')->get();
-	}
-
 }

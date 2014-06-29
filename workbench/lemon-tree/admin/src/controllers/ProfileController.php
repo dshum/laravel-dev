@@ -6,11 +6,6 @@ class ProfileController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		$input = \Input::all();
@@ -57,10 +52,6 @@ class ProfileController extends BaseController {
 	public function getIndex()
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
 
 		$loggedUser = \Sentry::getUser();
 

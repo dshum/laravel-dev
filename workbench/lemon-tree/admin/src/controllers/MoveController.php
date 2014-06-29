@@ -6,11 +6,6 @@ class MoveController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		$site = \App::make('site');
@@ -73,11 +68,6 @@ class MoveController extends BaseController {
 	public function postMoving()
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 

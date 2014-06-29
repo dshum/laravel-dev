@@ -9,7 +9,7 @@
 		@else
 	<div class="plus-empty"></div>
 		@endif
-	<a href="{{ $element->getBrowseUrl() }}" editUrl="{{ $element->getEditUrl() }}" deleteUrl="{{ $element->getDeleteUrl() }}" moveUrl="{{ \URL::route('admin.moving') }}" classId="{{ $element->getClassId() }}">{{ $element->{$item->getMainProperty()} }}</a>
+	<a href="{{ $element->getBrowseUrl() }}" browseUrl="{{ $element->getBrowseUrl() }}" browseUrlAddTab="{{ $element->getBrowseUrlAddTab() }}" editUrl="{{ $element->getEditUrl() }}" editUrlAddTab="{{ $element->getEditUrlAddTab() }}" deleteUrl="{{ $element->getDeleteUrl() }}" moveUrl="{{ \URL::route('admin.moving') }}" classId="{{ $element->getClassId() }}">{{ $element->{$item->getMainProperty()} }}</a>
 	<div class="padding{{ isset($tree[$element->getClassId()]) ? '' : ' dnone'}}" node="{{ $element->getClassId() }}">
 		{{ isset($treeView[$element->getClassId()]) ? $treeView[$element->getClassId()] : null }}
 	</div>

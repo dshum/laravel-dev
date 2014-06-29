@@ -1,17 +1,36 @@
 <?php namespace LemonTree;
 
 class TabController extends BaseController {
-
-	public function addTab()
+	
+	public function postToggle(Tab $activeTab)
 	{
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
+		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
 
-		$tabs = $loggedUser->getTabs();
+		$open = \Input::get('open');
+
+		$treeView = null;
+
+		if ($open == 'open') {
+			$treeView = \App::make('LemonTree\TreeController')->show();
+			$activeTab->show_tree = true;
+		} elseif ($open == 'false') {
+			$activeTab->show_tree = true;
+		} else {
+			$activeTab->show_tree = false;
+		}
+
+		$activeTab->save();
+
+		return $treeView;
+	}
+
+	public function getAddTab()
+	{
+		$loggedUser = \Sentry::getUser();
+
+		$tabs = $loggedUser->tabs;
 
 		foreach ($tabs as $tab) {
 			if ($tab->is_active) {
@@ -31,20 +50,15 @@ class TabController extends BaseController {
 		return \Redirect::to($tab->url);
 	}
 
-	public function deleteTab(Tab $delTab)
+	public function getDeleteTab(Tab $delTab)
 	{
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		if ($delTab->user_id != $loggedUser->id) {
 			return \Redirect::route('admin');
 		}
 
-		$tabs = $loggedUser->getTabs();
+		$tabs = $loggedUser->tabs;
 
 		$activeTab = null;
 
@@ -86,18 +100,13 @@ class TabController extends BaseController {
 
 	public function getIndex(Tab $activeTab)
 	{
-		if ( ! \Sentry::check()) {
-			$scope['login'] = null;
-			return \View::make('admin::login', $scope);
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		if ($activeTab->user_id != $loggedUser->id) {
 			return \Redirect::route('admin');
 		}
 
-		$tabs = $loggedUser->getTabs();
+		$tabs = $loggedUser->tabs;
 
 		foreach ($tabs as $tab) {
 			if ($tab->is_active) {

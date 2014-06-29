@@ -6,10 +6,6 @@ class UserController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		if ( ! $loggedUser->hasAccess('admin')) {
@@ -33,11 +29,6 @@ class UserController extends BaseController {
 	public function postAdd()
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 
@@ -122,11 +113,6 @@ class UserController extends BaseController {
 	public function postSave(User $user)
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			$scope['logout'] = true;
-			return json_encode($scope);
-		}
 
 		$loggedUser = \Sentry::getUser();
 
@@ -221,10 +207,6 @@ class UserController extends BaseController {
 	{
 		$scope = array();
 
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
-
 		$loggedUser = \Sentry::getUser();
 
 		if ( ! $loggedUser->hasAccess('admin')) {
@@ -252,10 +234,6 @@ class UserController extends BaseController {
 	public function getEdit(User $user)
 	{
 		$scope = array();
-
-		if ( ! \Sentry::check()) {
-			return \Redirect::route('admin');
-		}
 
 		$loggedUser = \Sentry::getUser();
 

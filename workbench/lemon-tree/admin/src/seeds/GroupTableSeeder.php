@@ -11,19 +11,26 @@ class GroupTableSeeder extends Seeder {
 		\DB::table('cytrus_groups')->truncate();
 
 		\Sentry::createGroup(array(
-			'name'        => 'Системные пользователи',
+			'name' => 'Системные пользователи',
+			'default_permission' => 'delete',
 			'permissions' => array(
 				'admin' => 1,
-				'element.create' => 1,
-				'element.owner.view' => 1,
-				'element.group.view' => 1,
-				'element.world.view' => 1,
-				'element.owner.view' => 1,
-				'element.group.update' => 1,
-				'element.world.update' => 1,
-				'element.owner.delete' => 1,
-				'element.group.delete' => 1,
-				'element.world.delete' => 1,
+			),
+		));
+		
+		\Sentry::createGroup(array(
+			'name' => 'Администраторы',
+			'default_permission' => 'delete',
+			'permissions' => array(
+				'admin' => 1,
+			),
+		));
+		
+		\Sentry::createGroup(array(
+			'name' => 'Модераторы',
+			'default_permission' => 'deny',
+			'permissions' => array(
+				'admin' => 0,
 			),
 		));
 

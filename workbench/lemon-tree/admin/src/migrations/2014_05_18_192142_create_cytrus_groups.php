@@ -16,6 +16,7 @@ class CreateCytrusGroups extends Migration {
 		{
 			$table->increments('id');
 			$table->string('name');
+			$table->string('default_permission')->nullable();
 			$table->text('permissions')->nullable();
 			$table->timestamps();
 

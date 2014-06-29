@@ -356,11 +356,27 @@ abstract class Element extends \Eloquent {
 			array('class' => $this->getClass(), 'id' => $this->id)
 		);
 	}
+	
+	public function getBrowseUrlAddTab()
+	{
+		return \URL::route(
+			'admin.browse.addtab',
+			array('class' => $this->getClass(), 'id' => $this->id)
+		);
+	}
 
 	public function getEditUrl()
 	{
 		return \URL::route(
 			'admin.edit',
+			array('class' => $this->getClass(), 'id' => $this->id)
+		);
+	}
+	
+	public function getEditUrlAddTab()
+	{
+		return \URL::route(
+			'admin.edit.addtab',
 			array('class' => $this->getClass(), 'id' => $this->id)
 		);
 	}
