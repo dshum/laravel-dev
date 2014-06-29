@@ -4,6 +4,10 @@
 <script type="text/javascript">
 $(function() {
 
+	$('#button-cancel').click(function() {
+		document.location.href = '{{ \URL::to($redirect) }}';
+	});
+
 	$('body').on('click', 'input[onetoone="name"]', function() {
 		var defaultText = $(this).attr('default');
 		var url = $(this).attr('url');
@@ -117,14 +121,19 @@ $(function() {
 @foreach ($elementList as $element)
 {{ Form::checkbox('check[]', $element->id, true) }} <a href="{{ $element->getEditUrl() }}">{{ $element->{$item->getMainProperty()} }}</a> <small class="grey">{{ $item->getTitle() }}</small><br />
 @endforeach
+@if ($onePropertyList)
 <h2>Куда переносим:</h2>
 <div class="form-edit">
-@foreach ($onePropertyList as $propertyName => $property)
+	@foreach ($onePropertyList as $propertyName => $property)
 <div id="{{ $propertyName }}_container"{{ $property->isMainProperty() ? ' class="main"' : '' }}>
 	{{ sizeof($elementList) > 1 ? $property->getElementMoveView() : $property->setElement($element)->getElementMoveView() }}
 </div><br />
-@endforeach
+	@endforeach
 </div>
-<p>{{ Form::submit('Переместить', array('id' => 'button-move', 'class' => 'btn')) }}</p>
+<p>{{ Form::button('Отмена', array('id' => 'button-cancel')) }} {{ Form::submit('Переместить', array('id' => 'button-move', 'class' => 'btn')) }}</p>
+@else
+<p>Нет разделов, подходящих для перемещения.</p>
+<p>{{ Form::button('Отмена', array('id' => 'button-cancel')) }} {{ Form::submit('Переместить', array('id' => 'button-move', 'class' => 'btn', 'disabled' => 'disabled')) }}</p>
+@endif
 {{ Form::close() }}
 @stop
