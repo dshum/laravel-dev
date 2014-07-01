@@ -53,7 +53,7 @@ class LoginController extends BaseController {
 
 		if (\Sentry::check()) \Sentry::logout();
 
-		return \Redirect::route('admin');
+		return \Redirect::back();
 	}
 
 	public function getIndex($currentElement = null)
