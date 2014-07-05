@@ -15,7 +15,9 @@
 <script type="text/javascript">
 $(function() {
 
-	$('body').on('click', 'div.plus', function() {
+	LT.adminUrl = '{{ URL::route("admin") }}';
+
+	$('body').on('click', 'div[node]', function() {
 		var node = $(this).attr('node');
 		var opened = $(this).attr('opened');
 
@@ -25,15 +27,15 @@ $(function() {
 			function(data) {
 				if (opened == 'open') {
 					$('div.padding[node="'+node+'"]').html(data).slideDown('fast', function() {
-						$('div.plus[node="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
+						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
 					});
 				} else if (opened == 'true') {
 					$('div.padding[node="'+node+'"]').slideUp('fast', function() {
-						$('div.plus[node="'+node+'"]').html('<div>+</div>').attr('opened', 'false');
+						$('div.minus[node="'+node+'"]').removeClass('minus').addClass('plus').attr('opened', 'false');
 					});
 				} else if (opened == 'false') {
 					$('div.padding[node="'+node+'"]').slideDown('fast', function() {
-						$('div.plus[node="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
+						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
 					});
 				}
 			},
@@ -44,35 +46,30 @@ $(function() {
 
 	$('#tree-toggler').click(function() {
 		var opened = $(this).attr('opened');
-		
+
 		if (opened == 'true') {
-			$('#tree').children('.container').css({overflowX: 'hidden'});
-			$('#tree').animate({width: '0%', 'opacity': 0}, 250, function() {
-				$('#tree').hide();
+			$('#tree').animate({left: '-20%'}, 250);
+			$('#browse').animate({left: '0%', width: '100%'}, 250, function() {
+				$('#tree-toggler').attr('opened', 'false');
 			});
-			$('#browse').animate({width: '100%'}, 250, function() {});
-			$('#tree-toggler').attr('opened', 'false');
 		} else if (opened == 'false') {
-			$('#tree').show();
-			$('#tree').animate({width: '20%', 'opacity': 1}, 250, function() {
-				$('#tree').children('.container').css({overflowX: 'auto'});
+			$('#tree').animate({left: '0%'}, 250);
+			$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
+				$('#tree-toggler').attr('opened', 'true');
 			});
-			$('#browse').animate({width: '80%'}, 250, function() {});
-			$('#tree-toggler').attr('opened', 'true');
 		}
-		
+
 		$.post(
 			"{{ URL::route('admin.tab.toggle', $activeTab->id) }}",
 			{open: opened},
 			function(data) {
 				if (opened == 'open') {
+					$('#tree').css('left', '-20%');
 					$('#tree-container').html(data);
-					$('#tree').show();
-					$('#tree').animate({width: '20%', 'opacity': 1}, 250, function() {
-						$('#tree').children('.container').css({overflowX: 'auto'});
+					$('#tree').animate({left: '0%'}, 250);
+					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
+						$('#tree-toggler').attr('opened', 'true');
 					});
-					$('#browse').animate({width: '80%'}, 250, function() {});
-					$('#tree-toggler').attr('opened', 'true');
 				}
 			},
 			'html'
@@ -85,39 +82,36 @@ $(function() {
 </head>
 <body>
 <div id="wrapper">
-	<div id="tab-wrapper">
-		<ul>
-			@foreach ($tabs as $tab)
-				@if ($tab->is_active)
-					<li class="tab-current">{{ $tab->title }}&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}" class="btn">&#215;</a></li>
-				@else
-				<li><a href="{{ \URL::route('admin.tab', array('id' => $tab->id)) }}">{{ $tab->title }}</a>&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}" class="btn">&#215;</a></li>
-				@endif
-			@endforeach
-			<li><a href="{{ \URL::route('admin.tab.add') }}" class="btn blue">+</a></li>
-		</ul>
-	</div>
-	<div id="page">
-		<div id="tree" class="{{ $activeTab->show_tree ? 'w20' : 'dnone w0' }}">
-			<div id="tree-container" class="container">
-				{{ $treeView }}
+	<div id="browse" style="{{ $activeTab->show_tree ? 'left: 20%; width: 80%;' : 'left: 0%; width: 100%;' }}">
+		<div id="browse-container" class="container">
+			<div id="tab-wrapper">
+				<ul>
+					@foreach ($tabs as $tab)
+						@if ($tab->is_active)
+							<li class="tab-current">{{ $tab->title }}&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}"><img src="/LT/img/delete-tab.png" alt="" style="position: relative; top: 4px;" /></a></li>
+						@else
+						<li><a href="{{ \URL::route('admin.tab', array('id' => $tab->id)) }}">{{ $tab->title }}</a>&nbsp;<a href="{{ \URL::route('admin.tab.delete', array('id' => $tab->id)) }}"><img src="/LT/img/delete-tab.png" alt="" style="position: relative; top: 4px;" /></a></li>
+						@endif
+					@endforeach
+					<li><a href="{{ \URL::route('admin.tab.add') }}"><img src="/LT/img/add-tab.png" alt="" style="position: relative; top: 3px;" /></a></li>
+				</ul>
 			</div>
-		</div>
-		<div id="browse" class="{{ $activeTab->show_tree ? 'w80' : 'w100' }}">
-			<div id="browse-container" class="container">
+			<div id="browse-wrapper">
 				<div id="menu-wrapper">
-					<ul>
-						<li><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" class="hand">≡</span></li>
-						@if (Route::currentRouteName() == 'admin')<li class="current_page_item"><a>Lemon Tree</a></li>@else<li><a href="{{ URL::route('admin') }}">Lemon Tree</a></li>@endif
-						<li><a href="{{ URL::current() }}">Обновить</a></li>
-						<li><a href="{{ URL::route('admin.search') }}">Поиск</a></li>
-						<li><a href="{{ URL::route('admin.trash') }}">Корзина</a></li>
-						@if (Route::currentRouteName() == 'admin.users')<li>Пользователи</li>@else<li><a href="{{ URL::route('admin.users') }}">Пользователи</a></li>@endif
-						@if (Route::currentRouteName() == 'admin.profile')<li class="current_page_item"><a>{{ $loggedUser->login }}</a></li>@else<li><a href="{{ URL::route('admin.profile') }}">{{ $loggedUser->login }}</a></li>@endif
-						<li><a href="{{ URL::route('admin.logout') }}">Выйти</a></li>
-					</ul>
+					<table border="0" style="width: 100%;">
+						<tr>
+						<td style="padding-right: 15px;"><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" class="dashed hand">Дерево</span></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin') }}">LemonTree</a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::current() }}">Обновить</a></td>
+						<td style="padding-right: 15px; width: 90%;"><div class="path">@yield('path')</div></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.search') }}">Поиск</a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.trash') }}">Корзина</a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.users') }}">Пользователи</a></td>
+						<td style="padding-right: 15px;" nowrap><a href="{{ URL::route('admin.profile') }}" style="font-weight: bold;">{{ $loggedUser->login }}</a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.logout') }}">Выход</a></td>
+						</tr>
+					</table>
 				</div>
-				<div class="path">@yield('path')</div>
 				@yield('browse')
 				<div class="space"></div>
 				{? $site = App::make('site') ?}
@@ -129,6 +123,11 @@ $(function() {
 				</ol>
 				<p>Totally: {{ $site->getMicroTime() }} sec, {{ $site->getMemoryUsage() }} Mb</p>
 			</div>
+		</div>
+	</div>
+	<div id="tree">
+		<div id="tree-container" class="container">
+			{{ $treeView }}
 		</div>
 	</div>
 </div>

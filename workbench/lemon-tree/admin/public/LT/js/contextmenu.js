@@ -4,13 +4,14 @@ $(function() {
 
 	$('body').on('contextmenu', '#tree a', function(e) {
 
-		var browseUrl = $(this).attr('browseUrl');
-		var browseUrlAddTab = $(this).attr('browseUrlAddTab');
-		var editUrl = $(this).attr('editUrl');
-		var editUrlAddTab = $(this).attr('editUrlAddTab');
-		var deleteUrl = $(this).attr('deleteUrl');
-		var moveUrl = $(this).attr('moveUrl');
 		var classId = $(this).attr('classId');
+
+		var browseUrl = LT.adminUrl+'/browse/'+classId;
+		var browseUrlAddTab = browseUrl+'/addtab';
+		var editUrl = LT.adminUrl+'/edit/'+classId;
+		var editUrlAddTab = editUrl+'/addtab';
+		var deleteUrl = LT.adminUrl+'/delete/'+classId;
+		var moveUrl = LT.adminUrl+'/moving';
 
 		var items = [
 			{

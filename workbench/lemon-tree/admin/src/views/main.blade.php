@@ -174,8 +174,8 @@ $(function() {
 {{ Form::button('Редактировать', array('id' => 'button-edit', 'class' => 'btn', 'disabled' => 'disabled')) }}
 @endif
 {{ Form::button('Сохранить', array('id' => 'button-save', 'class' => 'btn', 'disabled' => 'disabled')) }}
-{{ Form::button('Удалить', array('id' => 'button-delete', 'class' => 'btn', 'disabled' => 'disabled')) }}
 {{ Form::button('Переместить', array('id' => 'button-move', 'class' => 'btn', 'disabled' => 'disabled')) }}
+{{ Form::button('Удалить', array('id' => 'button-delete', 'class' => 'btn', 'disabled' => 'disabled')) }}
 </p>
 @if ($bindItemList)
 <p>Добавить:

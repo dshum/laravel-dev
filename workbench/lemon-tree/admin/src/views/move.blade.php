@@ -74,7 +74,7 @@ $(function() {
 		});
 	});
 
-	$('body').on('click', 'div.plus[node1], span.plus[node1]', function() {
+	$('body').on('click', 'div[node1], span[node1]', function() {
 		var node = $(this).attr('node1');
 		var itemName = $(this).attr('itemName');
 		var propertyName = $(this).attr('propertyName');
@@ -86,21 +86,21 @@ $(function() {
 				{itemName: itemName, propertyName: propertyName, classId: node},
 				function(data) {
 					$('div.padding[node1="'+node+'"]').html(data).slideDown('fast', function() {
-						$('div.plus[node1="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
-						$('span.plus[node1="'+node+'"]').attr('opened', 'true');
+						$('div.plus[node1="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
+						$('span[node1="'+node+'"]').attr('opened', 'true');
 					});
 				},
 				'html'
 			);
 		} else if (opened == 'true') {
 			$('div.padding[node1="'+node+'"]').slideUp('fast', function() {
-				$('div.plus[node1="'+node+'"]').html('<div>+</div>').attr('opened', 'false');
-				$('span.plus[node1="'+node+'"]').attr('opened', 'false');
+				$('div.minus[node1="'+node+'"]').removeClass('minus').addClass('plus').attr('opened', 'false');
+				$('span[node1="'+node+'"]').attr('opened', 'false');
 			});
 		} else if (opened == 'false') {
 			$('div.padding[node1="'+node+'"]').slideDown('fast', function() {
-				$('div.plus[node1="'+node+'"]').html('<div>-</div>').attr('opened', 'true');
-				$('span.plus[node1="'+node+'"]').attr('opened', 'true');
+				$('div.plus[node1="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
+				$('span[node1="'+node+'"]').attr('opened', 'true');
 			});
 		}
 	});

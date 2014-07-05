@@ -1,7 +1,7 @@
 <?php namespace LemonTree;
 
 class TreeController extends BaseController {
-	
+
 	public function check(Element $element)
 	{
 		$total = 0;
@@ -272,6 +272,7 @@ class TreeController extends BaseController {
 
 		if ( ! $itemElementList) return null;
 
+		$scope['currentElement'] = $currentElement;
 		$scope['treeItemList'] = $bindItemList;
 		$scope['treeItemElementList'] = $itemElementList;
 		$scope['treeView'] = $treeView;

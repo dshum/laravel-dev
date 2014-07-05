@@ -8,7 +8,7 @@
 @else
 	@if (isset($treeView))
 		<span id="{{ $name }}_title" onetoone="title" name="{{ $name }}" class="dashed hand">{{ $value ? $value->$mainProperty : 'Не определено' }}</span>
-		<div id="{{ $name }}_block" class="blank dnone">
+		<div id="{{ $name }}_block" class="blank dnone one">
 			@if ( ! $required)
 				{{ Form::radio($name, '', $value ? false : true, array('id' => $name.'_0', 'onetoone' => 'radio')) }} {{ Form::label($name.'_0', 'Не определено') }}<br />
 			@endif

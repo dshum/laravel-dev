@@ -33,7 +33,7 @@ Route::filter('admin.auth.ajax.html', function() {
 });
 
 Route::group(array('before' => 'admin.guest'), function() {
-	
+
 	Route::get('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\LoginController@getIndex'));
 
 	Route::get('/admin/login/restore', array('as' => 'admin.login.restore', 'uses' => 'LemonTree\RestoreController@getIndex'));
@@ -41,7 +41,7 @@ Route::group(array('before' => 'admin.guest'), function() {
 	Route::get('/admin/login/reset', array('as' => 'admin.login.reset', 'uses' => 'LemonTree\RestoreController@getReset'));
 
 	Route::post('/admin/login', array('as' => 'admin.login', 'uses' => 'LemonTree\LoginController@postLogin'));
-	
+
 	Route::post('/admin/login/restore', array('as' => 'admin.login.restore', 'uses' => 'LemonTree\RestoreController@postRestore'));
 
 	Route::post('/admin/login/reset', array('as' => 'admin.login.reset', 'uses' => 'LemonTree\RestoreController@postReset'));
@@ -49,9 +49,9 @@ Route::group(array('before' => 'admin.guest'), function() {
 });
 
 Route::group(array('before' => 'admin.auth'), function() {
-	
+
 	Route::get('/admin', array('as' => 'admin', 'uses' => 'LemonTree\MainController@getIndex'));
-	
+
 	Route::get('/admin/logout', array('as' => 'admin.logout', 'uses' => 'LemonTree\LoginController@getLogout'));
 
 	Route::get('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@getIndex'));
@@ -103,7 +103,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 	}))->where('id', '[0-9]+');
 
 	Route::get('/admin/group/create', array('as' => 'admin.group.create', 'uses' => 'LemonTree\GroupController@getCreate'));
-	
+
 	Route::get('/admin/user/create', array('as' => 'admin.user.create', 'uses' => 'LemonTree\UserController@getCreate'));
 
 	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\MainController@getIndex'));
@@ -116,7 +116,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 			return Redirect::route('admin');
 		}
 	}));
-	
+
 	Route::get('/admin/browse/{class}.{id}/addtab', array('as' => 'admin.browse.addtab', function($class, $id) {
 		try {
 			$element = $class::find($id);
@@ -139,7 +139,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 			return Redirect::route('admin');
 		}
 	}));
-	
+
 	Route::get('/admin/edit/{class}.{id}/addtab', array('as' => 'admin.edit.addtab', function($class, $id) {
 		try {
 			$element = $class::find($id);
@@ -160,20 +160,21 @@ Route::group(array('before' => 'admin.auth'), function() {
 		}
 	}));
 
-	Route::get('/admin/moving', function() { 
-		return \Redirect::route('admin'); 
+	Route::get('/admin/moving', function() {
+		return \Redirect::route('admin');
 	});
 
-	Route::get('/admin/move', function() { 
-		return \Redirect::route('admin'); 
+	Route::get('/admin/move', function() {
+		return \Redirect::route('admin');
 	});
 
 	Route::get('/admin/hint/{class}', array('as' => 'admin.hint', 'uses' => 'LemonTree\HintController@getHint'));
 
 	Route::get('/admin/multihint/{itemName}/{propertyName}', array('as' => 'admin.multihint', 'uses' => 'LemonTree\HintController@getMultiHint'));
 
-	Route::get('/admin/trash/{class?}.{id?}', array('as' => 'admin.trash', function($class = null, $id = null) {
+	Route::get('/admin/trash/{classId?}', array('as' => 'admin.trash', function($classId = null) {
 		try {
+			list($class, $id) = explode(Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::onlyTrashed()->
 				cacheTags($class)->
@@ -198,7 +199,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 });
 
 Route::group(array('before' => 'admin.auth.post'), function() {
-	
+
 	Route::post('/admin/moving', array('as' => 'admin.moving', 'uses' => 'LemonTree\MoveController@postMoving'));
 
 	Route::post('/admin/move', array('as' => 'admin.move', 'uses' => 'LemonTree\MoveController@postMove'));
@@ -206,29 +207,29 @@ Route::group(array('before' => 'admin.auth.post'), function() {
 });
 
 Route::group(array('before' => 'admin.auth.ajax'), function() {
-	
+
 	Route::post('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@postUpdate'));
 
 	Route::post('/admin/group/{id}', array('as' => 'admin.group', function($id) {
 		$group = \Sentry::findGroupById($id);
 		return App::make('LemonTree\GroupController')->postSave($group);
 	}))->where('id', '[0-9]+');
-	
+
 	Route::post('/admin/group/{id}/items', array('as' => 'admin.group.items', function($id) {
 		$group = \Sentry::findGroupById($id);
 		return App::make('LemonTree\GroupController')->postSaveItemPermissions($group);
 	}))->where('id', '[0-9]+');
-	
+
 	Route::post('/admin/group/{id}/elements', array('as' => 'admin.group.elements', function($id) {
 		$group = \Sentry::findGroupById($id);
 		return App::make('LemonTree\GroupController')->postSaveElementPermissions($group);
 	}))->where('id', '[0-9]+');
-	
+
 	Route::post('/admin/user/{id}', array('as' => 'admin.user', function($id) {
 		$user = \Sentry::findUserById($id);
 		return App::make('LemonTree\UserController')->postSave($user);
 	}))->where('id', '[0-9]+');
-	
+
 	Route::post('/admin/group/add', array('as' => 'admin.group.add', 'uses' => 'LemonTree\GroupController@postAdd'));
 
 	Route::post('/admin/user/add', array('as' => 'admin.user.add', 'uses' => 'LemonTree\UserController@postAdd'));
@@ -248,7 +249,7 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		}
 	}));
-	
+
 	Route::post('/admin/edit/{class}.{id}', array('as' => 'admin.save', function($class, $id) {
 		try {
 			$element =
@@ -262,7 +263,7 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		}
 	}));
-	
+
 	Route::post('/admin/create/{class}', array('as' => 'admin.add', function($class) {
 		try {
 			$element = new $class;
@@ -290,7 +291,7 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		}
 	}));
-	
+
 	Route::post('/admin/restore/{class}.{id}', array('as' => 'admin.restore', function($class, $id) {
 		try {
 			$element =
@@ -304,11 +305,11 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
 		}
 	}));
-	
+
 });
 
 Route::group(array('before' => 'admin.auth.ajax.html'), function() {
-	
+
 	Route::post('/admin/tree', array('as' => 'admin.tree', 'uses' => 'LemonTree\TreeController@show'));
 
 	Route::post('/admin/tree/open', array('as' => 'admin.tree.open', 'uses' => 'LemonTree\TreeController@postOpen'));
@@ -318,7 +319,7 @@ Route::group(array('before' => 'admin.auth.ajax.html'), function() {
 	Route::model('tab', 'LemonTree\Tab', function() {
 		return null;
 	});
-	
+
 	Route::post('/admin/tab/toggle/{tab}', array('as' => 'admin.tab.toggle', 'uses' => 'LemonTree\TabController@postToggle'))->where('tab', '[0-9]+');
 
 });

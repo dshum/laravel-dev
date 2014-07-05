@@ -1,13 +1,13 @@
 @foreach ($treeItemList as $itemName => $item)
-	<small><b>{{ $item->getTitle() }}</b></small>
+	<div class="item">{{ $item->getTitle() }}</div>
 	@foreach ($treeItemElementList[$itemName] as $element)
-		<div>
+		<div class="tree">
 		@if (isset($treeView[$element->getClassId()]))
-			<div class="plus" node1="{{ $element->getClassId() }}" opened="true"><div>-</div></div>
+			<div class="minus" node1="{{ $element->getClassId() }}" opened="true"></div>
 		@elseif (isset($treeCount[$element->getClassId()]) && $treeCount[$element->getClassId()] > 0)
-			<div class="plus" node1="{{ $element->getClassId() }}" itemName="{{ $currentProperty->getItem()->getName() }}" propertyName="{{ $currentProperty->getName() }}" opened="open"><div>+</div></div>
+			<div class="plus" node1="{{ $element->getClassId() }}" itemName="{{ $currentProperty->getItem()->getName() }}" propertyName="{{ $currentProperty->getName() }}" opened="open"></div>
 		@else
-			<div class="plus-empty"></div>
+			<div class="empty"></div>
 		@endif
 		@if ($itemName == $currentProperty->getRelatedClass())
 			{{ Form::radio($currentProperty->getName(), $element->id, $value && $value->id == $element->id ? true : false, array('id' => $currentProperty->getName().'_'.$element->id, 'onetoone' => 'radio')) }} {{ Form::label($currentProperty->getName().'_'.$element->id, $element->{$item->getMainProperty()}) }}<br />
