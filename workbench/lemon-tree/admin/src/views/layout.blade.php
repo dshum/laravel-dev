@@ -125,7 +125,7 @@ $(function() {
 			</div>
 		</div>
 	</div>
-	<div id="tree">
+	<div id="tree" style="{{ $activeTab->show_tree ? 'left: 0%;' : 'left: -200%;' }}">
 		<div id="tree-container" class="container">
 			{{ $treeView }}
 		</div>
