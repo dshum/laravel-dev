@@ -188,7 +188,7 @@ $(function() {
 		});
 	});
 
-	$('body').on('click', 'div[node1], span[node1]', function() {
+	$('body').on('click', 'div.plus[node1], div.minus[node1]', function() {
 		var node = $(this).attr('node1');
 		var itemName = $(this).attr('itemName');
 		var propertyName = $(this).attr('propertyName');

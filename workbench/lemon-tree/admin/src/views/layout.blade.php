@@ -17,7 +17,7 @@ $(function() {
 
 	LT.adminUrl = '{{ URL::route("admin") }}';
 
-	$('body').on('click', 'div[node]', function() {
+	$('body').on('click', 'div.plus[node], div.minus[node]', function() {
 		var node = $(this).attr('node');
 		var opened = $(this).attr('opened');
 
