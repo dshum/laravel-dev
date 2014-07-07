@@ -9,10 +9,10 @@
 	</tr>
 	@foreach ($itemElementList[$itemName] as $element)
 	<tr>
-		<td class="first"><a href="{{ URL::route($route, array('class' => get_class($element), 'id' => $element->id)) }}"><img src="/LT/img/file.png" alt="" style="padding-top: 4px;" /></a></td>
+		<td class="first"><a href="{{ URL::route($route, array('class' => get_class($element), 'id' => $element->id)) }}"><img src="/LT/img/file.png" alt="" style="vertical-align: middle;" /></a></td>
 		@foreach ($itemPropertyList[$itemName] as $propertyName => $property)
 			@if ($property->isMainProperty())
-			<td><img src="/LT/img/edit.png" alt="" /><a href="{{ URL::route('admin.edit', array('class' => get_class($element), 'id' => $element->id)) }}" edit="true">{{ $element->$propertyName }}</a></td>
+			<td><img src="/LT/img/edit.png" alt="" style="vertical-align: middle; margin-right: 5px;" /><a href="{{ URL::route('admin.edit', array('class' => get_class($element), 'id' => $element->id)) }}" edit="true">{{ $element->$propertyName }}</a></td>
 			@else
 		<td>{{ $property->setElement($element)->getElementListView() }}</td>
 			@endif

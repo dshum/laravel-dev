@@ -1,5 +1,5 @@
 @if ( ! $currentElement)
-<div class="lemon tree"><a href="{{ URL::route('admin') }}">Lemon Tree</a></div>
+<div class="lemon tree"><a href="{{ URL::route('admin') }}">Корень сайта</a></div>
 @endif
 @foreach ($treeItemList as $itemName => $item)
 <div class="item">{{ $item->getTitle() }}</div>

@@ -39,8 +39,8 @@ $(function() {
 	</tr>
 	@foreach ($groupList as $group)
 	<tr>
-		<td class="first"><a href="{{ URL::route('admin.users.group', $group->id) }}"><img src="/LT/img/file.png" alt="" style="padding-top: 4px;" /></a></td>
-		<td><img src="/LT/img/edit.png" alt="" /><a href="{{ \URL::route('admin.group', $group->id) }}">{{ $group->name }}</a></td>
+		<td class="first"><a href="{{ URL::route('admin.users.group', $group->id) }}"><img src="/LT/img/file.png" alt="" style="vertical-align: middle;" /></a></td>
+		<td><img src="/LT/img/edit.png" alt="" style="vertical-align: middle; margin-right: 5px;" /><a href="{{ \URL::route('admin.group', $group->id) }}">{{ $group->name }}</a></td>
 		<td><a href="{{ \URL::route('admin.group.items', $group->id) }}">Редактировать</a></td>
 		<td><a href="{{ \URL::route('admin.group.elements', $group->id) }}">Редактировать</a></td>
 		<td>{{ $group->created_at->format('d.m.Y') }}<br /><small>{{ $group->created_at->format('H:i:s') }}</small></td>
@@ -66,8 +66,8 @@ $(function() {
 	</tr>
 @foreach ($userList as $user)
 	<tr>
-		<td class="first"><a href="{{ URL::route('admin.users.user', $user->id) }}"><img src="/LT/img/file.png" alt="" style="padding-top: 4px;" /></a></td>
-		<td><img src="/LT/img/edit.png" alt="" /><a href="{{ \URL::route('admin.user', $user->id) }}">{{ $user->login }}</a></td>
+		<td class="first"><a href="{{ URL::route('admin.users.user', $user->id) }}"><img src="/LT/img/file.png" alt="" style="vertical-align: middle;" /></a></td>
+		<td><img src="/LT/img/edit.png" alt="" style="vertical-align: middle; margin-right: 5px;" /><a href="{{ \URL::route('admin.user', $user->id) }}">{{ $user->login }}</a></td>
 		<td>{{ $user->email }}</td>
 		<td>{{ $user->first_name }}</td>
 		<td>{{ $user->last_name }}</td>

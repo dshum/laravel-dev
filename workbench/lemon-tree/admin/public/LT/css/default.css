@@ -10,6 +10,7 @@ body {
 	font-size: 14px;
 	background: #FFF;
 	color: #000;
+	overflow-y: scroll;
 }
 
 #wrapper {
@@ -159,6 +160,23 @@ div.empty {
 	padding: 10px;
 }
 
+div.button {
+	float: left;
+	margin: 0 5px 0 5px;
+	padding: 3px 10px 7px 10px;
+	border: 1px solid #EEE;
+//	width: 96px;
+	height: 64px;
+	text-align: center;
+	font-size: 13px;
+	color: #999;
+}
+
+div.button:hover {
+	border: 1px solid #CCC;
+	color: #333;
+}
+
 #log {
 	clear: both;
 	position: fixed;
@@ -277,7 +295,7 @@ label {
 
 div.path {
 	background: #F0F0F0;
-	padding: 1px 10px;
+	padding: 3px 10px;
 }
 
 div.form-edit {
@@ -306,7 +324,7 @@ table.element-list th {
 }
 
 table.element-list td {
-	padding: 1px 5px;
+	padding: 3px 5px;
 	text-align: left;
 	border-bottom: 1px solid #EEE;
 	vertical-align: top;

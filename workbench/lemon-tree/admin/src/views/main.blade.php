@@ -167,16 +167,17 @@ $(function() {
 @section('browse')
 <p>
 @if ($currentElement)
-{{ Form::button('Наверх', array('id' => 'button-up', 'class' => 'btn')) }}
-{{ Form::button('Редактировать', array('id' => 'button-edit', 'class' => 'btn')) }}
+<div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
+<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 @else
-{{ Form::button('Наверх', array('id' => 'button-up', 'class' => 'btn', 'disabled' => 'disabled')) }}
-{{ Form::button('Редактировать', array('id' => 'button-edit', 'class' => 'btn', 'disabled' => 'disabled')) }}
+<div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="" /><br />Наверх</div>
+<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 @endif
-{{ Form::button('Сохранить', array('id' => 'button-save', 'class' => 'btn', 'disabled' => 'disabled')) }}
-{{ Form::button('Переместить', array('id' => 'button-move', 'class' => 'btn', 'disabled' => 'disabled')) }}
-{{ Form::button('Удалить', array('id' => 'button-delete', 'class' => 'btn', 'disabled' => 'disabled')) }}
+<div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
+<div id="button-move" class="button hand"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
+<div id="button-delete" class="button hand"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
 </p>
+<br clear="both" />
 @if ($bindItemList)
 <p>Добавить:
 	{? $count = sizeof($bindItemList) ?}

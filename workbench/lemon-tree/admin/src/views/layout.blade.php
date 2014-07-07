@@ -100,15 +100,15 @@ $(function() {
 				<div id="menu-wrapper">
 					<table border="0" style="width: 100%;">
 						<tr>
-						<td style="padding-right: 15px;"><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" class="dashed hand">Дерево</span></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::route('admin') }}">LemonTree</a></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::current() }}">Обновить</a></td>
+							<td style="padding-right: 15px;"><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" class="hand"><img src="/LT/img/tree.png" alt="" /></span></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin') }}"><img src="/LT/img/home.png" alt="" /></a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::current() }}"><img src="/LT/img/refresh.png" alt="" /></a></td>
 						<td style="padding-right: 15px; width: 90%;"><div class="path">@yield('path')</div></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.search') }}">Поиск</a></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.trash') }}">Корзина</a></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.users') }}">Пользователи</a></td>
-						<td style="padding-right: 15px;" nowrap><a href="{{ URL::route('admin.profile') }}" style="font-weight: bold;">{{ $loggedUser->login }}</a></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.logout') }}">Выход</a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.search') }}"><img src="/LT/img/search.png" alt="" /></a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.trash') }}"><img src="/LT/img/trash.png" alt="" /></a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.users') }}"><img src="/LT/img/users.png" alt="" /></a></td>
+						<td style="padding-right: 15px;" nowrap><img src="/LT/img/profile.png" alt="" style="vertical-align: middle; margin-right: 5px;" /><a href="{{ URL::route('admin.profile') }}"><b>{{ $loggedUser->login }}</b></a></td>
+						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.logout') }}"><img src="/LT/img/logout.png" alt="" /></a></td>
 						</tr>
 					</table>
 				</div>
