@@ -130,7 +130,9 @@ class TreeController extends BaseController {
 		if ($open == 'open') {
 			$element = Element::getByClassId($classId);
 			if ($element instanceof Element) {
-				$treeView = \App::make('LemonTree\TreeController')->show($element);
+				$treeView =
+					\App::make('LemonTree\TreeController')->
+					show($element);
 			}
 			$tree[$classId] = 1;
 		} elseif ($open == 'false') {
@@ -382,7 +384,9 @@ class TreeController extends BaseController {
 
 			foreach ($elementList as $element) {
 				if (isset($parents[$element->getClassId()])) {
-					$view = \App::make('LemonTree\TreeController')->show1($currentProperty, $element);
+					$view =
+						\App::make('LemonTree\TreeController')->
+							show1($currentProperty, $element);
 					if ($view) {
 						$treeView[$element->getClassId()] = $view;
 					}

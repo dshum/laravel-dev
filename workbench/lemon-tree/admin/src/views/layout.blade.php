@@ -62,10 +62,10 @@ $(function() {
 		$.post(
 			"{{ URL::route('admin.tab.toggle', $activeTab->id) }}",
 			{open: opened},
-			function(data) {
+			function(html) {
 				if (opened == 'open') {
 					$('#tree').css('left', '-20%');
-					$('#tree-container').html(data);
+					$('#tree-container').html(html);
 					$('#tree').animate({left: '0%'}, 250);
 					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
 						$('#tree-toggler').attr('opened', 'true');

@@ -5,7 +5,11 @@ class EditController extends BaseController {
 	public function getAddTab(Element $currentElement)
 	{
 		$loggedUser = \Sentry::getUser();
-		
+
+		if ( ! $loggedUser->hasViewAccess($currentElement)) {
+			return \Redirect::route('admin');
+		}
+
 		$tabs = $loggedUser->tabs;
 
 		foreach ($tabs as $tab) {
@@ -14,7 +18,7 @@ class EditController extends BaseController {
 				$tab->save();
 			}
 		}
-		
+
 		$site = \App::make('site');
 		$currentItem = $site->getItemByName($currentElement->getClass());
 		$mainProperty = $currentItem->getMainProperty();
@@ -26,15 +30,20 @@ class EditController extends BaseController {
 		$tab->is_active = true;
 		$tab->show_tree = false;
 		$tab->save();
-		
+
 		return \Redirect::to($currentElement->getEditUrl());
 	}
-	
+
 	public function postDelete(Element $currentElement)
 	{
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
+
+		if ( ! $loggedUser->hasDeleteAccess($currentElement)) {
+			$scope['redirect'] = \URL::route('admin');
+			return json_encode($scope);
+		}
 
 		try {
 			if ($currentElement->delete()) {
@@ -55,6 +64,11 @@ class EditController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
+		if ( ! $loggedUser->hasDeleteAccess($currentElement)) {
+			$scope['redirect'] = \URL::route('trash');
+			return json_encode($scope);
+		}
+
 		try {
 			$currentElement->forceDelete();
 			$scope['status'] = 'ok';
@@ -70,6 +84,11 @@ class EditController extends BaseController {
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
+
+		if ( ! $loggedUser->hasUpdateAccess($currentElement)) {
+			$scope['redirect'] = \URL::route('trash');
+			return json_encode($scope);
+		}
 
 		try {
 			$currentElement->restore();
@@ -158,7 +177,7 @@ class EditController extends BaseController {
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
-		
+
 		if ( ! $loggedUser->hasUpdateAccess($currentElement)) {
 			$scope['redirect'] = \URL::route('admin');
 			return json_encode($scope);
@@ -237,7 +256,7 @@ class EditController extends BaseController {
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
-		
+
 		if (
 			$parentElement
 			&& ! $loggedUser->hasViewAccess($parentElement)) {
@@ -295,7 +314,7 @@ class EditController extends BaseController {
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
-		
+
 		if ( ! $loggedUser->hasViewAccess($currentElement)) {
 			return \Redirect::route('admin');
 		}

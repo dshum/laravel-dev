@@ -50,13 +50,13 @@ Route::group(array('before' => 'admin.guest'), function() {
 
 Route::group(array('before' => 'admin.auth'), function() {
 
-	Route::get('/admin', array('as' => 'admin', 'uses' => 'LemonTree\MainController@getIndex'));
+	Route::get('/admin', array('as' => 'admin', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
 	Route::get('/admin/logout', array('as' => 'admin.logout', 'uses' => 'LemonTree\LoginController@getLogout'));
 
 	Route::get('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@getIndex'));
 
-	Route::get('/admin/search', array('as' => 'admin.search', 'uses' => 'LemonTree\SearchController@getIndex'));
+	Route::get('/admin/search/{class?}', array('as' => 'admin.search', 'uses' => 'LemonTree\SearchController@getIndex'));
 
 	Route::get('/admin/trash', array('as' => 'admin.trash', 'uses' => 'LemonTree\TrashController@getIndex'));
 
@@ -106,28 +106,29 @@ Route::group(array('before' => 'admin.auth'), function() {
 
 	Route::get('/admin/user/create', array('as' => 'admin.user.create', 'uses' => 'LemonTree\UserController@getCreate'));
 
-	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\MainController@getIndex'));
+	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
-	Route::get('/admin/browse/{class}.{id}', array('as' => 'admin.browse', function($class, $id) {
+	Route::get('/admin/browse/{classId}', array('as' => 'admin.browse', function($classId) {
 		try {
-			$element = $class::find($id);
-			return App::make('LemonTree\MainController')->getIndex($element);
+			$element = LemonTree\Element::getByClassId($classId);
+			return App::make('LemonTree\BrowseController')->getIndex($element);
 		} catch (Exception $e) {
 			return Redirect::route('admin');
 		}
 	}));
 
-	Route::get('/admin/browse/{class}.{id}/addtab', array('as' => 'admin.browse.addtab', function($class, $id) {
+	Route::get('/admin/browse/{classId}/addtab', array('as' => 'admin.browse.addtab', function($classId) {
 		try {
-			$element = $class::find($id);
-			return App::make('LemonTree\MainController')->getAddTab($element);
+			$element = LemonTree\Element::getByClassId($classId);
+			return App::make('LemonTree\BrowseController')->getAddTab($element);
 		} catch (Exception $e) {
 			return Redirect::route('admin');
 		}
 	}));
 
-	Route::get('/admin/edit/{class}.{id}', array('as' => 'admin.edit', function($class, $id) {
+	Route::get('/admin/edit/{classId}', array('as' => 'admin.edit', function($classId) {
 		try {
+			list($class, $id) = explode(LemonTree\Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::withTrashed()->
 				cacheTags($class)->
@@ -140,9 +141,9 @@ Route::group(array('before' => 'admin.auth'), function() {
 		}
 	}));
 
-	Route::get('/admin/edit/{class}.{id}/addtab', array('as' => 'admin.edit.addtab', function($class, $id) {
+	Route::get('/admin/edit/{classId}/addtab', array('as' => 'admin.edit.addtab', function($classId) {
 		try {
-			$element = $class::find($id);
+			$element = LemonTree\Element::getByClassId($classId);
 			return App::make('LemonTree\EditController')->getAddTab($element);
 		} catch (Exception $e) {
 			return Redirect::route('admin');
@@ -152,7 +153,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 	Route::get('/admin/create/{class}/{classId?}', array('as' => 'admin.create', function($class, $classId = null) {
 		try {
 			$element = new $class;
-			$parent = Element::getByClassId($classId);
+			$parent = LemonTree\Element::getByClassId($classId);
 			return App::make('LemonTree\EditController')->getCreate($element, $parent);
 		} catch (Exception $e) {
 			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
@@ -174,7 +175,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 
 	Route::get('/admin/trash/{classId?}', array('as' => 'admin.trash', function($classId = null) {
 		try {
-			list($class, $id) = explode(Element::ID_SEPARATOR, $classId);
+			list($class, $id) = explode(LemonTree\Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::onlyTrashed()->
 				cacheTags($class)->
@@ -234,24 +235,15 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 
 	Route::post('/admin/user/add', array('as' => 'admin.user.add', 'uses' => 'LemonTree\UserController@postAdd'));
 
-	Route::post('/admin/browse/save', array('as' => 'admin.browse.save', 'uses' => 'LemonTree\MainController@postSave'));
+	Route::post('/admin/browse/save', array('as' => 'admin.browse.save', 'uses' => 'LemonTree\BrowseController@postSave'));
 
-	Route::post('/admin/browse/delete', array('as' => 'admin.browse.delete', 'uses' => 'LemonTree\MainController@postDelete'));
+	Route::post('/admin/browse/delete', array('as' => 'admin.browse.delete', 'uses' => 'LemonTree\BrowseController@postDelete'));
 
-	Route::post('/admin/browse/restore', array('as' => 'admin.browse.restore', 'uses' => 'LemonTree\MainController@postRestore'));
+	Route::post('/admin/browse/restore', array('as' => 'admin.browse.restore', 'uses' => 'LemonTree\BrowseController@postRestore'));
 
-	Route::post('/admin/list/{class}/{pclass?}.{pid?}', array('as' => 'admin.list', function($class, $pclass = null, $pid = null) {
+	Route::post('/admin/edit/{classId}', array('as' => 'admin.save', function($classId) {
 		try {
-			$parent = $pclass::find($pid);
-			return App::make('LemonTree\MainController')->postList($class, $parent);
-		} catch (Exception $e) {
-			echo $e->getMessage().PHP_EOL;
-			echo '<pre>'.$e->getTraceAsString().'</pre>'; die();
-		}
-	}));
-
-	Route::post('/admin/edit/{class}.{id}', array('as' => 'admin.save', function($class, $id) {
-		try {
+			list($class, $id) = explode(LemonTree\Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::withTrashed()->
 				cacheTags($class)->
@@ -274,8 +266,9 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 		}
 	}));
 
-	Route::post('/admin/delete/{class}.{id}', array('as' => 'admin.delete', function($class, $id) {
+	Route::post('/admin/delete/{classId}', array('as' => 'admin.delete', function($classId) {
 		try {
+			list($class, $id) = explode(LemonTree\Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::withTrashed()->
 				cacheTags($class)->
@@ -292,8 +285,9 @@ Route::group(array('before' => 'admin.auth.ajax'), function() {
 		}
 	}));
 
-	Route::post('/admin/restore/{class}.{id}', array('as' => 'admin.restore', function($class, $id) {
+	Route::post('/admin/restore/{classId}', array('as' => 'admin.restore', function($classId) {
 		try {
+			list($class, $id) = explode(LemonTree\Element::ID_SEPARATOR, $classId);
 			$element =
 				$class::onlyTrashed()->
 				cacheTags($class)->
@@ -321,6 +315,8 @@ Route::group(array('before' => 'admin.auth.ajax.html'), function() {
 	});
 
 	Route::post('/admin/tab/toggle/{tab}', array('as' => 'admin.tab.toggle', 'uses' => 'LemonTree\TabController@postToggle'))->where('tab', '[0-9]+');
+
+	Route::post('/admin/browse/list', array('as' => 'admin.browse.list', 'uses' => 'LemonTree\BrowseController@postList'));
 
 });
 

@@ -58,6 +58,38 @@ $(function() {
 		});
 	});
 
+	$('body').on('click', 'span[showlist="true"]', function(){
+		var header = $(this);
+
+		var opened = $(this).attr('opened');
+		var classId = $(this).attr('classId');
+		var item = $(this).attr('item');
+
+		if (opened == 'true') {
+			$('#element_list_container_'+item).slideUp('fast', function() {
+				header.attr('opened', 'false');
+			});
+		} else if (opened == 'false') {
+			$('#element_list_container_'+item).slideDown('fast', function() {
+				header.attr('opened', 'true');
+			});
+		}
+
+		$.post(
+			"{{ URL::route('admin.browse.list') }}",
+			{open: opened, classId: classId, item: item},
+			function(html) {
+				if (opened == 'open') {
+					$('#item_'+item).html(html);
+					$('#element_list_container_'+item).slideDown('fast', function() {
+						header.attr('opened', 'true');
+					});
+				}
+			},
+			'html'
+		);
+	});
+
 	$('body').on('click', 'input:checkbox[name="checkAll[]"]', function(){
 		var itemName = $(this).attr('item');
 		if (this.checked) {
@@ -187,11 +219,13 @@ $(function() {
 </p>
 @endif
 <p class="error"><span id="message" class="dnone"></span></p>
-@if ($itemList)
+@if ($elementListViewList)
 {{ Form::open(array('route' => 'admin.browse.save', 'method' => 'post', 'id' => 'browseForm')) }}
 {{ Form::hidden('redirect', \Request::path()) }}
-@foreach ($itemList as $itemName => $item)
-@include('admin::list')
+@foreach ($elementListViewList as $itemName => $elementListView)
+<div id="item_{{ $itemName }}">
+{{ $elementListView }}
+</div>
 @endforeach
 {{ Form::close() }}
 @elseif ($currentElement)

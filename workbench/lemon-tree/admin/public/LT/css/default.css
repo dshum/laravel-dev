@@ -309,6 +309,39 @@ div.form-edit .main input {
 	font-size: 120%;
 }
 
+.element-list-header td {
+	padding: 0 0 3px 0;
+	border-collapse: collapse;
+}
+
+.order_link {
+	padding-top: 8px;
+	float: right;
+	white-space: nowrap;
+}
+
+.element-list-header .order_link {
+	padding: 8px 0 0 25px;
+	font-size: 13px;
+}
+
+.order_link img, .em img {
+	vertical-align: middle;
+}
+
+.order_link a, .em {
+	text-decoration: none;
+}
+
+.order_link a:hover, .em:hover  {
+	text-decoration: none;
+}
+
+.order_link em, .em em {
+	text-decoration: underline;
+	font-style: normal;
+}
+
 table.element-list {
 	border-collapse: collapse;
 	width: 100%;

@@ -1,11 +1,15 @@
 <?php namespace LemonTree;
 
-class MainController extends BaseController {
+class BrowseController extends BaseController {
 
 	public function getAddTab(Element $currentElement)
 	{
 		$loggedUser = \Sentry::getUser();
-		
+
+		if ( ! $loggedUser->hasViewAccess($currentElement)) {
+			return \Redirect::route('admin');
+		}
+
 		$tabs = $loggedUser->tabs;
 
 		foreach ($tabs as $tab) {
@@ -14,7 +18,7 @@ class MainController extends BaseController {
 				$tab->save();
 			}
 		}
-		
+
 		$site = \App::make('site');
 		$currentItem = $site->getItemByName($currentElement->getClass());
 		$mainProperty = $currentItem->getMainProperty();
@@ -26,10 +30,10 @@ class MainController extends BaseController {
 		$tab->is_active = true;
 		$tab->show_tree = false;
 		$tab->save();
-		
+
 		return \Redirect::to($currentElement->getBrowseUrl());
 	}
-	
+
 	public function postDelete()
 	{
 		$scope = array();
@@ -132,14 +136,54 @@ class MainController extends BaseController {
 		return json_encode($scope);
 	}
 
+	public function postList()
+	{
+		$loggedUser = \Sentry::getUser();
+
+		$open = \Input::get('open');
+		$classId = \Input::get('classId');
+		$class = \Input::get('item');
+
+		$site = \App::make('site');
+
+		$item = $site->getItemByName($class);
+
+		if ( ! $item instanceof Item) {
+			return null;
+		}
+
+		$lists = $loggedUser->getParameter('lists');
+
+		$elementListView = null;
+
+		if ($open == 'open') {
+			$lists[$classId][$class] = true;
+		} elseif ($open == 'false') {
+			$lists[$classId][$class] = true;
+		} else {
+			$lists[$classId][$class] = false;
+		}
+
+		$loggedUser->setParameter('lists', $lists);
+
+		if ($open == 'open') {
+			$element = Element::getByClassId($classId, true);
+			$elementListView =
+				\App::make('LemonTree\BrowseController')->
+					getElementListView($item, $element);
+		}
+
+		return $elementListView;
+	}
+
 	public function getIndex($currentElement = null)
 	{
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
-		
+
 		if (
-			$currentElement 
+			$currentElement
 			&& ! $loggedUser->hasViewAccess($currentElement)
 		) {
 			return \Redirect::route('admin');
@@ -185,64 +229,106 @@ class MainController extends BaseController {
 			}
 		}
 
-		$itemPropertyList = array();
-		$itemElementList = array();
+		$elementListViewList = array();
+		$open = true;
 
 		foreach ($itemList as $itemName => $item) {
 
-			$propertyList = $item->getPropertyList();
+			$elementListView = $this->getElementListView($item, $currentElement, $open);
 
-			if ( ! $currentElement && ! $item->getRoot()) {
-				unset($itemList[$itemName]);
-				continue;
-			} elseif ($currentElement) {
-				$flag = false;
+			if ($elementListView) {
+				$elementListViewList[$itemName] = $elementListView;
+				$open = false;
+			}
+
+		}
+
+		$scope['parentList'] = $parentList;
+		$scope['bindItemList'] = $bindItemList;
+		$scope['elementListViewList'] = $elementListViewList;
+
+		return \View::make('admin::browse', $scope);
+	}
+
+	private function getElementListView(Item $item, $currentElement = null, $defaultOpen = false)
+	{
+		$loggedUser = \Sentry::getUser();
+
+		$propertyList = $item->getPropertyList();
+
+		if ( ! $currentElement && ! $item->getRoot()) {
+			return null;
+		}
+
+		if ($currentElement) {
+			$flag = false;
+			foreach ($propertyList as $propertyName => $property) {
+				if (
+					$currentElement
+					&& $property instanceof OneToOneProperty
+					&& $property->getRelatedClass() == $currentElement->getClass()
+				) $flag = true;
+			}
+			if ( ! $flag) {
+				return null;
+			}
+		}
+
+		$itemPropertyList = array();
+
+		foreach ($propertyList as $propertyName => $property) {
+			if (
+				! $property->getShow()
+				|| $property->getHidden()
+			) continue;
+			$itemPropertyList[$propertyName] = $property;
+		}
+
+		$elementListCriteria = $item->getClass()->where(
+			function($query) use ($propertyList, $currentElement) {
+				if ($currentElement) {
+					$query->orWhere('id', null);
+				}
 				foreach ($propertyList as $propertyName => $property) {
 					if (
 						$currentElement
 						&& $property instanceof OneToOneProperty
 						&& $property->getRelatedClass() == $currentElement->getClass()
-					) $flag = true;
-				}
-				if ( ! $flag) {
-					unset($itemList[$itemName]);
-					continue;
-				}
-			}
-
-			foreach ($propertyList as $propertyName => $property) {
-				if (
-					! $property->getShow()
-					|| $property->getHidden()
-				) continue;
-				$itemPropertyList[$itemName][$propertyName] = $property;
-			}
-
-			$elementListCriteria = $item->getClass()->where(
-				function($query) use ($propertyList, $currentElement) {
-					if ($currentElement) {
-						$query->orWhere('id', null);
-					}
-					foreach ($propertyList as $propertyName => $property) {
-						if (
-							$currentElement
-							&& $property instanceof OneToOneProperty
-							&& $property->getRelatedClass() == $currentElement->getClass()
-						) {
-							$query->orWhere(
-								$property->getName(), $currentElement->id
-							);
-						} elseif (
-							! $currentElement
-							&& $property instanceof OneToOneProperty
-						) {
-							$query->orWhere(
-								$property->getName(), null
-							);
-						}
+					) {
+						$query->orWhere(
+							$property->getName(), $currentElement->id
+						);
+					} elseif (
+						! $currentElement
+						&& $property instanceof OneToOneProperty
+					) {
+						$query->orWhere(
+							$property->getName(), null
+						);
 					}
 				}
-			);
+			}
+		);
+
+		$elementListCriteria->
+		cacheTags($item->getName())->
+		rememberForever();
+
+		$total = $elementListCriteria->count();
+
+		if ( ! $total) {
+			return null;
+		}
+
+		$lists = $loggedUser->getParameter('lists');
+
+		$classId = $currentElement ? $currentElement->getClassId() : 'root';
+
+		$open = isset($lists[$classId][$item->getName()])
+			? $lists[$classId][$item->getName()]
+			: $defaultOpen;
+
+		if ($open) {
 
 			$orderByList = $item->getOrderByList();
 
@@ -250,32 +336,28 @@ class MainController extends BaseController {
 				$elementListCriteria->orderBy($field, $direction);
 			}
 
-			$elementListCriteria->
-			cacheTags($itemName)->
-			rememberForever();
+			$perPage = $item->getPerPage();
 
-			if ($item->getPerPage()) {
-				$elementList = $elementListCriteria->paginate($item->getPerPage());
+			if ($perPage) {
+				$elementList = $elementListCriteria->paginate($perPage);
 			} else {
 				$elementList = $elementListCriteria->get();
 			}
 
-			if (sizeof ($elementList)) {
-				$itemElementList[$itemName] = $elementList;
-			} else {
-				unset($itemList[$itemName]);
-			}
+		} else {
+
+			$elementList = array();
 
 		}
 
-		$scope['parentList'] = $parentList;
-		$scope['bindItemList'] = $bindItemList;
-		$scope['itemList'] = $itemList;
+		$scope['currentElement'] = $currentElement;
+		$scope['item'] = $item;
 		$scope['itemPropertyList'] = $itemPropertyList;
-		$scope['itemElementList'] = $itemElementList;
-		$scope['route'] = 'admin.browse';
+		$scope['open'] = $open;
+		$scope['total'] = $total;
+		$scope['elementList'] = $elementList;
 
-		return \View::make('admin::main', $scope);
+		return \View::make('admin::list', $scope);
 	}
 
 }

@@ -72,7 +72,6 @@ $site->
 		Item::create('Subcategory')->
 		setTitle('Подкатегория товаров')->
 		setMainProperty('name')->
-		setRoot(true)->
 		addOrderBy('order', 'asc')->
 		addProperty(
 			TextfieldProperty::create('name')->

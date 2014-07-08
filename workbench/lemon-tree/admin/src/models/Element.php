@@ -351,59 +351,37 @@ abstract class Element extends \Eloquent {
 
 	public function getBrowseUrl()
 	{
-		return \URL::route(
-			'admin.browse',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.browse', array($this->getClassId()));
 	}
-	
+
 	public function getBrowseUrlAddTab()
 	{
-		return \URL::route(
-			'admin.browse.addtab',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.browse.addtab', array($this->getClassId()));
 	}
 
 	public function getEditUrl()
 	{
-		return \URL::route(
-			'admin.edit',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.edit', array($this->getClassId()));
 	}
-	
+
 	public function getEditUrlAddTab()
 	{
-		return \URL::route(
-			'admin.edit.addtab',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.edit.addtab', array($this->getClassId()));
 	}
 
 	public function getDeleteUrl()
 	{
-		return \URL::route(
-			'admin.delete',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.delete', array($this->getClassId()));
 	}
 
 	public function getTrashUrl()
 	{
-		return \URL::route(
-			'admin.trash',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.trash', array($this->getClassId()));
 	}
 
 	public function getRestoreUrl()
 	{
-		return \URL::route(
-			'admin.restore',
-			array('class' => $this->getClass(), 'id' => $this->id)
-		);
+		return \URL::route('admin.restore', array($this->getClassId()));
 	}
-
 
 }
