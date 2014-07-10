@@ -1,8 +1,9 @@
 <?php namespace LemonTree;
 
 class Site {
-	
+
 	const ROOT = 'Root';
+	const TRASH = 'Trash';
 
 	protected $items = array();
 	protected $binds = array();
@@ -16,7 +17,7 @@ class Site {
 
 		return $this;
 	}
-	
+
 	public function getItemList()
 	{
 		return $this->items;
@@ -29,49 +30,49 @@ class Site {
 			? $this->items[$name]
 			: null;
 	}
-	
+
 	public function bind()
 	{
 		$num = func_num_args();
 		$args = func_get_args();
-		
+
 		if ($num < 2) return $this;
-		
+
 		$name = array_shift($args);
-		
+
 		foreach ($args as $arg) {
 			$this->binds[$name][$arg] = $arg;
 		}
-		
+
 		return $this;
 	}
-	
+
 	public function getBinds()
 	{
 		return $this->binds;
 	}
-	
+
 	public function bindTree()
 	{
 		$num = func_num_args();
 		$args = func_get_args();
-		
+
 		if ($num < 2) return $this;
-		
+
 		$name = array_shift($args);
-		
+
 		foreach ($args as $arg) {
 			$this->bindsTree[$name][$arg] = $arg;
 		}
-		
+
 		return $this;
 	}
-	
+
 	public function getBindsTree()
 	{
 		return $this->bindsTree;
 	}
-	
+
 	public function end()
 	{
 		return $this;

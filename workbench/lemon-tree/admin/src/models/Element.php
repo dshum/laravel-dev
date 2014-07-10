@@ -158,13 +158,54 @@ abstract class Element extends \Eloquent {
 		return get_called_class().'.'.$id;
 	}
 
-	public static function getByClassId($classId, $withTrashed = false)
+	public static function getByClassId($classId)
 	{
+		if ( ! strpos($classId, static::ID_SEPARATOR)) return null;
+
 		try {
+
 			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
-			return $withTrashed
-				? $class::withTrashed()->find($id)
-				: $class::find($id);
+
+			return $class::find($id);
+
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
+	public static function getWithTrashedByClassId($classId)
+	{
+		if ( ! strpos($classId, static::ID_SEPARATOR)) return null;
+
+		try {
+
+			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
+
+			return
+				$class::withTrashed()->
+				cacheTags($class)->
+				rememberForever()->
+				find($id);
+
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
+	public static function getOnlyTrashedByClassId($classId)
+	{
+		if ( ! strpos($classId, static::ID_SEPARATOR)) return null;
+
+		try {
+
+			list($class, $id) = explode(static::ID_SEPARATOR, $classId);
+
+			return
+				$class::onlyTrashed()->
+				cacheTags($class)->
+				rememberForever()->
+				find($id);
+
 		} catch (\Exception $e) {}
 
 		return null;
@@ -351,7 +392,9 @@ abstract class Element extends \Eloquent {
 
 	public function getBrowseUrl()
 	{
-		return \URL::route('admin.browse', array($this->getClassId()));
+		$route = $this->trashed() ? 'admin.trash' : 'admin.browse';
+
+		return \URL::route($route, array($this->getClassId()));
 	}
 
 	public function getBrowseUrlAddTab()

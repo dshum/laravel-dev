@@ -172,6 +172,13 @@ div.button {
 	color: #999;
 }
 
+div.disabled img {
+	-webkit-filter: grayscale(90%);
+	-webkit-filter: grayscale(0.9);
+	filter: grayscale(90%);
+	opacity: 0.6;
+}
+
 div.button:hover {
 	border: 1px solid #CCC;
 	color: #333;

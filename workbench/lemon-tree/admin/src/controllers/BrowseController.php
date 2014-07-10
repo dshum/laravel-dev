@@ -138,6 +138,8 @@ class BrowseController extends BaseController {
 
 	public function postList()
 	{
+		$isTrash = \Route::currentRouteName() == 'admin.trash.list';
+
 		$loggedUser = \Sentry::getUser();
 
 		$open = \Input::get('open');
@@ -167,10 +169,8 @@ class BrowseController extends BaseController {
 		$loggedUser->setParameter('lists', $lists);
 
 		if ($open == 'open') {
-			$element = Element::getByClassId($classId, true);
-			$elementListView =
-				\App::make('LemonTree\BrowseController')->
-					getElementListView($item, $element);
+			$element = Element::getWithTrashedByClassId($classId);
+			$elementListView = $this->getElementListView($item, $element, $isTrash);
 		}
 
 		return $elementListView;
@@ -179,6 +179,8 @@ class BrowseController extends BaseController {
 	public function getIndex($currentElement = null)
 	{
 		$scope = array();
+
+		$isTrash = \Route::currentRouteName() == 'admin.trash';
 
 		$loggedUser = \Sentry::getUser();
 
@@ -199,34 +201,43 @@ class BrowseController extends BaseController {
 			$scope['currentTitle'] = $currentElement->$mainProperty;
 			$scope['currentTabTitle'] = $currentElement->$mainProperty;
 		} else {
-			$scope['currentTitle'] = 'Lemon Tree';
-			$scope['currentTabTitle'] = 'Lemon Tree';
+			$scope['currentTitle'] = $isTrash ? 'Корзина' : 'Lemon Tree';
+			$scope['currentTabTitle'] = $isTrash ? 'Корзина' : 'Lemon Tree';
 		}
 
 		$scope = CommonFilter::apply($scope);
 
-		$parentList = $currentElement
-			? $currentElement->getParentList()
-			: array();
-
 		$itemList = $site->getItemList();
-		$binds = $site->getBinds();
 
 		$bindItemList = array();
 
-		foreach ($itemList as $itemName => $item) {
-			if ($currentElement) {
-				if (isset($binds[$currentElement->getClass()][$itemName])) {
-					$bindItemList[$itemName] = $item;
-				}
-				if (isset($binds[$currentElement->getClassId()][$itemName])) {
-					$bindItemList[$itemName] = $item;
-				}
-			} else {
-				if (isset($binds[Site::ROOT][$itemName])) {
-					$bindItemList[$itemName] = $item;
+		if ($isTrash) {
+
+			$parentList = array();
+
+		} else {
+
+			$parentList = $currentElement
+				? $currentElement->getParentList()
+				: array();
+
+			$binds = $site->getBinds();
+
+			foreach ($itemList as $itemName => $item) {
+				if ($currentElement) {
+					if (isset($binds[$currentElement->getClass()][$itemName])) {
+						$bindItemList[$itemName] = $item;
+					}
+					if (isset($binds[$currentElement->getClassId()][$itemName])) {
+						$bindItemList[$itemName] = $item;
+					}
+				} else {
+					if (isset($binds[Site::ROOT][$itemName])) {
+						$bindItemList[$itemName] = $item;
+					}
 				}
 			}
+
 		}
 
 		$elementListViewList = array();
@@ -234,7 +245,7 @@ class BrowseController extends BaseController {
 
 		foreach ($itemList as $itemName => $item) {
 
-			$elementListView = $this->getElementListView($item, $currentElement, $open);
+			$elementListView = $this->getElementListView($item, $currentElement, $isTrash, $open);
 
 			if ($elementListView) {
 				$elementListViewList[$itemName] = $elementListView;
@@ -243,6 +254,7 @@ class BrowseController extends BaseController {
 
 		}
 
+		$scope['isTrash'] = $isTrash;
 		$scope['parentList'] = $parentList;
 		$scope['bindItemList'] = $bindItemList;
 		$scope['elementListViewList'] = $elementListViewList;
@@ -250,13 +262,13 @@ class BrowseController extends BaseController {
 		return \View::make('admin::browse', $scope);
 	}
 
-	private function getElementListView(Item $item, $currentElement = null, $defaultOpen = false)
+	private function getElementListView(Item $item, $currentElement = null, $isTrash = false, $defaultOpen = false)
 	{
 		$loggedUser = \Sentry::getUser();
 
 		$propertyList = $item->getPropertyList();
 
-		if ( ! $currentElement && ! $item->getRoot()) {
+		if ( ! $currentElement && ! $item->getRoot() && ! $isTrash) {
 			return null;
 		}
 
@@ -284,31 +296,56 @@ class BrowseController extends BaseController {
 			$itemPropertyList[$propertyName] = $property;
 		}
 
-		$elementListCriteria = $item->getClass()->where(
-			function($query) use ($propertyList, $currentElement) {
-				if ($currentElement) {
-					$query->orWhere('id', null);
-				}
-				foreach ($propertyList as $propertyName => $property) {
-					if (
-						$currentElement
-						&& $property instanceof OneToOneProperty
-						&& $property->getRelatedClass() == $currentElement->getClass()
-					) {
-						$query->orWhere(
-							$property->getName(), $currentElement->id
-						);
-					} elseif (
-						! $currentElement
-						&& $property instanceof OneToOneProperty
-					) {
-						$query->orWhere(
-							$property->getName(), null
-						);
+		if ($isTrash) {
+
+			$elementListCriteria = $item->getClass()->onlyTrashed()->where(
+				function($query) use ($propertyList, $currentElement) {
+					if ($currentElement) {
+						$query->orWhere('id', null);
+					}
+					foreach ($propertyList as $propertyName => $property) {
+						if (
+							$currentElement
+							&& $property instanceof OneToOneProperty
+							&& $property->getRelatedClass() == $currentElement->getClass()
+						) {
+							$query->orWhere(
+								$property->getName(), $currentElement->id
+							);
+						}
 					}
 				}
-			}
-		);
+			);
+
+		} else {
+
+			$elementListCriteria = $item->getClass()->where(
+				function($query) use ($propertyList, $currentElement) {
+					if ($currentElement) {
+						$query->orWhere('id', null);
+					}
+					foreach ($propertyList as $propertyName => $property) {
+						if (
+							$currentElement
+							&& $property instanceof OneToOneProperty
+							&& $property->getRelatedClass() == $currentElement->getClass()
+						) {
+							$query->orWhere(
+								$property->getName(), $currentElement->id
+							);
+						} elseif (
+							! $currentElement
+							&& $property instanceof OneToOneProperty
+						) {
+							$query->orWhere(
+								$property->getName(), null
+							);
+						}
+					}
+				}
+			);
+
+		}
 
 		$elementListCriteria->
 		cacheTags($item->getName())->
@@ -322,7 +359,9 @@ class BrowseController extends BaseController {
 
 		$lists = $loggedUser->getParameter('lists');
 
-		$classId = $currentElement ? $currentElement->getClassId() : 'root';
+		$classId = $currentElement
+			? $currentElement->getClassId()
+			: ($isTrash ? Site::TRASH : Site::ROOT);
 
 		$open = isset($lists[$classId][$item->getName()])
 			? $lists[$classId][$item->getName()]
@@ -350,12 +389,18 @@ class BrowseController extends BaseController {
 
 		}
 
+		$hideList = $isTrash
+			? (\Route::currentRouteName() == 'admin.trash.list')
+			: (\Route::currentRouteName() == 'admin.browse.list');
+
+		$scope['isTrash'] = $isTrash;
 		$scope['currentElement'] = $currentElement;
 		$scope['item'] = $item;
 		$scope['itemPropertyList'] = $itemPropertyList;
 		$scope['open'] = $open;
 		$scope['total'] = $total;
 		$scope['elementList'] = $elementList;
+		$scope['hideList'] = $hideList;
 
 		return \View::make('admin::list', $scope);
 	}

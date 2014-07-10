@@ -16,6 +16,9 @@
 $(function() {
 
 	LT.adminUrl = '{{ URL::route("admin") }}';
+	LT.deleteUrl = '{{ URL::route("admin.browse.delete") }}';
+	LT.restoreUrl = '{{ URL::route("admin.browse.restore") }}';
+	LT.movingUrl = '{{ URL::route("admin.moving") }}';
 
 	$('body').on('click', 'div.plus[node], div.minus[node]', function() {
 		var node = $(this).attr('node');

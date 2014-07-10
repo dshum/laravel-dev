@@ -1,178 +1,29 @@
 @extends('admin::layout')
 
 @section('js')
+{{ HTML::script('LT/js/browse.js') }}
 <script type="text/javascript">
 $(function() {
-
-	var countChecked = 0;
-	var itemChecked = [], itemCountChecked = [];
 
 @if ($currentElement)
 	@if ($currentElement->getParent())
 	$('#button-up').click(function() {
 		document.location.href = '{{ $currentElement->getParent()->getBrowseUrl() }}';
 	});
+	@elseif ($isTrash)
+	$('#button-up').click(function() {
+		document.location.href = '{{ URL::route("admin.trash") }}';
+	});
 	@else
 	$('#button-up').click(function() {
 		document.location.href = '{{ URL::route("admin") }}';
 	});
 	@endif
-@endif
 
-@if ($currentElement)
 	$('#button-edit').click(function() {
 		document.location.href = '{{ $currentElement->getEditUrl() }}';
 	});
 @endif
-
-	$('#button-delete').click(function() {
-		$.blockUI();
-
-		$('#message').html('').hide();
-
-		$('#browseForm').attr('action', '{{ \URL::route("admin.browse.delete") }}');
-
-		$('#browseForm').ajaxSubmit({
-			url: this.action,
-			dataType: 'json',
-			success: function(data) {
-//				alert(data);
-				if (data.error) {
-					$('#message').html(data.error).show();
-					$.unblockUI();
-				} else {
-					document.location.reload();
-				}
-
-				$.unblockUI();
-			}
-		});
-
-		event.preventDefault();
-	});
-
-	$('#button-move').click(function() {
-		$('#browseForm').attr('action', '{{ \URL::route("admin.moving") }}');
-		$('#browseForm').each(function() {
-			this.submit();
-		});
-	});
-
-	$('body').on('click', 'span[showlist="true"]', function(){
-		var header = $(this);
-
-		var opened = $(this).attr('opened');
-		var classId = $(this).attr('classId');
-		var item = $(this).attr('item');
-
-		if (opened == 'true') {
-			$('#element_list_container_'+item).slideUp('fast', function() {
-				header.attr('opened', 'false');
-			});
-		} else if (opened == 'false') {
-			$('#element_list_container_'+item).slideDown('fast', function() {
-				header.attr('opened', 'true');
-			});
-		}
-
-		$.post(
-			"{{ URL::route('admin.browse.list') }}",
-			{open: opened, classId: classId, item: item},
-			function(html) {
-				if (opened == 'open') {
-					$('#item_'+item).html(html);
-					$('#element_list_container_'+item).slideDown('fast', function() {
-						header.attr('opened', 'true');
-					});
-				}
-			},
-			'html'
-		);
-	});
-
-	$('body').on('click', 'input:checkbox[name="checkAll[]"]', function(){
-		var itemName = $(this).attr('item');
-		if (this.checked) {
-			$('input:checkbox[name="check[]"][item="'+itemName+'"]').each(function() {
-				if( ! this.checked && ! this.disabled) {
-					this.checked = true;
-					$(this).parents('tr').addClass('light');
-					countChecked++;
-					if (itemCountChecked[itemName]) {
-						itemCountChecked[itemName]++;
-					} else {
-						itemCountChecked[itemName] = 1;
-						itemChecked++;
-					}
-				}
-			});
-		} else {
-			$('input:checkbox[name="check[]"][item="'+itemName+'"]').each(function() {
-				if (this.checked && ! this.disabled) {
-					this.checked = false;
-					$(this).parents('tr').removeClass('light');
-					countChecked--;
-					if (itemCountChecked[itemName]) {
-						itemCountChecked[itemName]--;
-					}
-					if ( ! itemCountChecked[itemName]) {
-						itemChecked--;
-					}
-				}
-			});
-		}
-
-		if (countChecked > 0) {
-			$('#button-delete').removeAttr('disabled');
-		} else {
-			$('#button-delete').attr('disabled', 'disabled');
-		}
-
-		if (itemChecked == 1) {
-			$('#button-move').removeAttr('disabled');
-		} else {
-			$('#button-move').attr('disabled', 'disabled');
-		}
-	});
-
-	$('body').on('click', 'input:checkbox[name="check[]"]', function() {
-		var itemName = $(this).attr('item');
-		if (this.checked) {
-			$(this).parents('tr').addClass('light');
-			countChecked++;
-			if (itemCountChecked[itemName]) {
-				itemCountChecked[itemName]++;
-			} else {
-				itemCountChecked[itemName] = 1;
-				itemChecked++;
-			}
-		} else {
-			$(this).parents('tr').removeClass('light');
-			countChecked--;
-			if (itemCountChecked[itemName]) {
-				itemCountChecked[itemName]--;
-			}
-			if ( ! itemCountChecked[itemName]) {
-				itemChecked--;
-			}
-		}
-
-		if (countChecked > 0) {
-			$('#button-delete').removeAttr('disabled');
-		} else {
-			$('#button-delete').attr('disabled', 'disabled');
-		}
-
-		if (itemChecked == 1) {
-			$('#button-move').removeAttr('disabled');
-		} else {
-			$('#button-move').attr('disabled', 'disabled');
-		}
-	}).on('mouseover', 'input:checkbox[name="check[]"]', function() {
-		$(this).parents('tr').addClass('light-hover');
-	}).on('mouseout', 'input:checkbox[name="check[]"]', function() {
-		$(this).parents('tr').removeClass('light-hover');
-	});
 
 	$('#browseForm').submit(function(event) {
 		event.preventDefault();
@@ -183,16 +34,25 @@ $(function() {
 @stop
 
 @section('path')
-@if ($currentElement)
-<a href="{{ URL::route('admin') }}">Корень сайта</a>
-	@if ($parentList)
-		@foreach ($parentList as $parent)
-&rarr;&nbsp;<a href="{{ URL::route('admin.browse', array('class' => $parent->getClass(), 'id' => $parent->id)) }}">{{ $parent->{$parent->getItem()->getMainProperty()} }}</a>
-		@endforeach
+@if ($isTrash)
+	@if ($currentElement)
+	<a href="{{ URL::route('admin.trash') }}">Корзина</a>
+	&rarr;&nbsp;<a href="{{ URL::route('admin.edit', array('class' => $currentElement->getClass(), 'id' => $currentElement->id)) }}">{{ $currentElement->{$currentElement->getItem()->getMainProperty()} }}</a>
+	@else
+	Корзина
 	@endif
-&rarr;&nbsp;<a href="{{ URL::route('admin.edit', array('class' => $currentElement->getClass(), 'id' => $currentElement->id)) }}">{{ $currentElement->{$currentElement->getItem()->getMainProperty()} }}</a>
 @else
-Корень сайта
+	@if ($currentElement)
+	<a href="{{ URL::route('admin') }}">Корень сайта</a>
+		@if ($parentList)
+			@foreach ($parentList as $parent)
+	&rarr;&nbsp;<a href="{{ URL::route('admin.browse', array('class' => $parent->getClass(), 'id' => $parent->id)) }}">{{ $parent->{$parent->getItem()->getMainProperty()} }}</a>
+			@endforeach
+		@endif
+	&rarr;&nbsp;<a href="{{ URL::route('admin.edit', array('class' => $currentElement->getClass(), 'id' => $currentElement->id)) }}">{{ $currentElement->{$currentElement->getItem()->getMainProperty()} }}</a>
+	@else
+	Корень сайта
+	@endif
 @endif
 @stop
 
@@ -202,15 +62,21 @@ $(function() {
 <div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
 <div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 @else
-<div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="" /><br />Наверх</div>
-<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
+<div id="button-up" class="button hand disabled"><img src="/LT/img/button-up.png" alt="" /><br />Наверх</div>
+<div id="button-edit" class="button hand disabled"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 @endif
-<div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
-<div id="button-move" class="button hand"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
-<div id="button-delete" class="button hand"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
+@if ($isTrash)
+<div id="button-save" class="button hand disabled"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
+<div id="button-restore" class="button hand disabled"><img src="/LT/img/button-restore.png" alt="Восстановить" title="Восстановить" /><br />Восстановить</div>
+<div id="button-delete" class="button hand disabled"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
+@else
+<div id="button-save" class="button hand disabled"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
+<div id="button-move" class="button hand disabled"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
+<div id="button-delete" class="button hand disabled"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
+@endif
 </p>
 <br clear="both" />
-@if ($bindItemList)
+@if ( ! $isTrash && $bindItemList)
 <p>Добавить:
 	{? $count = sizeof($bindItemList) ?}
 	@foreach ($bindItemList as $itemName => $item)
