@@ -12,11 +12,11 @@ $(function() {
 	});
 	@elseif ($isTrash)
 	$('#button-up').click(function() {
-		document.location.href = '{{ URL::route("admin.trash") }}';
+		document.location.href = LT.trashUrl;
 	});
 	@else
 	$('#button-up').click(function() {
-		document.location.href = '{{ URL::route("admin") }}';
+		document.location.href = LT.adminUrl;
 	});
 	@endif
 
@@ -89,7 +89,7 @@ $(function() {
 {{ Form::open(array('route' => 'admin.browse.save', 'method' => 'post', 'id' => 'browseForm')) }}
 {{ Form::hidden('redirect', \Request::path()) }}
 @foreach ($elementListViewList as $itemName => $elementListView)
-<div id="item_{{ $itemName }}">
+<div id="item_container_{{ $itemName }}">
 {{ $elementListView }}
 </div>
 @endforeach

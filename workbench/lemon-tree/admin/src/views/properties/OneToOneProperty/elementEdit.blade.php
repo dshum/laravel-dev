@@ -21,7 +21,6 @@
 		@else
 			<span id="{{ $name }}_show">Не определено</span>
 		@endif
-		{? $url = URL::route('admin.hint', array('class' => $relatedClass)) ?}
 		&nbsp;{{ Form::text($name.'_name', 'Введите ID или название', array('class' => 'prop-mini grey', 'onetoone' => 'name', 'url' => $url, 'propertyName' => $name, 'default' => 'Введите ID или название')) }}
 		&nbsp;&nbsp;<span id="{{ $name }}_reset" onetoone="reset" propertyName="{{ $name }}" class="small dashed hand">Очистить</span>
 	@endif

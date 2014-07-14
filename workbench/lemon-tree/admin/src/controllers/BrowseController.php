@@ -68,10 +68,16 @@ class BrowseController extends BaseController {
 				}
 			}
 			if ($scope['restricted']) {
-				$scope['error'] = 'Невозможно удалить следующие элементы, пока существуют связанные с ними элементы: ';
+				$scope['error'] =
+					'Невозможно удалить следующие элементы, '
+					.'пока существуют связанные с ними элементы: ';
 				foreach ($scope['restricted'] as $k => $element) {
 					$item = $element->getItem();
-					$scope['error'] .= ($k ? ', ' : '').'<a href="'.$element->getBrowseUrl().'">'.$element->{$item->getMainProperty()}.'</a>';
+					$scope['error'] .=
+						($k ? ', ' : '')
+						.'<a href="'.$element->getBrowseUrl().'">'
+						.$element->{$item->getMainProperty()}
+						.'</a>';
 				}
 			} else {
 				$scope['status'] = 'ok';
@@ -114,7 +120,7 @@ class BrowseController extends BaseController {
 		$elementList = array();
 
 		foreach ($check as $classId) {
-			$element = Element::getByClassId($classId, true);
+			$element = Element::getOnlyTrashedByClassId($classId);
 			if ($element) {
 				$elementList[] = $element;
 			}
@@ -143,18 +149,19 @@ class BrowseController extends BaseController {
 		$loggedUser = \Sentry::getUser();
 
 		$open = \Input::get('open');
+		$expand = \Input::get('expand', false);
 		$classId = \Input::get('classId');
 		$class = \Input::get('item');
+		$page = \Input::get('page');
 
 		$site = \App::make('site');
 
 		$item = $site->getItemByName($class);
 
-		if ( ! $item instanceof Item) {
-			return null;
-		}
+		if ( ! $item instanceof Item) return null;
 
 		$lists = $loggedUser->getParameter('lists');
+		$pages = $loggedUser->getParameter('pages');
 
 		$elementListView = null;
 
@@ -162,15 +169,25 @@ class BrowseController extends BaseController {
 			$lists[$classId][$class] = true;
 		} elseif ($open == 'false') {
 			$lists[$classId][$class] = true;
-		} else {
+		} elseif ($open == 'true') {
 			$lists[$classId][$class] = false;
 		}
 
-		$loggedUser->setParameter('lists', $lists);
+		if ((int)$page > 1) {
+			$pages[$classId][$class] = (int)$page;
+		} elseif($page !== null) {
+			unset($pages[$classId][$class]);
+		}
 
-		if ($open == 'open') {
+		$loggedUser->
+		setParameter('lists', $lists)->
+		setParameter('pages', $pages);
+
+		if ($open == 'open' || $expand) {
 			$element = Element::getWithTrashedByClassId($classId);
-			$elementListView = $this->getElementListView($item, $element, $isTrash);
+			$elementListView = $this->getElementListView(
+				$item, $element, $isTrash, true, $expand
+			);
 		}
 
 		return $elementListView;
@@ -245,7 +262,9 @@ class BrowseController extends BaseController {
 
 		foreach ($itemList as $itemName => $item) {
 
-			$elementListView = $this->getElementListView($item, $currentElement, $isTrash, $open);
+			$elementListView = $this->getElementListView(
+				$item, $currentElement, $isTrash, $open
+			);
 
 			if ($elementListView) {
 				$elementListViewList[$itemName] = $elementListView;
@@ -262,9 +281,25 @@ class BrowseController extends BaseController {
 		return \View::make('admin::browse', $scope);
 	}
 
-	private function getElementListView(Item $item, $currentElement = null, $isTrash = false, $defaultOpen = false)
+	private function getElementListView(
+		Item $item,
+		$currentElement = null,
+		$isTrash = false,
+		$defaultOpen = false,
+		$expand = true
+	)
 	{
 		$loggedUser = \Sentry::getUser();
+
+		$classId = $currentElement
+			? $currentElement->getClassId()
+			: ($isTrash ? Site::TRASH : Site::ROOT);
+
+		$parameters = array(
+			'classId' => $classId,
+			'item' => $item->getName(),
+			'expand' => true,
+		);
 
 		$propertyList = $item->getPropertyList();
 
@@ -358,16 +393,17 @@ class BrowseController extends BaseController {
 		}
 
 		$lists = $loggedUser->getParameter('lists');
-
-		$classId = $currentElement
-			? $currentElement->getClassId()
-			: ($isTrash ? Site::TRASH : Site::ROOT);
+		$pages = $loggedUser->getParameter('pages');
 
 		$open = isset($lists[$classId][$item->getName()])
 			? $lists[$classId][$item->getName()]
 			: $defaultOpen;
 
-		if ($open) {
+		$page = isset($pages[$classId][$item->getName()])
+			? $pages[$classId][$item->getName()]
+			: null;
+
+		if ($open || $expand) {
 
 			$orderByList = $item->getOrderByList();
 
@@ -378,7 +414,14 @@ class BrowseController extends BaseController {
 			$perPage = $item->getPerPage();
 
 			if ($perPage) {
+//				\Paginator::setCurrentPage($page);
 				$elementList = $elementListCriteria->paginate($perPage);
+				if ($isTrash) {
+					$elementList->setBaseUrl('/admin/trash/list');
+				} else {
+					$elementList->setBaseUrl('/admin/browse/list');
+				}
+				$elementList->appends($parameters);
 			} else {
 				$elementList = $elementListCriteria->get();
 			}
@@ -389,9 +432,7 @@ class BrowseController extends BaseController {
 
 		}
 
-		$hideList = $isTrash
-			? (\Route::currentRouteName() == 'admin.trash.list')
-			: (\Route::currentRouteName() == 'admin.browse.list');
+		$hideList = ! $expand;
 
 		$scope['isTrash'] = $isTrash;
 		$scope['currentElement'] = $currentElement;

@@ -201,6 +201,22 @@ abstract class BaseProperty {
 		return null;
 	}
 
+	public function getElementSearchView()
+	{
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'value' => \Input::get($this->getName()),
+		);
+
+		try {
+			$view = $this->getClassName().'.elementSearch';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
 	public function addRule($rule)
 	{
 		$this->rules[$rule] = $rule;

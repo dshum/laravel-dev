@@ -142,7 +142,6 @@ div.empty {
 	left: 20%;
 	width: 80%;
 	height: 100%;
-	z-index: 1000;
 }
 
 #browse div.container {
@@ -201,9 +200,12 @@ div.button:hover {
 }
 
 input[type="text"], input[type="password"], textarea {
-	width: 90%;
 	border: 1px solid #999;
 	padding-left: 3px;
+}
+
+.form-edit input[type="text"], input[type="password"], textarea {
+	width: 90%;
 }
 
 input.btn, button.btn {
@@ -220,7 +222,7 @@ input.prop-number, input[type="password"].prop-pass {
 	width: 150px;
 }
 
-input.prop-mini {
+.form-edit input.prop-mini {
 	width: 300px;
 }
 
@@ -316,6 +318,35 @@ div.form-edit .main input {
 	font-size: 120%;
 }
 
+div.form-search {
+	border: 1px solid #CCC;
+	background: #F0F0F0;
+	margin: 15px 0px;
+	padding: 5px 10px 10px 10px;
+}
+
+div.prop-search {
+	float: left;
+	margin: 5px 10px 5px 0;
+	padding: 5px 10px;
+	background: #FFF;
+}
+
+div.item-search {
+	float: left;
+	margin: 5px 10px 5px 0;
+	padding: 5px 10px;
+	background: #FFF;
+}
+
+div.item-search-active {
+	float: left;
+	margin: 5px 10px 5px 0;
+	padding: 5px 10px;
+	background: #666;
+	color: #FFF;
+}
+
 .element-list-header td {
 	padding: 0 0 3px 0;
 	border-collapse: collapse;
@@ -328,7 +359,7 @@ div.form-edit .main input {
 }
 
 .element-list-header .order_link {
-	padding: 8px 0 0 25px;
+	padding: 6px 0 0 25px;
 	font-size: 13px;
 }
 
@@ -345,7 +376,6 @@ div.form-edit .main input {
 }
 
 .order_link em, .em em {
-	text-decoration: underline;
 	font-style: normal;
 }
 
@@ -394,6 +424,19 @@ table.element-list .center {
 	text-align: center;
 }
 
+div.prop-search {
+	float: left;
+	margin: 5px 10px 5px 0;
+	padding: 5px 10px;
+	background: #FFF;
+	white-space: nowrap;
+	font-size: 13px;
+}
+
+div.prop-search input[type="text"] {
+	margin: 5px 5px 3px 0;
+}
+
 .dashed {
 	border-bottom: 1px dashed;
 }
@@ -418,16 +461,32 @@ table.element-list .center {
 ul.pagination li {
 	display: inline;
 	margin: 0px 1px;
-	padding: 1px 7px;
+	padding: 5px 10px;
 	background: #EEE;
+	font-size: 18px;
+}
+
+ul.pagination li:hover {
+	background: #CCC;
 }
 
 ul.pagination li.active {
-	background: #DDD;
+	background: #666;
+	color: #FFF;
 }
 
-.ui-autocomplete {max-height: 140px; overflow-y: auto; overflow-x: hidden;}
-.ui-autocomplete-loading {background: white url('/LT/img/ac-loader.gif') right center no-repeat;}
+ul.pagination li.disabled {
+	background: #EEE;
+	color: #999;
+}
 
+.ui-autocomplete {
+	max-height: 140px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
 
+.ui-autocomplete-loading {
+	background: white url('/LT/img/ac-loader.gif') right center no-repeat;
+}
 

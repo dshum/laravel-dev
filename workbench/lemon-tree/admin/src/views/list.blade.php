@@ -1,18 +1,20 @@
 <table class="element-list-header">
 <tr>
-@if ($isTrash)
+@if (isset($isSearch) && $isSearch)
+<td nowrap><h2>{{ $item->getTitle() }}</h2></td>
+@elseif (isset($isTrash) && $isTrash)
 <td nowrap><h2><span showlist="true" opened="{{ $open ? 'true' : 'open' }}" url="{{ URL::route('admin.trash.list') }}" classId="{{ $currentElement ? $currentElement->getClassId() : LemonTree\Site::TRASH }}" item="{{ $item->getName() }}" class="hand dashed">{{ $item->getTitle() }}</span></h2></td>
 @else
 <td nowrap><h2><span showlist="true" opened="{{ $open ? 'true' : 'open' }}" url="{{ URL::route('admin.browse.list') }}" classId="{{ $currentElement ? $currentElement->getClassId() : LemonTree\Site::ROOT }}" item="{{ $item->getName() }}" class="hand dashed">{{ $item->getTitle() }}</span></h2></td>
 @endif
-<td nowrap><div class="order_link"><em>@if ($elementList instanceof Paginator)страница {{ 1 }} из {{ 1 }}; @endif
-всего {{ $total }} {{ RussianTextUtils::selectCaseForNumber($total, array('элемент', 'элемента', 'элементов')) }}</em></a></div></td>
+<td nowrap><div class="order_link"><em>@if ($elementList instanceof \Illuminate\Pagination\Paginator)страница {{ $elementList->getCurrentPage() }} из {{ $elementList->getLastPage() }}; @endif
+всего {{ $total }} {{ RussianTextUtils::selectCaseForNumber($total, array('элемент', 'элемента', 'элементов')) }}</em></div></td>
 <td width="90%"></td>
-<td nowrap><a href="{{ URL::route('admin.search', array($item->getName())) }}"><small>Поиск элементов</small></td>
+<td nowrap><a href="{{ URL::route('admin.search', array('item' => $item->getName())) }}"><small>Поиск элементов</small></td>
 </tr>
 </table>
 @if ($open)
-<div id="element_list_container_{{ $item->getName() }}"{{ $hideList ? ' class="dnone"' : '' }}>
+<div id="element_list_container_{{ $item->getName() }}"{{ isset($hideList) && $hideList ? ' class="dnone"' : '' }}>
 <table class="element-list">
 	<tr>
 		<th class="first"><img src="/LT/img/default-sorting-inactive.gif" alt="" /></th>
@@ -35,7 +37,13 @@
 	</tr>
 	@endforeach
 </table>
-{{ $elementList instanceof Paginator ? $elementList->links() : null }}
+@if ($elementList instanceof \Illuminate\Pagination\Paginator && $elementList->getLastPage() > 1)
+{? $presenter = new \LemonTree\CustomPresenter($elementList); ?}
+<ul class="pagination">
+{{ $presenter->render() }}
+<li><a href="http://laravel.dev/admin/browse/list?page=3&classId=ServiceSection.14&item=GoodBrand&expand=1">3</a></li>
+</ul>
+@endif
 </div>
 @else
 <div id="element_list_container_{{ $item->getName() }}" class="dnone"></div>

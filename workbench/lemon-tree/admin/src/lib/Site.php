@@ -4,6 +4,7 @@ class Site {
 
 	const ROOT = 'Root';
 	const TRASH = 'Trash';
+	const SEARCH = 'Search';
 
 	protected $items = array();
 	protected $binds = array();

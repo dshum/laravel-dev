@@ -28,4 +28,9 @@ class VirtualProperty extends BaseProperty {
 		return $this;
 	}
 
+	public function getElementSearchView()
+	{
+		return null;
+	}
+
 }

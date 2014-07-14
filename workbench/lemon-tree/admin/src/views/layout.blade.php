@@ -16,68 +16,11 @@
 $(function() {
 
 	LT.adminUrl = '{{ URL::route("admin") }}';
+	LT.trashUrl = '{{ URL::route("admin.trash") }}';
 	LT.deleteUrl = '{{ URL::route("admin.browse.delete") }}';
 	LT.restoreUrl = '{{ URL::route("admin.browse.restore") }}';
 	LT.movingUrl = '{{ URL::route("admin.moving") }}';
-
-	$('body').on('click', 'div.plus[node], div.minus[node]', function() {
-		var node = $(this).attr('node');
-		var opened = $(this).attr('opened');
-
-		$.post(
-			"{{ URL::route('admin.tree.open') }}",
-			{classId: node, open: opened},
-			function(data) {
-				if (opened == 'open') {
-					$('div.padding[node="'+node+'"]').html(data).slideDown('fast', function() {
-						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
-					});
-				} else if (opened == 'true') {
-					$('div.padding[node="'+node+'"]').slideUp('fast', function() {
-						$('div.minus[node="'+node+'"]').removeClass('minus').addClass('plus').attr('opened', 'false');
-					});
-				} else if (opened == 'false') {
-					$('div.padding[node="'+node+'"]').slideDown('fast', function() {
-						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
-					});
-				}
-			},
-			'html'
-		);
-
-	});
-
-	$('#tree-toggler').click(function() {
-		var opened = $(this).attr('opened');
-
-		if (opened == 'true') {
-			$('#tree').animate({left: '-20%'}, 250);
-			$('#browse').animate({left: '0%', width: '100%'}, 250, function() {
-				$('#tree-toggler').attr('opened', 'false');
-			});
-		} else if (opened == 'false') {
-			$('#tree').animate({left: '0%'}, 250);
-			$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
-				$('#tree-toggler').attr('opened', 'true');
-			});
-		}
-
-		$.post(
-			"{{ URL::route('admin.tab.toggle', $activeTab->id) }}",
-			{open: opened},
-			function(html) {
-				if (opened == 'open') {
-					$('#tree').css('left', '-20%');
-					$('#tree-container').html(html);
-					$('#tree').animate({left: '0%'}, 250);
-					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
-						$('#tree-toggler').attr('opened', 'true');
-					});
-				}
-			},
-			'html'
-		);
-	});
+	LT.searchItemUrl = '{{ URL::route("admin.search.item") }}';
 
 });
 </script>
@@ -103,9 +46,9 @@ $(function() {
 				<div id="menu-wrapper">
 					<table border="0" style="width: 100%;">
 						<tr>
-							<td style="padding-right: 15px;"><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" class="hand"><img src="/LT/img/tree.png" alt="" /></span></td>
+							<td style="padding-right: 15px;"><span id="tree-toggler" opened="{{ $activeTab->show_tree ? 'true' : 'open' }}" url="{{ URL::route('admin.tab.toggle', $activeTab->id) }}" class="hand"><img src="/LT/img/tree.png" alt="" /></span></td>
 						<td style="padding-right: 15px;"><a href="{{ URL::route('admin') }}"><img src="/LT/img/home.png" alt="" /></a></td>
-						<td style="padding-right: 15px;"><a href="{{ URL::current() }}"><img src="/LT/img/refresh.png" alt="" /></a></td>
+						<td style="padding-right: 15px;"><a id="button-refresh" href="{{ URL::current() }}"><img src="/LT/img/refresh.png" alt="" /></a></td>
 						<td style="padding-right: 15px; width: 90%;"><div class="path">@yield('path')</div></td>
 						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.search') }}"><img src="/LT/img/search.png" alt="" /></a></td>
 						<td style="padding-right: 15px;"><a href="{{ URL::route('admin.trash') }}"><img src="/LT/img/trash.png" alt="" /></a></td>

@@ -18,4 +18,9 @@ class PasswordProperty extends BaseProperty {
 		return $this;
 	}
 
+	public function getElementSearchView()
+	{
+		return null;
+	}
+
 }

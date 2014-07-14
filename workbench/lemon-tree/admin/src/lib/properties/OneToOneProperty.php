@@ -130,6 +130,7 @@ class OneToOneProperty extends BaseProperty {
 		$relatedClass = $this->getRelatedClass();
 		$relatedItem = $site->getItemByName($relatedClass);
 		$mainProperty = $relatedItem->getMainProperty();
+		$url = \URL::route('admin.hint', $relatedClass);
 
 		$scope = array(
 			'name' => $this->getName(),
@@ -139,6 +140,7 @@ class OneToOneProperty extends BaseProperty {
 			'required' => $this->getRequired(),
 			'mainProperty' => $mainProperty,
 			'relatedClass' => $relatedClass,
+			'url' => $url,
 		);
 
 		if ($this->getBinds()) {
@@ -180,6 +182,43 @@ class OneToOneProperty extends BaseProperty {
 
 		try {
 			$view = $this->getClassName().'.elementMove';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
+	public function getElementSearchView()
+	{
+		$site = \App::make('site');
+
+		$relatedClass = $this->getRelatedClass();
+		$relatedItem = $site->getItemByName($relatedClass);
+		$mainProperty = $relatedItem->getMainProperty();
+		$url = \URL::route('admin.hint', $relatedClass);
+
+		$id = \Input::get($this->getName());
+
+		try {
+			$value = $relatedClass::find($id);
+			$valueName = $value->$mainProperty;
+		} catch (\Exception $e) {
+			$value = null;
+			$valueName = null;
+		}
+
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'value' => $value,
+			'valueName' => $valueName,
+			'mainProperty' => $mainProperty,
+			'relatedClass' => $relatedClass,
+			'url' => $url,
+		);
+
+		try {
+			$view = $this->getClassName().'.elementSearch';
 			return \View::make('admin::properties.'.$view, $scope);
 		} catch (\Exception $e) {}
 

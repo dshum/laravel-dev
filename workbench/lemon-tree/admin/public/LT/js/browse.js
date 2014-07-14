@@ -41,13 +41,10 @@ $(function() {
 
 		$('#message').html('').hide();
 
-		$('#browseForm').attr('action', LT.restoreUrl);
-
 		$('#browseForm').ajaxSubmit({
-			url: this.action,
+			url: LT.restoreUrl,
 			dataType: 'json',
 			success: function(data) {
-//				alert(data);
 				document.location.reload();
 			}
 		});
@@ -78,7 +75,7 @@ $(function() {
 			{open: opened, classId: classId, item: item},
 			function(html) {
 				if (opened == 'open') {
-					$('#item_'+item).html(html);
+					$('#item_container_'+item).html(html);
 					$('#element_list_container_'+item).slideDown('fast', function() {
 						header.attr('opened', 'true');
 					});
@@ -86,6 +83,21 @@ $(function() {
 			},
 			'html'
 		);
+	});
+
+	$('body').on('click', 'ul.pagination li a', function() {
+		var container = $(this).parents('div[id^=item_container]');
+		container.fadeOut('fast');
+		$.post(
+			$(this).attr('href'),
+			{},
+			function(html) {
+				container.html(html).fadeIn('fast');
+			},
+			'html'
+		);
+
+		return false;
 	});
 
 	$('body').on('click', 'input:checkbox[name="checkAll[]"]', function(){

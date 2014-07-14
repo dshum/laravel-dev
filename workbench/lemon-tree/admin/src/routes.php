@@ -56,7 +56,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 
 	Route::get('/admin/profile', array('as' => 'admin.profile', 'uses' => 'LemonTree\ProfileController@getIndex'));
 
-	Route::get('/admin/search/{class?}', array('as' => 'admin.search', 'uses' => 'LemonTree\SearchController@getIndex'));
+	Route::get('/admin/search', array('as' => 'admin.search', 'uses' => 'LemonTree\SearchController@getIndex'));
 
 	Route::get('/admin/trash', array('as' => 'admin.trash', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
@@ -113,6 +113,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 			$element = LemonTree\Element::getByClassId($classId);
 			return App::make('LemonTree\BrowseController')->getIndex($element);
 		} catch (Exception $e) {
+			echo $e->getTraceAsString(); die();
 			return Redirect::route('admin');
 		}
 	}));
@@ -293,5 +294,13 @@ Route::group(array('before' => 'admin.auth.ajax.html'), function() {
 
 	Route::post('/admin/trash/list', array('as' => 'admin.trash.list', 'uses' => 'LemonTree\BrowseController@postList'));
 
+	Route::post('/admin/search/item', array('as' => 'admin.search.item', 'uses' => 'LemonTree\SearchController@postItem'));
+
+	Route::post('/admin/search/list', array('as' => 'admin.search.list', 'uses' => 'LemonTree\SearchController@postList'));
+
+});
+
+Route::post('*', function() {
+	return Response::view('error404', array(), 404);
 });
 

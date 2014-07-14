@@ -129,6 +129,7 @@ $site->
 		setTitle('Бренд товара')->
 		setMainProperty('name')->
 		addOrderBy('name', 'asc')->
+		setPerPage(3)->
 		addProperty(
 			TextfieldProperty::create('name')->
 			setTitle('Название')->
@@ -291,8 +292,7 @@ $site->
 			setTitle('Бренд товара')->
 			setRelatedClass('GoodBrand')->
 			setDeleting(OneToOneProperty::RESTRICT)->
-			setRequired(true)->
-			bind('GoodBrand')
+			setRequired(true)
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->

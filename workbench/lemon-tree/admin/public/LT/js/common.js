@@ -45,8 +45,74 @@ $(function() {
 		return onCtrlS(event);
 	});
 
+	$('body').on('click', 'div.plus[node], div.minus[node]', function() {
+		var node = $(this).attr('node');
+		var opened = $(this).attr('opened');
+
+		$.post(
+			"{{ URL::route('admin.tree.open') }}",
+			{classId: node, open: opened},
+			function(data) {
+				if (opened == 'open') {
+					$('div.padding[node="'+node+'"]').html(data).slideDown('fast', function() {
+						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
+					});
+				} else if (opened == 'true') {
+					$('div.padding[node="'+node+'"]').slideUp('fast', function() {
+						$('div.minus[node="'+node+'"]').removeClass('minus').addClass('plus').attr('opened', 'false');
+					});
+				} else if (opened == 'false') {
+					$('div.padding[node="'+node+'"]').slideDown('fast', function() {
+						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
+					});
+				}
+			},
+			'html'
+		);
+
+	});
+
+	$('#tree-toggler').click(function() {
+		var opened = $(this).attr('opened');
+		var url = $(this).attr('url');
+
+		if (opened == 'true') {
+			$('#tree').animate({left: '-20%'}, 250);
+			$('#browse').animate({left: '0%', width: '100%'}, 250, function() {
+				$('#tree-toggler').attr('opened', 'false');
+			});
+		} else if (opened == 'false') {
+			$('#tree').animate({left: '0%'}, 250);
+			$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
+				$('#tree-toggler').attr('opened', 'true');
+			});
+		}
+
+		$.post(
+			url,
+			{open: opened},
+			function(html) {
+				if (opened == 'open') {
+					$('#tree').css('left', '-20%');
+					$('#tree-container').html(html);
+					$('#tree').animate({left: '0%'}, 250);
+					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
+						$('#tree-toggler').attr('opened', 'true');
+					});
+				}
+			},
+			'html'
+		);
+	});
+
 	$('#log').click(function() {
 		$(this).fadeOut('fast');
+	});
+
+	$('#button-refresh').click(function() {
+		document.location.reload();
+
+		return false;
 	});
 
 });
