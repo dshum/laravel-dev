@@ -49,6 +49,7 @@ class SearchController extends BaseController {
 			if (isset($orders[$classId][$class])) {
 				unset($orders[$classId][$class]);
 			}
+			$page = 1;
 		} elseif ($orderField && $orderDirection) {
 			$orders[$classId][$class] = array(
 				'field' => $orderField,
@@ -61,6 +62,7 @@ class SearchController extends BaseController {
 			) {
 				unset($orders[$classId][$class]);
 			}
+			$page = 1;
 		}
 
 		if ((int)$page > 1) {

@@ -183,6 +183,7 @@ class BrowseController extends BaseController {
 			if (isset($orders[$classId][$class])) {
 				unset($orders[$classId][$class]);
 			}
+			$page = 1;
 		} elseif ($orderField && $orderDirection) {
 			$orders[$classId][$class] = array(
 				'field' => $orderField,

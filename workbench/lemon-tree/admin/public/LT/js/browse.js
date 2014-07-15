@@ -87,12 +87,12 @@ $(function() {
 
 	$('body').on('click', 'a[order="true"]', function() {
 		var container = $(this).parents('div[id^=item_container]');
-		container.fadeOut('fast');
+		container.animate({opacity: 0}, 250);
 		$.post(
 			$(this).attr('href'),
 			{},
 			function(html) {
-				container.html(html).fadeIn('fast');
+				container.html(html).animate({opacity: 1}, 250);
 			},
 			'html'
 		);
@@ -102,12 +102,12 @@ $(function() {
 
 	$('body').on('click', 'ul.pagination li a', function() {
 		var container = $(this).parents('div[id^=item_container]');
-		container.fadeOut('fast');
+		container.animate({opacity: 0}, 250);
 		$.post(
 			$(this).attr('href'),
 			{},
 			function(html) {
-				container.html(html).fadeIn('fast');
+				container.html(html).animate({opacity: 1}, 250);
 			},
 			'html'
 		);
