@@ -1,6 +1,10 @@
 <?php namespace LemonTree;
 
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
+
 abstract class Element extends \Eloquent {
+
+	use SoftDeletingTrait;
 
 	const ID_SEPARATOR = '.';
 
@@ -9,7 +13,7 @@ abstract class Element extends \Eloquent {
 
 	protected $item = null;
 	protected $assetsName = 'assets';
-	protected $softDelete = true;
+	protected $dates = ['deleted_at'];
 	protected $href = null;
 
 	public static function boot()
@@ -23,7 +27,7 @@ abstract class Element extends \Eloquent {
 			if (isset($childItemList[OneToOneProperty::RESTRICT])) {
 				foreach ($childItemList[OneToOneProperty::RESTRICT] as $itemName => $data) {
 					foreach ($data as $propertyName => $property) {
-						if ( ! $element->isSoftDeleting()) {
+						if ($element->forceDeleting) {
 							$count = $element->
 								hasMany($itemName, $propertyName)->
 								onlyTrashed()->

@@ -31,13 +31,37 @@ class SearchController extends BaseController {
 		$site = \App::make('site');
 
 		$class = \Input::get('item');
+		$orderDefault = \Input::get('orderDefault');
+		$orderField = \Input::get('orderField');
+		$orderDirection = \Input::get('orderDirection', 'asc');
 		$page = \Input::get('page');
 
 		$currentItem = $class ? $site->getItemByName($class) : null;
 
 		if ( ! $currentItem) return null;
 
+		$orders = $loggedUser->getParameter('orders');
 		$pages = $loggedUser->getParameter('pages');
+
+		$classId = Site::SEARCH;
+
+		if ($orderDefault) {
+			if (isset($orders[$classId][$class])) {
+				unset($orders[$classId][$class]);
+			}
+		} elseif ($orderField && $orderDirection) {
+			$orders[$classId][$class] = array(
+				'field' => $orderField,
+				'direction' => $orderDirection,
+			);
+			if (
+				isset($orderByList[$orderField])
+				&& $orderByList[$orderField] == $orderDirection
+				&& sizeof($orderByList) < 2
+			) {
+				unset($orders[$classId][$class]);
+			}
+		}
 
 		if ((int)$page > 1) {
 			$pages[Site::SEARCH][$class] = (int)$page;
@@ -46,6 +70,7 @@ class SearchController extends BaseController {
 		}
 
 		$loggedUser->
+		setParameter('orders', $orders)->
 		setParameter('pages', $pages);
 
 		$propertyList = $currentItem->getPropertyList();
@@ -97,7 +122,13 @@ class SearchController extends BaseController {
 	{
 		$loggedUser = \Sentry::getUser();
 
-		$parameters = array('item' => $item->getName());
+		$parameters = array(
+			'item' => $item->getName(),
+			'expand' => true,
+		);
+
+		$listBaseUrl = '/admin/search/list';
+		$listBaseRoute = 'admin.search.list';
 
 		$propertyList = $item->getPropertyList();
 
@@ -129,7 +160,14 @@ class SearchController extends BaseController {
 			return null;
 		}
 
+		$orders = $loggedUser->getParameter('orders');
 		$pages = $loggedUser->getParameter('pages');
+
+		$classId = Site::SEARCH;
+
+		$orderBy = isset($orders[$classId][$item->getName()])
+			? $orders[$classId][$item->getName()]
+			: null;
 
 		$page = isset($pages[Site::SEARCH][$item->getName()])
 			? $pages[Site::SEARCH][$item->getName()]
@@ -137,16 +175,40 @@ class SearchController extends BaseController {
 
 		$orderByList = $item->getOrderByList();
 
-		foreach ($orderByList as $field => $direction) {
-			$elementListCriteria->orderBy($field, $direction);
+		$currentOrderByList = array();
+
+		if (
+			isset($orderBy['field'])
+			&& isset($orderBy['direction'])
+			&& (
+				! isset($orderByList[$orderBy['field']])
+				|| $orderByList[$orderBy['field']] != $orderBy['direction']
+				|| sizeof($orderByList) > 1
+			)
+		) {
+			$elementListCriteria->orderBy(
+				$orderBy['field'],
+				$orderBy['direction']
+			);
+			$currentOrderByList[$orderBy['field']] = $orderBy['direction'];
+			$defaultOrderBy = false;
+		} else {
+			foreach ($orderByList as $field => $direction) {
+				$elementListCriteria->orderBy($field, $direction);
+				$currentOrderByList[$field] = $direction;
+			}
+			$defaultOrderBy = true;
 		}
 
 		$perPage = $item->getPerPage();
 
 		if ($perPage) {
+			if ($page > ceil($total / $perPage)) {
+				$page = ceil($total / $perPage);
+			}
 			\Paginator::setCurrentPage($page);
 			$elementList = $elementListCriteria->paginate($perPage);
-			$elementList->setBaseUrl('/admin/search/list');
+			$elementList->setBaseUrl($listBaseUrl);
 			$elementList->appends($parameters);
 		} else {
 			$elementList = $elementListCriteria->get();
@@ -154,11 +216,16 @@ class SearchController extends BaseController {
 
 		$scope['isSearch'] = true;
 		$scope['currentElement'] = null;
+		$scope['classId'] = $classId;
 		$scope['item'] = $item;
+		$scope['currentOrderByList'] = $currentOrderByList;
+		$scope['defaultOrderBy'] = $defaultOrderBy;
 		$scope['itemPropertyList'] = $itemPropertyList;
 		$scope['open'] = true;
 		$scope['total'] = $total;
 		$scope['elementList'] = $elementList;
+		$scope['listBaseUrl'] = $listBaseUrl;
+		$scope['listBaseRoute'] = $listBaseRoute;
 
 		return \View::make('admin::list', $scope);
 	}

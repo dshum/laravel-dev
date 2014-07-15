@@ -389,8 +389,12 @@ table.element-list th {
 	padding: 1px 5px;
 	text-align: left;
 	border-bottom: 3px solid #CCC;
-	color: #999;
+	color: #234e9e;
 	font-weight: normal;
+}
+
+table.element-list th span {
+	color: #234e9e;
 }
 
 table.element-list td {

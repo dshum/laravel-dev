@@ -129,6 +129,7 @@ $site->
 		setTitle('Бренд товара')->
 		setMainProperty('name')->
 		addOrderBy('name', 'asc')->
+		addOrderBy('created_at', 'desc')->
 		setPerPage(3)->
 		addProperty(
 			TextfieldProperty::create('name')->

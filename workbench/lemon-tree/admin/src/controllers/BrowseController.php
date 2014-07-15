@@ -152,6 +152,9 @@ class BrowseController extends BaseController {
 		$expand = \Input::get('expand', false);
 		$classId = \Input::get('classId');
 		$class = \Input::get('item');
+		$orderDefault = \Input::get('orderDefault');
+		$orderField = \Input::get('orderField');
+		$orderDirection = \Input::get('orderDirection', 'asc');
 		$page = \Input::get('page');
 
 		$site = \App::make('site');
@@ -160,7 +163,10 @@ class BrowseController extends BaseController {
 
 		if ( ! $item instanceof Item) return null;
 
+		$orderByList = $item->getOrderByList();
+
 		$lists = $loggedUser->getParameter('lists');
+		$orders = $loggedUser->getParameter('orders');
 		$pages = $loggedUser->getParameter('pages');
 
 		$elementListView = null;
@@ -173,6 +179,25 @@ class BrowseController extends BaseController {
 			$lists[$classId][$class] = false;
 		}
 
+		if ($orderDefault) {
+			if (isset($orders[$classId][$class])) {
+				unset($orders[$classId][$class]);
+			}
+		} elseif ($orderField && $orderDirection) {
+			$orders[$classId][$class] = array(
+				'field' => $orderField,
+				'direction' => $orderDirection,
+			);
+			if (
+				isset($orderByList[$orderField])
+				&& $orderByList[$orderField] == $orderDirection
+				&& sizeof($orderByList) < 2
+			) {
+				unset($orders[$classId][$class]);
+			}
+			$page = 1;
+		}
+
 		if ((int)$page > 1) {
 			$pages[$classId][$class] = (int)$page;
 		} elseif($page !== null) {
@@ -181,6 +206,7 @@ class BrowseController extends BaseController {
 
 		$loggedUser->
 		setParameter('lists', $lists)->
+		setParameter('orders', $orders)->
 		setParameter('pages', $pages);
 
 		if ($open == 'open' || $expand) {
@@ -301,6 +327,9 @@ class BrowseController extends BaseController {
 			'expand' => true,
 		);
 
+		$listBaseUrl = $isTrash ? '/admin/trash/list' : '/admin/browse/list';
+		$listBaseRoute = $isTrash ? 'admin.trash.list' : 'admin.browse.list';
+
 		$propertyList = $item->getPropertyList();
 
 		if ( ! $currentElement && ! $item->getRoot() && ! $isTrash) {
@@ -393,11 +422,16 @@ class BrowseController extends BaseController {
 		}
 
 		$lists = $loggedUser->getParameter('lists');
+		$orders = $loggedUser->getParameter('orders');
 		$pages = $loggedUser->getParameter('pages');
 
 		$open = isset($lists[$classId][$item->getName()])
 			? $lists[$classId][$item->getName()]
 			: $defaultOpen;
+
+		$orderBy = isset($orders[$classId][$item->getName()])
+			? $orders[$classId][$item->getName()]
+			: null;
 
 		$page = isset($pages[$classId][$item->getName()])
 			? $pages[$classId][$item->getName()]
@@ -407,20 +441,40 @@ class BrowseController extends BaseController {
 
 			$orderByList = $item->getOrderByList();
 
-			foreach ($orderByList as $field => $direction) {
-				$elementListCriteria->orderBy($field, $direction);
+			$currentOrderByList = array();
+
+			if (
+				isset($orderBy['field'])
+				&& isset($orderBy['direction'])
+				&& (
+					! isset($orderByList[$orderBy['field']])
+					|| $orderByList[$orderBy['field']] != $orderBy['direction']
+					|| sizeof($orderByList) > 1
+				)
+			) {
+				$elementListCriteria->orderBy(
+					$orderBy['field'],
+					$orderBy['direction']
+				);
+				$currentOrderByList[$orderBy['field']] = $orderBy['direction'];
+				$defaultOrderBy = false;
+			} else {
+				foreach ($orderByList as $field => $direction) {
+					$elementListCriteria->orderBy($field, $direction);
+					$currentOrderByList[$field] = $direction;
+				}
+				$defaultOrderBy = true;
 			}
 
 			$perPage = $item->getPerPage();
 
 			if ($perPage) {
-//				\Paginator::setCurrentPage($page);
-				$elementList = $elementListCriteria->paginate($perPage);
-				if ($isTrash) {
-					$elementList->setBaseUrl('/admin/trash/list');
-				} else {
-					$elementList->setBaseUrl('/admin/browse/list');
+				if ($page > ceil($total / $perPage)) {
+					$page = ceil($total / $perPage);
 				}
+				\Paginator::setCurrentPage($page);
+				$elementList = $elementListCriteria->paginate($perPage);
+				$elementList->setBaseUrl($listBaseUrl);
 				$elementList->appends($parameters);
 			} else {
 				$elementList = $elementListCriteria->get();
@@ -436,11 +490,16 @@ class BrowseController extends BaseController {
 
 		$scope['isTrash'] = $isTrash;
 		$scope['currentElement'] = $currentElement;
+		$scope['classId'] = $classId;
 		$scope['item'] = $item;
+		$scope['currentOrderByList'] = $currentOrderByList;
+		$scope['defaultOrderBy'] = $defaultOrderBy;
 		$scope['itemPropertyList'] = $itemPropertyList;
 		$scope['open'] = $open;
 		$scope['total'] = $total;
 		$scope['elementList'] = $elementList;
+		$scope['listBaseUrl'] = $listBaseUrl;
+		$scope['listBaseRoute'] = $listBaseRoute;
 		$scope['hideList'] = $hideList;
 
 		return \View::make('admin::list', $scope);

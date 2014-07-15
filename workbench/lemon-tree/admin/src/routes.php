@@ -109,6 +109,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
 	Route::get('/admin/browse/{classId}', array('as' => 'admin.browse', function($classId) {
+		echo $classId;
 		try {
 			$element = LemonTree\Element::getByClassId($classId);
 			return App::make('LemonTree\BrowseController')->getIndex($element);
@@ -116,7 +117,7 @@ Route::group(array('before' => 'admin.auth'), function() {
 			echo $e->getTraceAsString(); die();
 			return Redirect::route('admin');
 		}
-	}));
+	}))->where('classId', '[A-Za-z0-9]+.[0-9]+');
 
 	Route::get('/admin/trash/{classId?}', array('as' => 'admin.trash', function($classId = null) {
 		try {
@@ -300,7 +301,11 @@ Route::group(array('before' => 'admin.auth.ajax.html'), function() {
 
 });
 
-Route::post('*', function() {
-	return Response::view('error404', array(), 404);
-});
+Route::get('/admin/{url}', function() {
+	return Redirect::route('admin');
+})->where('url', '[A-Za-z0-9\.\-\/]+');
+
+Route::post('/admin/{url}', function() {
+	return Redirect::route('admin');
+})->where('url', '[A-Za-z0-9\.\-\/]+');
 

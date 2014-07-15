@@ -50,7 +50,7 @@ $(function() {
 		var opened = $(this).attr('opened');
 
 		$.post(
-			"{{ URL::route('admin.tree.open') }}",
+			LT.treeOpenUrl,
 			{classId: node, open: opened},
 			function(data) {
 				if (opened == 'open') {

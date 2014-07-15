@@ -21,6 +21,7 @@ $(function() {
 	LT.restoreUrl = '{{ URL::route("admin.browse.restore") }}';
 	LT.movingUrl = '{{ URL::route("admin.moving") }}';
 	LT.searchItemUrl = '{{ URL::route("admin.search.item") }}';
+	LT.treeOpenUrl = '{{ URL::route("admin.tree.open") }}';
 
 });
 </script>
