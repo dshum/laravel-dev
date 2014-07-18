@@ -149,4 +149,42 @@ $(function() {
 		}
 	});
 
+	$('#editForm').submit(function(event) {
+		$.blockUI();
+
+		$('textarea[tinymce="true"]').each(function() {
+			$(this).val(tinyMCE.get(this.name).getContent());
+		});
+
+		$('input[onetoone="name"]').blur();
+
+		$(this).ajaxSubmit({
+			url: this.action,
+			dataType: 'json',
+			success: function(data) {
+//				alert(data);
+				$('#message').html('').hide();
+				$('span[error]').removeClass('error');
+
+				if (data.error) {
+					for (var i in data.error) {
+						$('span[error="'+data.error[i]+'"]').addClass('error');
+					}
+				} else if (data.logout) {
+					document.location.href = LT.adminUrl;
+				} else if (data.redirect) {
+					document.location.href = data.redirect;
+				} else if (data.refresh) {
+					for (var name in data.refresh) {
+						var view = LT.urldecode(data.refresh[name]);
+						$('#'+name+'_container').html(view);
+					}
+				}
+
+				$.unblockUI();
+			}
+		});
+		event.preventDefault();
+	});
+
 });

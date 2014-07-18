@@ -4,13 +4,18 @@ $(function() {
 	var itemChecked = [], itemCountChecked = [];
 
 	$('#button-move').click(function() {
+		if ( ! countChecked) return false;
+
 		$('#browseForm').attr('action', LT.movingUrl);
+
 		$('#browseForm').each(function() {
 			this.submit();
 		});
 	});
 
 	$('#button-delete').click(function() {
+		if ( ! countChecked) return false;
+
 		$.blockUI();
 
 		$('#message').html('').hide();
@@ -37,6 +42,8 @@ $(function() {
 	});
 
 	$('#button-restore').click(function() {
+		if ( ! countChecked) return false;
+
 		$.blockUI();
 
 		$('#message').html('').hide();
@@ -148,15 +155,17 @@ $(function() {
 		}
 
 		if (countChecked > 0) {
-			$('#button-delete').removeAttr('disabled');
+			$('#button-delete').removeClass('disabled');
 		} else {
-			$('#button-delete').attr('disabled', 'disabled');
+			$('#button-delete').addClass('disabled', 'disabled');
 		}
 
 		if (itemChecked == 1) {
-			$('#button-move').removeAttr('disabled');
+			$('#button-move').removeClass('disabled');
+			$('#button-restore').removeClass('disabled');
 		} else {
-			$('#button-move').attr('disabled', 'disabled');
+			$('#button-move').addClass('disabled', 'disabled');
+			$('#button-restore').addClass('disabled', 'disabled');
 		}
 	});
 
@@ -183,15 +192,17 @@ $(function() {
 		}
 
 		if (countChecked > 0) {
-			$('#button-delete').removeAttr('disabled');
+			$('#button-delete').removeClass('disabled');
 		} else {
-			$('#button-delete').attr('disabled', 'disabled');
+			$('#button-delete').addClass('disabled', 'disabled');
 		}
 
 		if (itemChecked == 1) {
-			$('#button-move').removeAttr('disabled');
+			$('#button-move').removeClass('disabled');
+			$('#button-restore').removeClass('disabled');
 		} else {
-			$('#button-move').attr('disabled', 'disabled');
+			$('#button-move').addClass('disabled', 'disabled');
+			$('#button-restore').addClass('disabled', 'disabled');
 		}
 	}).on('mouseover', 'input:checkbox[name="check[]"]', function() {
 		$(this).parents('tr').addClass('light-hover');

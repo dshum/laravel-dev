@@ -69,44 +69,6 @@ $(function() {
 			'json'
 		);
 	});
-
-	$('#editForm').submit(function(event) {
-		$.blockUI();
-
-		$('textarea[tinymce="true"]').each(function() {
-			$(this).val(tinyMCE.get(this.name).getContent());
-		});
-
-		$('input[onetoone="name"]').blur();
-
-		$(this).ajaxSubmit({
-			url: this.action,
-			dataType: 'json',
-			success: function(data) {
-//				alert(data);
-				$('#message').html('').hide();
-				$('span[error]').removeClass('error');
-
-				if (data.error) {
-					for (var i in data.error) {
-						$('span[error="'+data.error[i]+'"]').addClass('error');
-					}
-				} else if (data.logout) {
-					document.location.href = LT.adminUrl;
-				} else if (data.redirect) {
-					document.location.href = data.redirect;
-				} else if (data.refresh) {
-					for (var name in data.refresh) {
-						var view = LT.urldecode(data.refresh[name]);
-						$('#'+name+'_container').html(view);
-					}
-				}
-
-				$.unblockUI();
-			}
-		});
-		event.preventDefault();
-	});
 @endif
 
 });
@@ -136,7 +98,7 @@ $(function() {
 @if ($currentElement->trashed())
 <p>
 <div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
-<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
+<div id="button-edit" class="button hand disabled"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 <div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
 <div id="button-restore" class="button hand"><img src="/LT/img/button-restore.png" alt="Восстановить" title="Восстановить" /><br />Восстановить</div>
 <div id="button-delete" class="button hand"><img src="/LT/img/button-remove.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
@@ -144,7 +106,7 @@ $(function() {
 @elseif ($currentElement->id)
 <p>
 <div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
-<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
+<div id="button-edit" class="button hand disabled"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 <div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
 <div id="button-move" class="button hand"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
 <div id="button-delete" class="button hand"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
@@ -152,10 +114,10 @@ $(function() {
 @else
 <p>
 <div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
-<div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
+<div id="button-edit" class="button hand disabled"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 <div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
-<div id="button-move" class="button hand"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
-<div id="button-delete" class="button hand"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
+<div id="button-move" class="button hand disabled"><img src="/LT/img/button-move.png" alt="Переместить" title="Переместить" /><br />Переместить</div>
+<div id="button-delete" class="button hand disabled"><img src="/LT/img/button-delete.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
 </p>
 @endif
 <br clear="both" />
