@@ -109,7 +109,6 @@ Route::group(array('before' => 'admin.auth'), function() {
 	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
 	Route::get('/admin/browse/{classId}', array('as' => 'admin.browse', function($classId) {
-		echo $classId;
 		try {
 			$element = LemonTree\Element::getByClassId($classId);
 			return App::make('LemonTree\BrowseController')->getIndex($element);

@@ -175,13 +175,15 @@ class TreeController extends BaseController {
 		return $treeView;
 	}
 
-	public function show($currentElement = null)
+	public function show($parent = null)
 	{
 		$scope = array();
 
 		$loggedUser = \Sentry::getUser();
 
 		$tree = $loggedUser->getParameter('tree');
+
+		$currentElementClassId = \Session::get('currentElement', null);
 
 		$site = \App::make('site');
 
@@ -191,11 +193,11 @@ class TreeController extends BaseController {
 		$bindItemList = array();
 
 		foreach ($itemList as $itemName => $item) {
-			if ($currentElement) {
-				if (isset($binds[$currentElement->getClass()][$itemName])) {
+			if ($parent) {
+				if (isset($binds[$parent->getClass()][$itemName])) {
 					$bindItemList[$itemName] = $item;
 				}
-				if (isset($binds[$currentElement->getClassId()][$itemName])) {
+				if (isset($binds[$parent->getClassId()][$itemName])) {
 					$bindItemList[$itemName] = $item;
 				}
 			} else {
@@ -216,15 +218,15 @@ class TreeController extends BaseController {
 			$propertyList = $item->getPropertyList();
 
 			$elementListCriteria = $item->getClass()->where(
-				function($query) use ($propertyList, $currentElement) {
-					if ($currentElement) {
+				function($query) use ($propertyList, $parent) {
+					if ($parent) {
 						foreach ($propertyList as $propertyName => $property) {
 							if (
 								$property instanceof OneToOneProperty
-								&& $property->getRelatedClass() == $currentElement->getClass()
+								&& $property->getRelatedClass() == $parent->getClass()
 							) {
 								$query->orWhere(
-									$property->getName(), $currentElement->id
+									$property->getName(), $parent->id
 								);
 							}
 						}
@@ -274,7 +276,8 @@ class TreeController extends BaseController {
 
 		if ( ! $itemElementList) return null;
 
-		$scope['currentElement'] = $currentElement;
+		$scope['parent'] = $parent;
+		$scope['currentElementClassId'] = $currentElementClassId;
 		$scope['treeItemList'] = $bindItemList;
 		$scope['treeItemElementList'] = $itemElementList;
 		$scope['treeView'] = $treeView;

@@ -22,7 +22,10 @@ $(function() {
 	LT.movingUrl = '{{ URL::route("admin.moving") }}';
 	LT.searchItemUrl = '{{ URL::route("admin.search.item") }}';
 	LT.treeOpenUrl = '{{ URL::route("admin.tree.open") }}';
-
+@if (isset($currentElement) && $currentElement)
+	LT.currentElement = '{{ $currentElement->getClassId() }}';
+	$('div.tree').children('a[classId="'+LT.currentElement+'"]').css('font-weight', 'bold');
+@endif
 });
 </script>
 @yield('js')

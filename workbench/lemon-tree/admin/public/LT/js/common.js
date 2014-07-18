@@ -54,7 +54,9 @@ $(function() {
 			{classId: node, open: opened},
 			function(data) {
 				if (opened == 'open') {
-					$('div.padding[node="'+node+'"]').html(data).slideDown('fast', function() {
+					$('div.padding[node="'+node+'"]').html(data)
+					$('div.tree').children('a[classId="'+LT.currentElement+'"]').css('font-weight', 'bold');
+					$('div.padding[node="'+node+'"]').slideDown('fast', function() {
 						$('div.plus[node="'+node+'"]').removeClass('plus').addClass('minus').attr('opened', 'true');
 					});
 				} else if (opened == 'true') {
@@ -95,6 +97,7 @@ $(function() {
 				if (opened == 'open') {
 					$('#tree').css('left', '-20%');
 					$('#tree-container').html(html);
+					$('div.tree').children('a[classId="'+LT.currentElement+'"]').css('font-weight', 'bold');
 					$('#tree').animate({left: '0%'}, 250);
 					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
 						$('#tree-toggler').attr('opened', 'true');

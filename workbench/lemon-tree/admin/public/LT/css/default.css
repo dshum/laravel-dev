@@ -98,7 +98,7 @@ div.plus {
 	width: 11px;
 	height: 11px;
 	float: left;
-	background: url(../img/plus.png);
+	background: #222 url(../img/plus.png);
 	margin: 2px 5px 0 0;
 	cursor: pointer;
 	cursor: hand;
@@ -108,7 +108,7 @@ div.minus {
 	width: 11px;
 	height: 11px;
 	float: left;
-	background: url(../img/minus.png);
+	background: #222 url(../img/minus.png);
 	margin: 2px 5px 0 0;
 	cursor: pointer;
 	cursor: hand;

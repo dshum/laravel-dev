@@ -1,4 +1,4 @@
-@if ( ! $currentElement)
+@if ( ! $parent)
 <div class="lemon tree"><a href="{{ URL::route('admin') }}">Корень сайта</a></div>
 @endif
 @foreach ($treeItemList as $itemName => $item)

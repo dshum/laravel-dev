@@ -61,7 +61,7 @@ $(function() {
 		$.blockUI();
 
 		$.post(
-			LT.restoreUrl,
+			'{{ URL::route("admin.restore", $currentElement->getClassId()) }}',
 			{},
 			function(data) {
 				document.location.reload();
@@ -138,7 +138,7 @@ $(function() {
 <div id="button-up" class="button hand"><img src="/LT/img/button-up.png" alt="Наверх" title="Наверх" /><br />Наверх</div>
 <div id="button-edit" class="button hand"><img src="/LT/img/button-edit.png" alt="Редактировать" title="Редактировать" /><br />Редактировать</div>
 <div id="button-save" class="button hand"><img src="/LT/img/button-save.png" alt="Сохранить" title="Сохранить" /><br />Сохранить</div>
-<div id="button-move" class="button hand"><img src="/LT/img/button-move.png" alt="Восстановить" title="Восстановить" /><br />Восстановить</div>
+<div id="button-restore" class="button hand"><img src="/LT/img/button-restore.png" alt="Восстановить" title="Восстановить" /><br />Восстановить</div>
 <div id="button-delete" class="button hand"><img src="/LT/img/button-remove.png" alt="Удалить" title="Удалить" /><br />Удалить</div>
 </p>
 @elseif ($currentElement->id)
