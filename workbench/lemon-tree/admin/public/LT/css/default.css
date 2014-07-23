@@ -37,6 +37,8 @@ body {
 	margin: 0;
 	padding: 0 10px 3px 10px;
 	background: #EEE;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
 	font-size: 13px;
 }
 
@@ -161,11 +163,11 @@ div.empty {
 
 div.button {
 	float: left;
+	height: 64px;
 	margin: 0 5px 0 5px;
 	padding: 3px 10px 7px 10px;
 	border: 1px solid #EEE;
-//	width: 96px;
-	height: 64px;
+	border-radius: 5px;
 	text-align: center;
 	font-size: 13px;
 	color: #999;
@@ -303,15 +305,17 @@ label {
 }
 
 div.path {
-	background: #F0F0F0;
 	padding: 3px 10px;
+	background: #F0F0F0;
+	border-radius: 3px;
 }
 
 div.form-edit {
-	border: 1px solid #CCC;
-	background: #F0F0F0;
 	margin: 15px 0px;
-	padding: 5px 10px 10px 10px;
+	padding: 10px 10px 10px 10px;
+	background: #F0F0F0;
+	border: 1px solid #CCC;
+	border-radius: 5px;
 }
 
 div.form-edit .main input {
@@ -319,10 +323,11 @@ div.form-edit .main input {
 }
 
 div.form-search {
-	border: 1px solid #CCC;
-	background: #F0F0F0;
 	margin: 15px 0px;
 	padding: 5px 10px 10px 10px;
+	background: #F0F0F0;
+	border: 1px solid #CCC;
+	border-radius: 5px;
 }
 
 div.prop-search {
@@ -330,6 +335,8 @@ div.prop-search {
 	margin: 5px 10px 5px 0;
 	padding: 5px 10px;
 	background: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 3px;
 }
 
 div.item-search {
@@ -337,6 +344,8 @@ div.item-search {
 	margin: 5px 10px 5px 0;
 	padding: 5px 10px;
 	background: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 3px;
 }
 
 div.item-search-active {
@@ -345,6 +354,7 @@ div.item-search-active {
 	padding: 5px 10px;
 	background: #666;
 	color: #FFF;
+	border-radius: 3px;
 }
 
 .element-list-header td {

@@ -12,7 +12,7 @@ $(function() {
 	});
 });
 </script>
-<span switch="true" name="{{ $name }}" class="dashed hand" style="color: #E70;">{{ $title }}</span>:<br>
+<span switch="true" name="{{ $name }}" class="dashed hand" style="color: magenta;">{{ $title }}</span>:<br>
 <div id="{{ $name }}_block" style="display: {{ $from || $to ? 'block' : 'none' }};">
 от <input type="text" class="prop-date" id="{{ $name }}_from" name="{{ $name }}_from" value="{{ $from ? $from->format('Y-m-d') : null }}"{{ $from || $to ? '' : ' disabled="disabled"' }}> <span id="{{ $name }}_from_show" class="hand"><img src="/LT/img/calendar.gif" alt="" /></span>
 до <input type="text" class="prop-date" id="{{ $name }}_to" name="{{ $name }}_to" value="{{ $to ? $to->format('Y-m-d') : null }}"{{ $from || $to ? '' : ' disabled="disabled"' }}> <span id="{{ $name }}_to_show" class="hand"><img src="/LT/img/calendar.gif" alt="" /></span>

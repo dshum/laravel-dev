@@ -31,7 +31,7 @@ $(function() {
 <table class="element-list-header">
 <tr>
 <td><h2>Класс элемента</h2></td>
-<td><div class="order_link">сортировать по <span class="dashed hand">дате</span>, <span class="dashed hand">названию</span>, <span style="padding: 2px 5px; background: #999; color: #FFF;">по умолчанию</span></div></td>
+<td><div class="order_link">сортировать по <span class="dashed hand">дате</span>, <span class="dashed hand">названию</span>, <span style="padding: 2px 5px 3px 5px; background: #999; border-radius: 3px; color: #FFF;">по умолчанию</span></div></td>
 </tr>
 </table>
 

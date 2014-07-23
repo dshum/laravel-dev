@@ -1,4 +1,4 @@
-<span switch="true" name="{{ $name }}" class="dashed hand" style="color: #00f;">{{ $title }}</span><span id="{{ $name }}_sign" class="grey" style="display: {{ $value ? 'inline' : 'none' }};"> (введите ID или название)</span>:<br>
+<span switch="true" name="{{ $name }}" class="dashed hand" style="color: blue;">{{ $title }}</span><span id="{{ $name }}_sign" class="grey" style="display: {{ $value ? 'inline' : 'none' }};"> (введите ID или название)</span>:<br>
 <div id="{{ $name }}_block" style="display: {{ $value ? 'block' : 'none' }};">
 <input type="hidden" id="{{ $name }}" name="{{ $name }}" value="{{ $value }}"{{ $value ? '' : ' disabled="disabled"' }}>
 ID <span id="{{ $name }}_show">{{ $value ? $value->id : 'не определен' }}</span>

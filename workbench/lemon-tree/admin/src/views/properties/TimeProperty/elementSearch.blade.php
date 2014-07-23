@@ -1,4 +1,4 @@
-<span switch="true" name="{{ $name }}" class="dashed hand" style="color: #E70;">{{ $title }}</span>:<br>
+<span switch="true" name="{{ $name }}" class="dashed hand" style="color: magenta;">{{ $title }}</span>:<br>
 <div id="{{ $name }}_block" style="display: {{ $from || $to ? 'block' : 'none' }};">
 <input type="hidden" id="{{ $name }}_from" name="{{ $name }}_from" value="<?=$from->toString()?>"<?=$open ? '' : ' disabled="true"'?>>
 <input type="hidden" id="{{ $name }}_to" name="{{ $name }}_to" value="<?=$to->toString()?>"<?=$open ? '' : ' disabled="true"'?>>
