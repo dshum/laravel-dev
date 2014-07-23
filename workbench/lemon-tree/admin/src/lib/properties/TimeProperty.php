@@ -39,4 +39,41 @@ class TimeProperty extends BaseProperty {
 		return $this;
 	}
 
+	public function searchQuery($query)
+	{
+		$name = $this->getName();
+
+		$from = \Input::get($name.'_from');
+		$to = \Input::get($name.'_to');
+
+		if ($from !== null) {
+			$from = str_replace(array(',', ' '), array('.', ''), $from);
+			$query->where($name, '>=', (int)$from);
+		}
+
+		if ($to !== null) {
+			$to = str_replace(array(',', ' '), array('.', ''), $to);
+			$query->where($name, '<=', (int)$to);
+		}
+
+		return $query;
+	}
+
+	public function getElementSearchView()
+	{
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'from' => \Input::get($this->getName().'_from'),
+			'to' => \Input::get($this->getName().'_to'),
+		);
+
+		try {
+			$view = $this->getClassName().'.elementSearch';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
 }

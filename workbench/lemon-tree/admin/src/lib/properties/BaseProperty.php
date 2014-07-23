@@ -155,6 +155,19 @@ abstract class BaseProperty {
 		return $this->value;
 	}
 
+	public function searchQuery($query)
+	{
+		$name = $this->getName();
+
+		$value = \Input::get($name);
+
+		if ($value !== null) {
+			$query->where($name, 'ilike', "%$value%");
+		}
+
+		return $query;
+	}
+
 	public function set()
 	{
 		$name = $this->getName();
@@ -195,6 +208,23 @@ abstract class BaseProperty {
 
 		try {
 			$view = $this->getClassName().'.elementEdit';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
+	}
+
+	public function getBrowseEditView()
+	{
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'value' => $this->getValue(),
+			'readonly' => $this->getReadonly(),
+		);
+
+		try {
+			$view = $this->getClassName().'.browseEdit';
 			return \View::make('admin::properties.'.$view, $scope);
 		} catch (\Exception $e) {}
 

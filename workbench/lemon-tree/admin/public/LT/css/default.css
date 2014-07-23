@@ -213,12 +213,12 @@ input.btn, button.btn {
 	font-size: 120%;
 }
 
-input.prop-time {
+.form-edit input.prop-time {
 	width: 20px;
 	padding-left: 5px;
 }
 
-input.prop-number, input[type="password"].prop-pass {
+.form-edit input.prop-number, input.prop-pass {
 	width: 150px;
 }
 
@@ -437,8 +437,24 @@ div.prop-search {
 	font-size: 13px;
 }
 
-div.prop-search input[type="text"] {
-	margin: 5px 5px 3px 0;
+div.prop-search input[type="text"], input[type="radio"] {
+	margin: 7px 5px 3px 0;
+}
+
+div.prop-search input.prop-number {
+	margin-left: 5px;
+	width: 75px;
+}
+
+div.prop-search input.prop-date {
+	margin-left: 5px;
+	margin-right: 0;
+	width: 75px;
+}
+
+div.prop-search input.prop-time {
+	width: 20px;
+	padding-left: 5px;
 }
 
 .dashed {

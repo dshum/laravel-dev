@@ -18,6 +18,21 @@ class CheckboxProperty extends BaseProperty {
 		return $this;
 	}
 
+	public function searchQuery($query)
+	{
+		$name = $this->getName();
+
+		$value = \Input::get($name);
+
+		if ($value == 'true') {
+			$query->where($name, 1);
+		} elseif ($value === 'false') {
+			$query->where($name, 0);
+		}
+
+		return $query;
+	}
+
 	public function set()
 	{
 		$name = $this->getName();

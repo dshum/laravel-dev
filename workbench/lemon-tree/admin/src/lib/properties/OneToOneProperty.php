@@ -102,6 +102,19 @@ class OneToOneProperty extends BaseProperty {
 		return $this;
 	}
 
+	public function searchQuery($query)
+	{
+		$name = $this->getName();
+
+		$value = (int)\Input::get($name);
+
+		if ($value) {
+			$query->where($name, $value);
+		}
+
+		return $query;
+	}
+
 	public function getElementListView()
 	{
 		$site = \App::make('site');

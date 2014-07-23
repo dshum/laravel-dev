@@ -304,7 +304,6 @@ $site->
 		addProperty(
 			DatetimeProperty::create('updated_at')->
 			setTitle('Последнее изменение')->
-			setReadonly(true)->
 			setShow(true)
 		)
 	)->

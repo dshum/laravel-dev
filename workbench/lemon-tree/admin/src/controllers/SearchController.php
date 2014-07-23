@@ -98,18 +98,28 @@ class SearchController extends BaseController {
 
 		$itemList = $site->getItemList();
 
+		$action = \Input::get('action');
 		$class = \Input::get('item');
 
-		$currentItem = $class ? $site->getItemByName($class) : null;
+		$search = $loggedUser->getParameter('search');
+
+		if ($class) {
+			$search['currentItem'] = $class;
+			$loggedUser->setParameter('search', $search);
+		}
+
+		$currentItem = isset($search['currentItem'])
+			? $site->getItemByName($search['currentItem'])
+			: null;
 
 		$propertyList = $currentItem
 			? $currentItem->getPropertyList() : array();
 
-		$id = \Input::get('id');
-
-		$elementListView = $currentItem
+		$elementListView = $action == 'search' && $currentItem
 			? $this->getElementListView($currentItem)
 			: null;
+
+		$id = \Input::get('id');
 
 		$scope['itemList'] = $itemList;
 		$scope['currentItem'] = $currentItem;
@@ -147,7 +157,7 @@ class SearchController extends BaseController {
 		$elementListCriteria = $item->getClass()->where(
 			function($query) use ($propertyList) {
 				foreach ($propertyList as $propertyName => $property) {
-
+					$query = $property->searchQuery($query);
 				}
 			}
 		);

@@ -1,6 +1,8 @@
 @extends('admin::layout')
 
 @section('js')
+{{ HTML::style('LT/js/calendarview/jquery.calendar.css') }}
+{{ HTML::script('LT/js/calendarview/jquery.calendar.js') }}
 {{ HTML::script('LT/js/search.js') }}
 {{ HTML::script('LT/js/browse.js') }}
 <script type="text/javascript">
@@ -22,6 +24,7 @@ $(function() {
 <p class="error"><span id="message" class="dnone"></span></p>
 
 {{ Form::open(array('route' => 'admin.search', 'method' => 'get', 'id' => 'searchForm')) }}
+{{ Form::hidden('action', 'search') }}
 {{ Form::hidden('item', $currentItem ? $currentItem->getName() : null, array('id' => 'item')) }}
 <div class="form-search">
 
@@ -41,7 +44,7 @@ $(function() {
 @endforeach
 <br clear="both" /><br />
 
-<div id="itemContainer">
+<div id="itemContainer" style="width: 90%;">
 
 @if ($currentItem)
 <div id="idContainer" class="prop-search">

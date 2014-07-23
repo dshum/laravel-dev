@@ -31,12 +31,70 @@ class DateProperty extends BaseProperty {
 		parent::setElement($element);
 
 		if (is_string($this->value)) {
-			$this->value = Carbon::createFromFormat($this->format, $this->value);
-		} elseif ( ! $this->value && $this->getFillNow()) {
-			$this->value = Carbon::today();
+			try {
+				$this->value = Carbon::createFromFormat($this->format, $this->value);
+				return $this;
+			} catch (\Exception $e) {}
+		}
+
+		if ( ! $this->value && $this->getFillNow()) {
+			$this->value = \Carbon::now();
 		}
 
 		return $this;
+	}
+
+	public function searchQuery($query)
+	{
+		$name = $this->getName();
+
+		$from = \Input::get($name.'_from');
+		$to = \Input::get($name.'_to');
+
+		if ($from) {
+			try {
+				$from = Carbon::createFromFormat('Y-m-d', $from);
+				$query->where($name, '>=', $from->format('Y-m-d'));
+			} catch (\Exception $e) {}
+		}
+
+		try {
+			$from = Carbon::createFromFormat('Y-m-d', $from);
+			$to = Carbon::createFromFormat('Y-m-d', $to);
+		} catch (\Exception $e) {
+			$from = null;
+			$to = null;
+		}
+
+		return $query;
+	}
+
+	public function getElementSearchView()
+	{
+		$from = \Input::get($this->getName().'_from');
+		$to = \Input::get($this->getName().'_to');
+
+		try {
+			$from = Carbon::createFromFormat('Y-m-d', $from);
+			$to = Carbon::createFromFormat('Y-m-d', $to);
+		} catch (\Exception $e) {
+			$from = null;
+			$to = null;
+		}
+
+		$scope = array(
+			'name' => $this->getName(),
+			'title' => $this->getTitle(),
+			'from' => $from,
+			'to' => $to,
+		);
+
+		try {
+			$view = $this->getClassName().'.elementSearch';
+			return \View::make('admin::properties.'.$view, $scope);
+		} catch (\Exception $e) {}
+
+		return null;
 	}
 
 }
