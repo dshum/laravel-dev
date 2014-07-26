@@ -87,6 +87,7 @@ $(function() {
 	</tr>
 @endforeach
 </table>
+<p><a href="{{ URL::route('admin.users.log') }}">Журнал действий пользователей</a></p>
 @else
 <p>Пользователи отсутствуют.</p>
 @endif

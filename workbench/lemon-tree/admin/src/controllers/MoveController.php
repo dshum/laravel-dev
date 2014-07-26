@@ -53,12 +53,20 @@ class MoveController extends BaseController {
 			return \Redirect::route('admin');
 		}
 
+		$moved = array();
+
 		foreach ($elementList as $element) {
 			foreach ($onePropertyList as $propertyName => $property) {
 				$property->setElement($element)->set();
 			}
 			$element->save();
+			$moved[] = $element->getClassId();
 		}
+
+		UserAction::log(
+			UserActionType::ACTION_TYPE_MOVE_ELEMENT_LIST_ID,
+			implode(', ', $moved)
+		);
 
 		return $redirect
 			? \Redirect::to($redirect)

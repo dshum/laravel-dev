@@ -88,15 +88,6 @@ abstract class Element extends \Eloquent {
 
 		});
 
-		static::created(function($element) {
-
-			$class = get_class($element);
-			if ($class::isCache() === true) {
-				\Cache::tags($class)->flush();
-			}
-
-		});
-
 		static::saved(function($element) {
 
 			$class = get_class($element);

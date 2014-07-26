@@ -15,9 +15,8 @@ class CreateCytrusUserActions extends Migration {
 		Schema::create('cytrus_user_actions', function ($table) {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned()->index();
-			$table->string('action_type');
+			$table->string('action_type')->index();
 			$table->string('comments');
-			$table->string('title');
 			$table->string('url');
 			$table->timestamps();
 		});

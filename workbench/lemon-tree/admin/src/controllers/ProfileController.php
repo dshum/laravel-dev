@@ -41,6 +41,10 @@ class ProfileController extends BaseController {
 
 		try {
 			$loggedUser->save();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_PROFILE_ID,
+				'ID '.$loggedUser->id.' ('.$loggedUser->login.')'
+			);
 			$scope['status'] = 'ok';
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage();

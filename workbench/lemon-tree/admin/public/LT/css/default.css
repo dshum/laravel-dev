@@ -447,7 +447,7 @@ div.prop-search {
 	font-size: 13px;
 }
 
-div.prop-search input[type="text"], input[type="radio"] {
+div.prop-search input[type="text"], input[type="radio"], select {
 	margin: 7px 5px 3px 0;
 }
 
@@ -465,6 +465,10 @@ div.prop-search input.prop-date {
 div.prop-search input.prop-time {
 	width: 20px;
 	padding-left: 5px;
+}
+
+div.prop-search input.prop-comment {
+	width: 300px;
 }
 
 .dashed {

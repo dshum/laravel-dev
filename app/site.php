@@ -649,6 +649,7 @@ $site->
 	bind('Subcategory', 'Good')->
 	bind('ServiceSection.1', 'ServiceSection')->
 	bind('ServiceSection.4', 'Counter')->
+	bind('ServiceSection.6', 'ServiceSection')->
 	bind('ServiceSection.7', 'ServiceSection')->
 	bind('ServiceSection.12', 'ExpenseCategory')->
 	bind('ServiceSection.13', 'ExpenseSource')->
@@ -660,6 +661,7 @@ $site->
 	bindTree('Section', 'Section')->
 	bindTree('ServiceSection.1', 'ServiceSection')->
 	bindTree('ServiceSection.4', 'Counter')->
+	bindTree('ServiceSection.6', 'ServiceSection')->
 	bindTree('ServiceSection.7', 'ServiceSection')->
 	bindTree('ServiceSection.12', 'ExpenseCategory')->
 	bindTree('ServiceSection.13', 'ExpenseSource')->

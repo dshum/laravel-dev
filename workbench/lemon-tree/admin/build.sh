@@ -1,3 +1,6 @@
+php composer.phar create-project laravel/laravel your-project-name --prefer-dist
+php composer.phar install
+
 php artisan migrate:make create_section_table
 php artisan migrate:make create_service_section_table
 php artisan migrate:make create_site_settings_table

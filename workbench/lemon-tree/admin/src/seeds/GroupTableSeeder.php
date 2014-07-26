@@ -17,15 +17,15 @@ class GroupTableSeeder extends Seeder {
 				'admin' => 1,
 			),
 		));
-		
+
 		\Sentry::createGroup(array(
 			'name' => 'Администраторы',
 			'default_permission' => 'delete',
 			'permissions' => array(
-				'admin' => 1,
+				'admin' => 0,
 			),
 		));
-		
+
 		\Sentry::createGroup(array(
 			'name' => 'Модераторы',
 			'default_permission' => 'deny',

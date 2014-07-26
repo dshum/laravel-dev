@@ -47,6 +47,10 @@ class EditController extends BaseController {
 
 		try {
 			if ($currentElement->delete()) {
+				UserAction::log(
+					UserActionType::ACTION_TYPE_DROP_ELEMENT_TO_TRASH_ID,
+					$currentElement->getClassId()
+				);
 				$scope['status'] = 'ok';
 			} else {
 				$scope['error'] = 'Невозможно удалить этот элемент, пока существуют связанные с ним элементы.';
@@ -70,8 +74,16 @@ class EditController extends BaseController {
 		}
 
 		try {
-			$currentElement->forceDelete();
-			$scope['status'] = 'ok';
+			if ($currentElement->delete()) {
+//				$currentElement->forceDelete();
+				UserAction::log(
+					UserActionType::ACTION_TYPE_DROP_ELEMENT_ID,
+					$currentElement->getClassId()
+				);
+				$scope['status'] = 'ok';
+			} else {
+				$scope['error'] = 'Невозможно удалить этот элемент, пока существуют связанные с ним элементы.';
+			}
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage().PHP_EOL.$e->getTraceAsString();
 		}
@@ -92,6 +104,10 @@ class EditController extends BaseController {
 
 		try {
 			$currentElement->restore();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_RESTORE_ELEMENT_ID,
+				$currentElement->getClassId()
+			);
 			$scope['status'] = 'ok';
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage();
@@ -157,14 +173,24 @@ class EditController extends BaseController {
 		}
 
 		try {
+
 			$currentElement->save();
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_ADD_ELEMENT_ID,
+				$currentElement->getClassId()
+			);
+
 			$scope['status'] = 'ok';
+
 			$parentElement = $currentElement->getParent();
+
 			if ($parentElement) {
 				$scope['redirect'] = $parentElement->getBrowseUrl();
 			} else {
 				$scope['redirect'] = \URL::route('admin');
 			}
+
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage();
 		}
@@ -241,6 +267,11 @@ class EditController extends BaseController {
 				$view = $property->setElement($currentElement)->getElementEditView();
 				$scope['refresh'][$propertyName] = urlencode($view);
 			}
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_ELEMENT_ID,
+				$currentElement->getClassId()
+			);
 
 			$scope['status'] = 'ok';
 

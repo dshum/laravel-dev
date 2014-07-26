@@ -21,6 +21,10 @@ class UserController extends BaseController {
 
 		try {
 			$user->delete();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_DROP_USER_ID,
+				'ID '.$user->id.' ('.$user->login.')'
+			);
 		} catch (\Exception $e) {}
 
 		return \Redirect::route('admin.users');
@@ -98,6 +102,11 @@ class UserController extends BaseController {
 			}
 
 			$user->flush();
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_ADD_USER_ID,
+				'ID '.$user->id.' ('.$user->login.')'
+			);
 
 			$scope['status'] = 'ok';
 
@@ -193,6 +202,11 @@ class UserController extends BaseController {
 			}
 
 			$user->flush();
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_USER_ID,
+				'ID '.$user->id.' ('.$user->login.')'
+			);
 
 			$scope['status'] = 'ok';
 

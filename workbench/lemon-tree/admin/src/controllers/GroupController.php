@@ -19,50 +19,50 @@ class GroupController extends BaseController {
 		}
 
 		$input = \Input::all();
-		
+
 		$defaultGroupPermission = $group->default_permission
-			? $group->default_permission 
+			? $group->default_permission
 			: 'deny';
-		
+
 		$groupItemPermissions = $group->itemPermissions;
-		
+
 		$groupItemPermissionMap = array();
-		
+
 		foreach ($groupItemPermissions as $groupItemPermission) {
 			$class = $groupItemPermission->class;
 			$groupItemPermissionMap[$class] = $groupItemPermission;
 		}
-		
+
 		$groupElementPermissions = $group->elementPermissions;
-		
+
 		$groupElementPermissionMap = array();
-		
+
 		foreach ($groupElementPermissions as $groupElementPermission) {
 			$classId = $groupElementPermission->class_id;
 			$groupElementPermissionMap[$classId] = $groupElementPermission;
 		}
-		
+
 		try {
-		
+
 			foreach ($input as $key => $value) {
-				
+
 				list($class, $id) = explode('_', $key);
-				
+
 				if ( ! $class || ! $id) continue;
-				
+
 				$classId = $class.Element::ID_SEPARATOR.$id;
-				
+
 				$defaultPermission = isset($groupItemPermissionMap[$class])
 					? $groupItemPermissionMap[$class]->permission
 					: $defaultGroupPermission;
 
 				if (isset($groupElementPermissionMap[$classId])) {
-					
-					$groupElementPermission = 
+
+					$groupElementPermission =
 						$groupElementPermissionMap[$classId];
-					
+
 					$permission = $groupElementPermission->permission;
-					
+
 					if ($defaultPermission == $value) {
 						$groupElementPermission->delete();
 					} elseif ($permission != $value) {
@@ -73,26 +73,31 @@ class GroupController extends BaseController {
 				} elseif ($defaultPermission != $value) {
 
 					$groupElementPermission = new GroupElementPermission;
-					
+
 					$groupElementPermission->group_id = $group->id;
 					$groupElementPermission->class_id = $classId;
 					$groupElementPermission->permission = $value;
-					
+
 					$groupElementPermission->save();
 
 				}
-				
+
 			}
-			
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_ELEMENT_PERMISSIONS_ID,
+				'ID '.$group->id.' ('.$group->name.')'
+			);
+
 			$scope['status'] = 'ok';
-			
+
 		} catch (\Exception $e) {
 			$scope['message'] = $e->getMessage().$e->getTraceAsString();
 		}
 
 		return json_encode($scope);
 	}
-	
+
 	public function getEditElementPermissions(Group $group)
 	{
 		$scope = array();
@@ -111,45 +116,45 @@ class GroupController extends BaseController {
 		$scope['currentTabTitle'] = $group->name;
 
 		$scope = CommonFilter::apply($scope);
-		
+
 		$defaultGroupPermission = $group->default_permission
-			? $group->default_permission 
+			? $group->default_permission
 			: 'deny';
-		
+
 		$groupItemPermissions = $group->itemPermissions;
-		
+
 		$groupItemPermissionMap = array();
-		
+
 		foreach ($groupItemPermissions as $groupItemPermission) {
 			$class = $groupItemPermission->class;
 			$permission = $groupItemPermission->permission;
 			$groupItemPermissionMap[$class] = $permission;
 		}
-		
+
 		$groupElementPermissions = $group->elementPermissions;
-		
+
 		$groupElementPermissionMap = array();
-		
+
 		foreach ($groupElementPermissions as $groupElementPermission) {
 			$classId = $groupElementPermission->class_id;
 			$permission = $groupElementPermission->permission;
 			$groupElementPermissionMap[$classId] = $permission;
 		}
-		
+
 		$site = \App::make('site');
-		
+
 		$itemList = $site->getItemList();
-		
+
 		$itemElementList = array();
-		
+
 		foreach ($itemList as $itemName => $item) {
-			
+
 			if ( ! $item->getElementPermissions()) {
 				unset($itemList[$itemName]);
 				continue;
 			}
-			
-			$elementList = 
+
+			$elementList =
 				$item->getClass()->
 				orderBy($item->getMainProperty())->
 				cacheTags($itemName)->
@@ -173,7 +178,7 @@ class GroupController extends BaseController {
 
 		return \View::make('admin::groupElements', $scope);
 	}
-	
+
 	public function postSaveItemPermissions(Group $group)
 	{
 		$scope = array();
@@ -191,9 +196,9 @@ class GroupController extends BaseController {
 		}
 
 		$input = \Input::all();
-		
+
 		$site = \App::make('site');
-		
+
 		$itemList = $site->getItemList();
 
 		foreach ($itemList as $item) {
@@ -213,22 +218,22 @@ class GroupController extends BaseController {
 			$scope['error'] = $messages->all();
 			return json_encode($scope);
 		}
-		
+
 		$defaultGroupPermission = $group->default_permission
-			? $group->default_permission 
+			? $group->default_permission
 			: 'deny';
-		
+
 		$groupItemPermissions = $group->itemPermissions;
-		
+
 		$groupItemPermissionMap = array();
-		
+
 		foreach ($groupItemPermissions as $groupItemPermission) {
 			$class = $groupItemPermission->class;
 			$groupItemPermissionMap[$class] = $groupItemPermission;
 		}
-		
+
 		try {
-		
+
 			foreach ($itemList as $item) {
 
 				$class = $item->getName();
@@ -236,7 +241,7 @@ class GroupController extends BaseController {
 				if (isset($groupItemPermissionMap[$class])) {
 
 					$groupItemPermission = $groupItemPermissionMap[$class];
-					
+
 					$permission = $groupItemPermission->permission;
 
 					if ($defaultGroupPermission == $input[$class]) {
@@ -249,26 +254,31 @@ class GroupController extends BaseController {
 				} elseif ($defaultGroupPermission != $input[$class]) {
 
 					$groupItemPermission = new GroupItemPermission;
-					
+
 					$groupItemPermission->group_id = $group->id;
 					$groupItemPermission->class = $class;
 					$groupItemPermission->permission = $input[$class];
-					
+
 					$groupItemPermission->save();
 
 				}
-				
+
 			}
-			
+
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_ITEM_PERMISSIONS_ID,
+				'ID '.$group->id.' ('.$group->name.')'
+			);
+
 			$scope['status'] = 'ok';
-			
+
 		} catch (\Exception $e) {
 			$scope['message'] = $e->getMessage();
 		}
 
 		return json_encode($scope);
 	}
-	
+
 	public function getEditItemPermissions(Group $group)
 	{
 		$scope = array();
@@ -287,19 +297,19 @@ class GroupController extends BaseController {
 		$scope['currentTabTitle'] = $group->name;
 
 		$scope = CommonFilter::apply($scope);
-		
+
 		$site = \App::make('site');
-		
+
 		$itemList = $site->getItemList();
-		
+
 		$defaultGroupPermission = $group->default_permission
-			? $group->default_permission 
+			? $group->default_permission
 			: 'deny';
-		
+
 		$groupItemPermissions = $group->itemPermissions;
-		
+
 		$groupItemPermissionMap = array();
-		
+
 		foreach ($groupItemPermissions as $groupItemPermission) {
 			$class = $groupItemPermission->class;
 			$permission = $groupItemPermission->permission;
@@ -313,7 +323,7 @@ class GroupController extends BaseController {
 
 		return \View::make('admin::groupItems', $scope);
 	}
-	
+
 	public function getDelete(Group $group)
 	{
 		$scope = array();
@@ -330,6 +340,10 @@ class GroupController extends BaseController {
 
 		try {
 			$group->delete();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_DROP_GROUP_ID,
+				'ID '.$group->id.' ('.$group->name.')'
+			);
 		} catch (\Exception $e) {}
 
 		return \Redirect::route('admin.users');
@@ -370,7 +384,7 @@ class GroupController extends BaseController {
 		$group = new Group;
 
 		$group->name = $input['name'];
-		
+
 		$group->default_permission = $input['default_permission'];
 
 		$permissions = $group->getPermissions();
@@ -379,6 +393,10 @@ class GroupController extends BaseController {
 
 		try {
 			$group->save();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_ADD_GROUP_ID,
+				'ID '.$group->id.' ('.$group->name.')'
+			);
 			$scope['status'] = 'ok';
 			$scope['redirect'] = \URL::route('admin.users');
 		} catch (\Exception $e) {
@@ -426,7 +444,7 @@ class GroupController extends BaseController {
 		}
 
 		$group->name = $input['name'];
-		
+
 		$group->default_permission = $input['default_permission'];
 
 		$permissions = $group->getPermissions();
@@ -435,6 +453,10 @@ class GroupController extends BaseController {
 
 		try {
 			$group->save();
+			UserAction::log(
+				UserActionType::ACTION_TYPE_SAVE_GROUP_ID,
+				'ID '.$group->id.' ('.$group->name.')'
+			);
 			$scope['status'] = 'ok';
 		} catch (\Exception $e) {
 			$scope['message'] = $e->getMessage();

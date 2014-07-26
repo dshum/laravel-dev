@@ -63,7 +63,7 @@ $(function() {
 					</table>
 				</div>
 				@yield('browse')
-				<div class="space"></div>
+				<div class="space"><br /></div>
 				{? $site = App::make('site') ?}
 				{? $queries = DB::getQueryLog() ?}
 				<ol>

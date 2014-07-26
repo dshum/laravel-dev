@@ -62,15 +62,23 @@ class BrowseController extends BaseController {
 		$scope['restricted'] = array();
 
 		try {
+
+			$dropped = array();
+
 			foreach ($elementList as $element) {
-				if ( ! $element->delete()) {
+				if ($element->delete()) {
+					$dropped[] = $element->getClassId();
+				} else {
 					$scope['restricted'][] = $element;
 				}
 			}
+
 			if ($scope['restricted']) {
+
 				$scope['error'] =
 					'Невозможно удалить следующие элементы, '
 					.'пока существуют связанные с ними элементы: ';
+
 				foreach ($scope['restricted'] as $k => $element) {
 					$item = $element->getItem();
 					$scope['error'] .=
@@ -79,9 +87,20 @@ class BrowseController extends BaseController {
 						.$element->{$item->getMainProperty()}
 						.'</a>';
 				}
+
 			} else {
+
 				$scope['status'] = 'ok';
+
 			}
+
+			if (sizeof($dropped)) {
+				UserAction::log(
+					UserActionType::ACTION_TYPE_DROP_ELEMENT_LIST_TO_TRASH_ID,
+					implode(', ', $dropped)
+				);
+			}
+
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage().PHP_EOL.$e->getTraceAsString();
 		}
@@ -95,9 +114,67 @@ class BrowseController extends BaseController {
 
 		$loggedUser = \Sentry::getUser();
 
+		$check = \Input::get('check');
+
+		if ( ! $check) {
+			return json_encode($scope);
+		}
+
+		$elementList = array();
+
+		foreach ($check as $classId) {
+			$element = Element::getByClassId($classId);
+			if ($element) {
+				$elementList[] = $element;
+			}
+		}
+
+		if ( ! $elementList) {
+			return json_encode($scope);
+		}
+
+		$scope['restricted'] = array();
+
 		try {
-			$currentElement->forceDelete();
-			$scope['status'] = 'ok';
+
+			$dropped = array();
+
+			foreach ($elementList as $element) {
+				if ($element->forceDelete()) {
+					$dropped[] = $element->getClassId();
+				} else {
+					$scope['restricted'][] = $element;
+				}
+			}
+
+			if ($scope['restricted']) {
+
+				$scope['error'] =
+					'Невозможно удалить следующие элементы, '
+					.'пока существуют связанные с ними элементы: ';
+
+				foreach ($scope['restricted'] as $k => $element) {
+					$item = $element->getItem();
+					$scope['error'] .=
+						($k ? ', ' : '')
+						.'<a href="'.$element->getBrowseUrl().'">'
+						.$element->{$item->getMainProperty()}
+						.'</a>';
+				}
+
+			} else {
+
+				$scope['status'] = 'ok';
+
+			}
+
+			if (sizeof($dropped)) {
+				UserAction::log(
+					UserActionType::ACTION_TYPE_DROP_ELEMENT_LIST_TO_TRASH_ID,
+					implode(', ', $dropped)
+				);
+			}
+
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage().PHP_EOL.$e->getTraceAsString();
 		}
@@ -131,9 +208,15 @@ class BrowseController extends BaseController {
 		}
 
 		try {
+			$restored = array();
 			foreach ($elementList as $element) {
 				$element->restore();
+				$restored[] = $element->getClassId();
 			}
+			UserAction::log(
+				UserActionType::ACTION_TYPE_RESTORE_ELEMENT_LIST_ID,
+				implode(', ', $restored)
+			);
 			$scope['status'] = 'ok';
 		} catch (\Exception $e) {
 			$scope['error'] = $e->getMessage();

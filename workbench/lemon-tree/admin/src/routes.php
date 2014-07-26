@@ -106,6 +106,8 @@ Route::group(array('before' => 'admin.auth'), function() {
 
 	Route::get('/admin/user/create', array('as' => 'admin.user.create', 'uses' => 'LemonTree\UserController@getCreate'));
 
+	Route::get('/admin/users/log', array('as' => 'admin.users.log', 'uses' => 'LemonTree\UsersController@getLog'));
+
 	Route::get('/admin/browse', array('as' => 'admin.browse', 'uses' => 'LemonTree\BrowseController@getIndex'));
 
 	Route::get('/admin/browse/{classId}', array('as' => 'admin.browse', function($classId) {

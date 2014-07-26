@@ -14,6 +14,11 @@ class LoginController extends BaseController {
 
 			\Sentry::login($user, false);
 
+			UserAction::log(
+				UserActionType::ACTION_TYPE_LOGIN_ID,
+				$user->login
+			);
+
 		} catch (\Cartalyst\Sentry\Users\LoginRequiredException $e) {
 			$scope['error'] = 'Введите логин.';
 		} catch (\Cartalyst\Sentry\Users\PasswordRequiredException $e) {

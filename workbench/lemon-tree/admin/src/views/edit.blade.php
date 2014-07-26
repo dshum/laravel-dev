@@ -36,14 +36,15 @@ $(function() {
 			'{{ $currentElement->getDeleteUrl() }}',
 			{},
 			function(data) {
+				alert(data);
 				if (data.error) {
 					$('#message').html(data.error).show();
 					$.unblockUI();
 				} else {
-					document.location.href = '{{ $urlOnDelete }}';
+//					document.location.href = '{{ $urlOnDelete }}';
 				}
 			},
-			'json'
+			'html'
 		);
 	});
 
@@ -122,7 +123,7 @@ $(function() {
 @endif
 <br clear="both" />
 @if ($currentElement->getHref())<div class="href"><a href="{{ $currentElement->getHref() }}" target="_blank">Смотреть страницу на сайте</a></div>@endif
-<h1>Редактирование элемента типа <b>{{ $currentItem->getTitle() }}</b></h1>
+<h1>@if ($currentElement->id)Редактирование@elseДобавление@endif элемента типа <b>{{ $currentItem->getTitle() }}</b></h1>
 <p class="error"><span id="message" class="dnone"></span></p>
 @if ($currentElement->id)
 {{ Form::model($currentElement, array('route' => array('admin.save', $currentElement->getClassId()), 'method' => 'post', 'id' => 'editForm', 'files' => true)) }}
