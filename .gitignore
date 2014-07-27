@@ -6,7 +6,6 @@ composer.phar
 Thumbs.db
 /nbproject/private/
 /app/config/database.php
-/public/LT/
 /public/assets/
 /storage/
 /vendor
