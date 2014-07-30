@@ -23,6 +23,9 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			OrderProperty::create('order')
+		)->
+		addProperty(
 			ImageProperty::create('image')->
 			setTitle('Изображение')->
 			setResize(205, 139, 80)->
@@ -78,6 +81,9 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			OrderProperty::create('order')
 		)->
 		addProperty(
 			TextfieldProperty::create('url')->
@@ -194,6 +200,9 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			OrderProperty::create('order')
 		)->
 		addProperty(
 			TextfieldProperty::create('url')->
@@ -326,6 +335,9 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			OrderProperty::create('order')
+		)->
+		addProperty(
 			TextfieldProperty::create('url')->
 			setTitle('Адрес страницы')
 		)->
@@ -392,6 +404,9 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			OrderProperty::create('order')
 		)->
 		addProperty(
 			OneToOneProperty::create('service_section_id')->
@@ -486,6 +501,9 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			OrderProperty::create('order')
+		)->
+		addProperty(
 			TextareaProperty::create('code')->
 			setTitle('Код счетчика')
 		)->
@@ -531,6 +549,9 @@ $site->
 			setShow(true)
 		)->
 		addProperty(
+			OrderProperty::create('order')
+		)->
+		addProperty(
 			OneToOneProperty::create('service_section_id')->
 			setTitle('Служебный раздел')->
 			setRelatedClass('ServiceSection')->
@@ -566,6 +587,9 @@ $site->
 			setTitle('Название')->
 			setRequired(true)->
 			setShow(true)
+		)->
+		addProperty(
+			OrderProperty::create('order')
 		)->
 		addProperty(
 			OneToOneProperty::create('service_section_id')->
