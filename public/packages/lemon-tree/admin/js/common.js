@@ -16,7 +16,7 @@ LT.urldecode = function(str) {
 
 $(function() {
 
-	$.blockUI.defaults.message = '<img src="/LT/img/loader.gif" />';
+	$.blockUI.defaults.message = '<img src="/packages/lemon-tree/admin/img/loader.gif" />';
 	$.blockUI.defaults.css.border = 'none';
 	$.blockUI.defaults.css.background = 'none';
 	$.blockUI.defaults.overlayCSS.opacity = 0.2;

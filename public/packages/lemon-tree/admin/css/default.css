@@ -73,10 +73,6 @@ a {
 	text-decoration: none;
 }
 
-.tree {
-	margin: 5px 0 10px 0;
-}
-
 #tree div.lemon a {
 	font-family: 'Trebuchet MS', sans-serif;
 	font-size: 16px;
@@ -84,19 +80,23 @@ a {
 	color: #b0eb12;
 }
 
-div.item {
+#tree div.tree {
+	margin: 5px 0 10px 0;
+}
+
+#tree div.item {
 	margin: 10px 0 5px 0;
 	font-size: 11px;
 	font-weight: bold;
 	color: #e8a700;
 }
 
-div.padding {
+#tree div.padding {
 	margin-left: 5px;
 	padding-left: 20px;
 }
 
-div.plus {
+#tree div.plus {
 	width: 11px;
 	height: 11px;
 	float: left;
@@ -106,7 +106,7 @@ div.plus {
 	cursor: hand;
 }
 
-div.minus {
+#tree div.minus {
 	width: 11px;
 	height: 11px;
 	float: left;
@@ -116,7 +116,7 @@ div.minus {
 	cursor: hand;
 }
 
-div.empty {
+#tree div.empty {
 	width: 11px;
 	height: 11px;
 	float: left;
@@ -125,17 +125,62 @@ div.empty {
 	cursor: hand;
 }
 
+.one {
+	margin-top: 3px;
+}
+
+.one div.undefined {
+	margin: 10px 0 0 0;
+}
+
+.one div.tree {
+	margin: 5px 0 10px 0;
+}
+
 .one div.item {
+	margin: 10px 0 5px 0;
+	font-size: 11px;
 	font-weight: bold;
 	color: #234e9e;
 }
 
+.one div.padding {
+	margin-left: 5px;
+	padding-left: 20px;
+}
+
 .one div.plus {
-	background: url(../img/plus2.png);
+	width: 11px;
+	height: 11px;
+	float: left;
+	background: #FFF url(../img/plus2.png);
+	margin: 2px 5px 0 0;
+	cursor: pointer;
+	cursor: hand;
 }
 
 .one div.minus {
-	background: url(../img/minus2.png);
+	width: 11px;
+	height: 11px;
+	float: left;
+	background: #FFF url(../img/minus2.png);
+	margin: 2px 5px 0 0;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.one div.empty {
+	width: 11px;
+	height: 11px;
+	float: left;
+	margin-left: 5px;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.one input[type="radio"] {
+	margin: 0;
+	padding: 0;
 }
 
 #browse {
@@ -173,16 +218,16 @@ div.button {
 	color: #999;
 }
 
+div.button:hover {
+	border: 1px solid #CCC;
+	color: #333;
+}
+
 div.disabled img {
 	-webkit-filter: grayscale(90%);
 	-webkit-filter: grayscale(0.9);
 	filter: grayscale(90%);
 	opacity: 0.6;
-}
-
-div.button:hover {
-	border: 1px solid #CCC;
-	color: #333;
 }
 
 #log {
@@ -330,15 +375,6 @@ div.form-search {
 	border-radius: 5px;
 }
 
-div.prop-search {
-	float: left;
-	margin: 5px 10px 5px 0;
-	padding: 5px 10px;
-	background: #FFF;
-	border: 1px solid #CCC;
-	border-radius: 3px;
-}
-
 div.item-search {
 	float: left;
 	margin: 5px 10px 5px 0;
@@ -362,31 +398,21 @@ div.item-search-active {
 	border-collapse: collapse;
 }
 
-.order_link {
-	padding-top: 8px;
-	float: right;
-	white-space: nowrap;
-}
-
 .element-list-header .order_link {
 	padding: 6px 0 0 25px;
 	font-size: 13px;
 }
 
-.order_link img, .em img {
+.order_link img {
 	vertical-align: middle;
 }
 
-.order_link a, .em {
-	text-decoration: none;
-}
-
-.order_link a:hover, .em:hover  {
-	text-decoration: none;
-}
-
-.order_link em, .em em {
-	font-style: normal;
+select.multi-element-list {
+	width: 90%;
+	padding: 5px;
+	border: 1px solid #CCC;
+	border-radius: 5px;
+	font-size: 120%;
 }
 
 table.element-list {
@@ -443,6 +469,8 @@ div.prop-search {
 	margin: 5px 10px 5px 0;
 	padding: 5px 10px;
 	background: #FFF;
+	border: 1px solid #CCC;
+	border-radius: 3px;
 	white-space: nowrap;
 	font-size: 13px;
 }
@@ -468,7 +496,17 @@ div.prop-search input.prop-time {
 }
 
 div.prop-search input.prop-comment {
-	width: 300px;
+	width: 250px;
+}
+
+div.prop-search select.prop-select {
+	width: 250px;
+}
+
+div.plugin {
+	padding: 10px;
+	border: 1px solid #EEE;
+	border-radius: 5px;
 }
 
 .dashed {
@@ -521,6 +559,5 @@ ul.pagination li.disabled {
 }
 
 .ui-autocomplete-loading {
-	background: white url('/LT/img/ac-loader.gif') right center no-repeat;
+	background: white url('/packages/lemon-tree/admin/img/ac-loader.gif') right center no-repeat;
 }
-
