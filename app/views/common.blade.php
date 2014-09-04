@@ -4,12 +4,8 @@
 {{ $currentElement->title }}
 @stop
 
-@section('h1')
-{{ $currentElement->h1 }}
-@stop
-
 @section('content')
-<h1>@yield('h1')</h1>
+<h2><span>{{ $currentElement->h1 }}</span></h2>
 <div class="info">
 	<p>{{ $currentElement->fullcontent }}</p>
 </div>

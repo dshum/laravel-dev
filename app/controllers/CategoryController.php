@@ -10,12 +10,17 @@ class CategoryController extends BaseController {
 
 		View::share('currentElement', $currentElement);
 
+		$subcategoryList =
+			Subcategory::where('category_id', $currentElement->id)->
+			orderBy('order')->
+			get();
+
 		$goodList =
 			Good::where('category_id', $currentElement->id)->
 			orderBy('order')->
-			cacheTags('Category')->rememberForever()->
 			get();
 
+		$scope['subcategoryList'] = $subcategoryList;
 		$scope['goodList'] = $goodList;
 
 		return View::make('catalogue.category', $scope);

@@ -11,11 +11,11 @@
   |
  */
 
-Route::get('/', array('as' => 'firstpage', 'uses' => 'FirstpageController@getIndex'));
+Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 
-Route::get('/novelty', array('as' => 'novelty', 'uses' => 'NoveltyController@getIndex'));
+Route::get('/novelty', array('as' => 'novelty', 'uses' => 'HomeController@getNovelty'));
 
-Route::get('/special', array('as' => 'special', 'uses' => 'SpecialController@getIndex'));
+Route::get('/special', array('as' => 'special', 'uses' => 'HomeController@getSpecial'));
 
 Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@getIndex'));
 

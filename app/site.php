@@ -2,8 +2,6 @@
 
 $site = \App::make('site');
 
-$site->initMicroTime();
-
 $site->
 
 	/*
@@ -690,5 +688,10 @@ $site->
 	bindTree('ServiceSection.12', 'ExpenseCategory')->
 	bindTree('ServiceSection.13', 'ExpenseSource')->
 	bindTree('ServiceSection.14', 'GoodBrand')->
+
+	bindBrowsePlugin('ServiceSection.8', 'MoneyStat')->
+	bindSearchPlugin('Good', 'GoodSearch')->
+	bindEditPlugin('ServiceSection', 'MoneyStat2')->
+	bindBrowseFilter('Good', 'GoodFilter')->
 
 	end();

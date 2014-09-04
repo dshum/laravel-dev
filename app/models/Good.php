@@ -2,12 +2,36 @@
 
 class Good extends LemonTree\Element {
 
-	protected $category = null;
-	protected $subcategory = null;
+	public static function boot()
+	{
+		parent::boot();
+
+		static::saved(function($element) {
+
+			$class = get_class($element);
+			if ($class::isCache() === true) {
+				$key = $class::getCacheKey($element->id);
+				\Cache::forget($key);
+				\Cache::tags($class)->flush();
+			}
+
+		});
+
+		static::deleted(function($element) {
+
+			$class = get_class($element);
+			if ($class::isCache() === true) {
+				$key = $class::getCacheKey($element->id);
+				\Cache::forget($key);
+				\Cache::tags($class)->flush();
+			}
+
+		});
+    }
 
 	public function getHref()
 	{
-		$category = $this->getCategory();
+		$category = $this->category;
 
 		return \URL::route('catalogue', array('url1' => $category->url, 'url2' => $this->url));
 	}
@@ -17,26 +41,19 @@ class Good extends LemonTree\Element {
 		return substr(md5(rand()), 0, 2);
 	}
 
-	public function getCategory()
+	public function category()
 	{
-		if ($this->category) return $this->category;
-
-		return $this->category =
-			$this->belongsTo('Category', 'category_id')->
-			cacheTags('Category')->
-			rememberForever()->
-			first();
+		return $this->belongsTo('Category', 'category_id');
 	}
 
-	public function getSubcategory()
+	public function subcategory()
 	{
-		if ($this->subcategory) return $this->subcategory;
+		return $this->belongsTo('Subcategory', 'subcategory_id');
+	}
 
-		return $this->subcategory =
-			$this->belongsTo('Subcategory', 'subcategory_id')->
-			cacheTags('Subcategory')->
-			rememberForever()->
-			first();
+	public function brand()
+	{
+		return $this->belongsTo('GoodBrand', 'good_brand_id');
 	}
 
 }
