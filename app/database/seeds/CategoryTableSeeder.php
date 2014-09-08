@@ -4,6 +4,8 @@ class CategoryTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('categories')->truncate();
 
 		Category::create(array(

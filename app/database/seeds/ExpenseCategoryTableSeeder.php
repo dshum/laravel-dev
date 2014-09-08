@@ -4,6 +4,8 @@ class ExpenseCategoryTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('expense_categories')->truncate();
 
 		ExpenseCategory::create(array(

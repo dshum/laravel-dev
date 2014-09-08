@@ -11,17 +11,23 @@
   |
  */
 
+Route::group(array('before' => 'guest'), function() {
+	Route::get('/register', array('as' => 'register', 'uses' => 'RegisterController@getIndex'));
+	Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@getIndex'));
+	Route::post('/login', array('as' => 'login', 'uses' => 'LoginController@postLogin'));
+	Route::get('/restore', array('as' => 'restore', 'uses' => 'RestoreController@getIndex'));
+});
+
+Route::group(array('before' => 'auth'), function() {
+	Route::get('/logout', array('as' => 'logout', 'uses' => 'LoginController@getLogout'));
+	Route::get('/cabinet', array('as' => 'cabinet', 'uses' => 'CabinetController@getIndex'));
+});
+
 Route::get('/', array('as' => 'home', 'uses' => 'HomeController@getIndex'));
 
 Route::get('/novelty', array('as' => 'novelty', 'uses' => 'HomeController@getNovelty'));
 
 Route::get('/special', array('as' => 'special', 'uses' => 'HomeController@getSpecial'));
-
-Route::get('/login', array('as' => 'login', 'uses' => 'LoginController@getIndex'));
-
-Route::get('/register', array('as' => 'register', 'uses' => 'RegisterController@getIndex'));
-
-Route::get('/cabinet', array('as' => 'cabinet', 'uses' => 'CabinetController@getIndex'));
 
 Route::get('/cart', array('as' => 'cart', 'uses' => 'CartController@getIndex'));
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCartPositionTable extends Migration {
+class CreateGoodStoreStateTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreateCartPositionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('cart_positions');
+		//
 	}
 
 }

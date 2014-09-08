@@ -47,7 +47,7 @@ a {
 	text-decoration: underline;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
 	width: 300px;
 	font-size: 120%;
 }
@@ -67,6 +67,13 @@ textarea {
 
 .red {
 	color: #D70;
+}
+
+p.error span {
+	padding: 5px 10px;
+	background: #E70;
+	color: #FFF;
+	font-weight: bold;
 }
 
 div.left {
@@ -103,13 +110,22 @@ div.good {
 	text-align: center;
 }
 
-div.good img {
-	border: 1px solid #999;
+img {
 	border-radius: 10px;
 }
 
 div.good div.title {
 	text-align: left;
+}
+
+span.btn {
+	padding: 4px 7px 5px 7px;
+	font-size: 80%;
+	background: #690;
+	color: #FFF;
+	border-radius: 5px;
+	cursor: pointer;
+	cursor: hand;
 }
 
 div.good small {

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVideoTable extends Migration {
+class CreateMetroStationTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreateVideoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('videos');
+		//
 	}
 
 }

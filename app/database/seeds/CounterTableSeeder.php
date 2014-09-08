@@ -4,6 +4,8 @@ class CounterTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('counters')->truncate();
 
 		Counter::create(array(

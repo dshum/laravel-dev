@@ -15,8 +15,9 @@
 
 	<h1>@if ($currentRouteName != 'home')<a href="{{ URL::route('home') }}">Магазин</a>@else<h1><span>Магазин</span></h1>@endif</h1>
 
-@if (false)
-	<p><strong>Добро пожаловать</strong>, <a href="{{ URL::route('cabinet') }}">denis-shumeev@yandex.ru</a></p>
+@if ($loggedUser)
+	<p><a href="{{ URL::route('cabinet') }}">{{ $loggedUser->email }}</a></p>
+	<p><a href="{{ URL::route('logout') }}">Выход</a></p>
 @else
 	<p><a href="{{ URL::route('login') }}">Войти</a></p>
 	<p><a href="{{ URL::route('register') }}">Зарегистрироваться</a></p>

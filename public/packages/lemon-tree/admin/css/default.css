@@ -42,6 +42,11 @@ body {
 	font-size: 13px;
 }
 
+#tab-wrapper ul li img {
+	position: relative;
+	top: 4px;
+}
+
 a {
 	color: #234e9e;
 }
@@ -198,8 +203,28 @@ a {
 	background: #FFF;
 }
 
-#menu-wrapper {
+#menu-wrapper table {
+	width: 100%;
+}
 
+#menu-wrapper table td {
+	padding-right: 15px;
+}
+
+#menu-wrapper table td.path {
+	width: 90%;
+}
+
+#menu-wrapper table td img {
+	width: 32px;
+	height: 32px;
+}
+
+#menu-wrapper table td img.profile {
+	width: 24px;
+	height: 24px;
+	vertical-align: middle;
+	margin-right: 5px;
 }
 
 #browse-wrapper {
@@ -216,6 +241,11 @@ div.button {
 	text-align: center;
 	font-size: 13px;
 	color: #999;
+}
+
+div.button img {
+	width: 48px;
+	height: 48px;
 }
 
 div.button:hover {

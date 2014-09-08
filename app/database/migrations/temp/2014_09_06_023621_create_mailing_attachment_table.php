@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSiteUserTable extends Migration {
+class CreateMailingAttachmentTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreateSiteUserTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('site_users');
+		//
 	}
 
 }

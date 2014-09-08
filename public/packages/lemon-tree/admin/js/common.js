@@ -79,12 +79,14 @@ $(function() {
 		var url = $(this).attr('url');
 
 		if (opened == 'true') {
-			$('#tree').animate({left: '-20%'}, 250);
+			$('#tree').animate({left: '-20%'}, 250, function() {
+				$(this).hide();
+			});
 			$('#browse').animate({left: '0%', width: '100%'}, 250, function() {
 				$('#tree-toggler').attr('opened', 'false');
 			});
 		} else if (opened == 'false') {
-			$('#tree').animate({left: '0%'}, 250);
+			$('#tree').show().animate({left: '0%'}, 250);
 			$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
 				$('#tree-toggler').attr('opened', 'true');
 			});
@@ -98,7 +100,7 @@ $(function() {
 					$('#tree').css('left', '-20%');
 					$('#tree-container').html(html);
 					$('div.tree').children('a[classId="'+LT.currentElement+'"]').css('font-weight', 'bold');
-					$('#tree').animate({left: '0%'}, 250);
+					$('#tree').show().animate({left: '0%'}, 250);
 					$('#browse').animate({left: '20%', width: '80%'}, 250, function() {
 						$('#tree-toggler').attr('opened', 'true');
 					});

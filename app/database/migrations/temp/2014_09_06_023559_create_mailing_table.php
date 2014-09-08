@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePhotoTable extends Migration {
+class CreateMailingTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreatePhotoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('photos');
+		//
 	}
 
 }

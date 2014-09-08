@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDeliveryAddressTable extends Migration {
+class CreateOrderTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreateDeliveryAddressTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('delivery_adresses');
+		//
 	}
 
 }

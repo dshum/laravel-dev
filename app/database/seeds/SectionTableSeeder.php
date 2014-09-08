@@ -4,6 +4,10 @@ class SectionTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
+		Eloquent::unguard();
+
 		DB::table('sections')->truncate();
 
 		Section::create(array(

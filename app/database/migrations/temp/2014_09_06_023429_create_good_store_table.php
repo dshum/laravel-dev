@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMosoblRegionTable extends Migration {
+class CreateGoodStoreTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -22,7 +22,7 @@ class CreateMosoblRegionTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('mosobl_regions');
+		//
 	}
 
 }

@@ -4,6 +4,8 @@ class SiteSettingsTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('site_settings')->truncate();
 
 		SiteSettings::create(array(

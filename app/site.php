@@ -5,6 +5,68 @@ $site = \App::make('site');
 $site->
 
 	/*
+	 * Пользователь
+	 */
+
+	addItem(
+		Item::create('SiteUser')->
+		setTitle('Пользователь')->
+		setMainProperty('email')->
+		addOrderBy('created_at', 'desc')->
+		addProperty(
+			TextfieldProperty::create('email')->
+			setTitle('Email')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('fio')->
+			setTitle('Имя, фамилия')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('phone')->
+			setTitle('Телефон')->
+			setRequired(true)->
+			setShow(true)
+		)->
+		addProperty(
+			TextfieldProperty::create('phone2')->
+			setTitle('Телефон 2')->
+			setShow(true)
+		)->
+		addProperty(
+			FloatProperty::create('discount')->
+			setTitle('Скидка, %')
+		)->
+		addProperty(
+			CheckboxProperty::create('activated')->
+			setTitle('Активирован')
+		)->
+		addProperty(
+			CheckboxProperty::create('banned')->
+			setTitle('Забанен')
+		)->
+		addProperty(
+			TextareaProperty::create('comments')->
+			setTitle('Комментарий менеджера')
+		)->
+		addProperty(
+			DatetimeProperty::create('created_at')->
+			setTitle('Дата создания')->
+			setReadonly(true)->
+			setShow(true)
+		)->
+		addProperty(
+			DatetimeProperty::create('updated_at')->
+			setTitle('Последнее изменение')->
+			setReadonly(true)->
+			setShow(true)
+		)
+	)->
+
+	/*
 	 * Категория товаров
 	 */
 

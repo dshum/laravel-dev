@@ -4,6 +4,8 @@ class GoodTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('goods')->truncate();
 
 		Good::create(array(

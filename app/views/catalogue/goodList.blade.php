@@ -7,7 +7,7 @@
 <a href="{{ $good->getHref() }}">{{ $good->name }}</a><br />
 <small>{{ $good->brand->name }}</small>
 {{ $good->price }} руб.
-<span class="btn">Заказать</span>
+<span good="{{ $good->id }}" class="btn">Заказать</span>
 </div>
 </div>
 @endforeach

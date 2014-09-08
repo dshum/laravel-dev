@@ -4,6 +4,8 @@ class SubcategoryTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('subcategories')->truncate();
 
 		Subcategory::create(array(

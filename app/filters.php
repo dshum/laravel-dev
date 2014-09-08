@@ -1,5 +1,19 @@
 <?php
 
+Route::filter('guest', function() {
+	if (Auth::check()) {
+		return Redirect::route('cabinet');
+	}
+});
+
+Route::filter('auth', function() {
+	if ( ! Auth::check()) {
+		return App::make('LoginController')->getIndex();
+	}
+});
+
+return;
+
 /*
 |--------------------------------------------------------------------------
 | Application & Route Filters

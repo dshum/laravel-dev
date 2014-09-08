@@ -4,6 +4,8 @@ class ExpenseSourceTableSeeder extends Seeder {
 
 	public function run()
 	{
+		Eloquent::unguard();
+		
 		DB::table('expense_sources')->truncate();
 
 		ExpenseSource::create(array(
