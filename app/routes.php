@@ -35,22 +35,22 @@ Route::get('/order', array('as' => 'order', 'uses' => 'OrderController@getIndex'
 
 Route::get('/delivery', array('as' => 'delivery', function() {
 	$currentElement = Section::find(1);
-	View::share('currentElement', $currentElement);
 	$scope = CommonFilter::apply();
+	View::share('currentElement', $currentElement);
 	return View::make('common', $scope);
 }));
 
 Route::get('/payments', array('as' => 'payments', function() {
 	$currentElement = Section::find(2);
-	View::share('currentElement', $currentElement);
 	$scope = CommonFilter::apply();
+	View::share('currentElement', $currentElement);
 	return View::make('common', $scope);
 }));
 
 Route::get('/contacts', array('as' => 'contacts', function() {
 	$currentElement = Section::find(3);
-	View::share('currentElement', $currentElement);
 	$scope = CommonFilter::apply();
+	View::share('currentElement', $currentElement);
 	return View::make('common', $scope);
 }));
 
