@@ -1,0 +1,56 @@
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0px;
+	padding: 0px;
+	background: #FFF;
+	font-family: 'Trebuchet MS', sans-serif;
+	font-size: 100%;
+	font-weight: 400;
+	color: #000;
+}
+
+#wrapper {
+	width: 400px;
+	height: 300px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -200px;
+	margin-left: -200px;
+	padding-bottom: 20px;
+}
+
+#page {
+	width: 100%;
+	position: relative;
+	text-align: left;
+}
+
+#logo span {
+	background: #CCC;
+	color: #FFF;
+	padding: 2px 10px 2px 5px;
+	font-size: 150%;
+	font-weight: 800;
+}
+
+input.btn {
+	padding: 5px 10px;
+	font-size: 120%;
+}
+
+p.error {
+	color: orange;
+	font-weight: 800;
+}
+
+p.ok {
+	color: green;
+	font-weight: 800;
+}
+
+
+
