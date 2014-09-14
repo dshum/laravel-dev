@@ -22,17 +22,17 @@ $(function() {
 	$.blockUI.defaults.overlayCSS.opacity = 0.2;
 	$.blockUI.defaults.fadeIn = 50;
 
-	var onCtrlS = function(event, form) {
-		if(!event) var event = window.event;
+	var onCtrlS = function(event) {
+		if ( ! event) var event = window.event;
 
-		if(event.keyCode) {
+		if (event.keyCode) {
 			var code = event.keyCode;
-		} else if(event.which) {
+		} else if (event.which) {
 			var code = event.which;
 		}
 
-		if(code == 83 && event.ctrlKey == true) {
-			$('form:first').submit();
+		if (code == 83 && event.ctrlKey == true) {
+			$('form[save="true"]').submit();
 			return false;
 		}
 
