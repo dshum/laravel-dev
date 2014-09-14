@@ -102,7 +102,9 @@ $site->
 		)->
 		addProperty(
 			TextareaProperty::create('shortcontent')->
-			setTitle('Краткое описание')
+			setTitle('Краткое описание')->
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			RichtextProperty::create('fullcontent')->
@@ -111,7 +113,8 @@ $site->
 		addProperty(
 			CheckboxProperty::create('hide')->
 			setTitle('Скрыть')->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			DatetimeProperty::create('created_at')->
@@ -161,7 +164,8 @@ $site->
 		addProperty(
 			CheckboxProperty::create('hide')->
 			setTitle('Скрыть')->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			OneToOneProperty::create('category_id')->
@@ -273,7 +277,8 @@ $site->
 			TextfieldProperty::create('code')->
 			setTitle('Артикул')->
 			setRequired(true)->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			ImageProperty::create('image')->
@@ -286,13 +291,15 @@ $site->
 			FloatProperty::create('supplier_price')->
 			setTitle('Цена поставщика')->
 			setRequired(true)->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			FloatProperty::create('price')->
 			setTitle('Цена')->
 			setRequired(true)->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			FloatProperty::create('price2')->
@@ -333,12 +340,14 @@ $site->
 		addProperty(
 			CheckboxProperty::create('hide')->
 			setTitle('Скрыть')->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			CheckboxProperty::create('absent')->
 			setTitle('Нет в наличии')->
-			setShow(true)
+			setShow(true)->
+			setEditable(true)
 		)->
 		addProperty(
 			OneToOneProperty::create('category_id')->

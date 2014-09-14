@@ -478,6 +478,40 @@ table.element-list th.first, td.first a {
 	text-decoration: none;
 }
 
+table.element-list td.first img {
+	vertical-align: middle;
+}
+
+table.element-list td.edit {
+	width: 20px;
+	padding-right: 0;
+}
+
+table.element-list td.edit img {
+	vertical-align: middle;
+}
+
+table.element-list td.main {
+	padding-left: 0;
+}
+
+table.element-list td.editable input[type="text"] {
+	width: 200px;
+}
+
+table.element-list td.editable input[type="password"] {
+	width: 100px;
+}
+
+table.element-list td.editable input[type="text"].prop-number {
+	width: 50px;
+}
+
+table.element-list td.editable textarea {
+	width: 200px;
+	height: 100px;
+}
+
 table.element-list th.last, td.last {
 	width: 20px;
 }
@@ -551,6 +585,15 @@ div.plugin {
 .dnone {
 	display: none;
 }
+
+.dinline {
+	display: inline;
+}
+
+.dblock {
+	display: block;
+}
+
 
 .grey {
 	color: #999;
