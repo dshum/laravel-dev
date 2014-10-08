@@ -2,24 +2,19 @@
 
 class Subcategory extends LemonTree\Element {
 
-	protected $category = null;
-	
 	public function getHref()
 	{
-		$category = $this->getCategory();
+		$category = $this->category;
 
-		return \URL::route('catalogue', array('url1' => $category->url, 'url2' => $this->url));
+		return \URL::route('catalogue', array(
+			'url1' => $category->url,
+			'url2' => $this->url
+		));
 	}
 
-	public function getCategory()
+	public function category()
 	{
-		if ($this->category) return $this->category;
-
-		return $this->category =
-			$this->belongsTo('Category', 'category_id')->
-			cacheTags('Category')->
-			rememberForever()->
-			first();
+		return $this->belongsTo('Category', 'category_id');
 	}
 
 }

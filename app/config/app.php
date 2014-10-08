@@ -121,9 +121,10 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
 		'Cartalyst\Sentry\SentryServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 
 		'LemonTree\Admin\AdminServiceProvider',
-//		'Session2\SessionHandlerServiceProvider',
+
 
 	),
 

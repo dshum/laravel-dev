@@ -7,5 +7,5 @@ Thumbs.db
 /nbproject/private/
 /app/config/database.php
 /public/assets/
-/storage/
+/storage/*
 /vendor

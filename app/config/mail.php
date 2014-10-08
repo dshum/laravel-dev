@@ -48,6 +48,7 @@ return array(
 	  |
 	 */
 	'from' => array('address' => 'info@lemon-tree.ru', 'name' => 'Lemon Tree'),
+	'buglover' => array('address' => 'bugs@lr1.ru', 'name' => 'Buglover'),
 	/*
 	  |--------------------------------------------------------------------------
 	  | E-Mail Encryption Protocol

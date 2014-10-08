@@ -18,6 +18,27 @@ $(function() {
 		form.submit();
 	});
 
+	$('#button-copy').click(function() {
+		if ( ! countChecked) return false;
+
+		$.blockUI();
+
+		$('#message').html('').hide();
+
+		$('#browseForm').ajaxSubmit({
+			url: LT.copyUrl,
+			dataType: 'json',
+			success: function(data) {
+				document.location.reload();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
+			}
+		});
+
+		event.preventDefault();
+	});
+
 	$('#button-delete').click(function() {
 		if ( ! countChecked) return false;
 
@@ -38,6 +59,9 @@ $(function() {
 				}
 
 				$.unblockUI();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
@@ -56,6 +80,9 @@ $(function() {
 			dataType: 'json',
 			success: function(data) {
 				document.location.reload();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
@@ -158,8 +185,10 @@ $(function() {
 		}
 
 		if (countChecked > 0) {
+			$('#button-copy').removeClass('disabled');
 			$('#button-delete').removeClass('disabled');
 		} else {
+			$('#button-copy').addClass('disabled', 'disabled');
 			$('#button-delete').addClass('disabled', 'disabled');
 		}
 
@@ -195,8 +224,10 @@ $(function() {
 		}
 
 		if (countChecked > 0) {
+			$('#button-copy').removeClass('disabled');
 			$('#button-delete').removeClass('disabled');
 		} else {
+			$('#button-copy').addClass('disabled', 'disabled');
 			$('#button-delete').addClass('disabled', 'disabled');
 		}
 
@@ -274,7 +305,6 @@ $(function() {
 			url: this.action,
 			dataType: 'json',
 			success: function(data) {
-//				alert(data);
 				if (data.error) {
 					for (var classId in data.error) {
 						for (var i in data.error[classId]) {
@@ -306,6 +336,9 @@ $(function() {
 				stopToggle = false;
 
 				$.unblockUI();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 

@@ -96,7 +96,7 @@ $(function() {
 	$('#order-last').click(function(){
 		LT.Order.moveLast();
 	});
-	
+
 	$('#orderForm').submit(function(event) {
 		$.blockUI();
 
@@ -104,14 +104,17 @@ $(function() {
 			url: this.action,
 			dataType: 'json',
 			success: function(data) {
-//				alert(data);
 				if (data.logout) {
 					document.location.href = LT.adminUrl;
 				}
+				
 				$.unblockUI();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
-		
+
 		event.preventDefault();
 	});
 });

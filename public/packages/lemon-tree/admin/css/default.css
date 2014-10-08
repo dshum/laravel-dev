@@ -10,7 +10,7 @@ body {
 	font-size: 14px;
 	background: #FFF;
 	color: #000;
-	overflow-y: scroll;
+//	overflow-y: scroll;
 }
 
 #wrapper {
@@ -428,13 +428,20 @@ div.item-search-active {
 	border-collapse: collapse;
 }
 
-.element-list-header .order_link {
+.order-link {
 	padding: 6px 0 0 25px;
 	font-size: 13px;
 }
 
-.order_link img {
+.order-link img {
 	vertical-align: middle;
+}
+
+.order-link .active {
+	padding: 2px 5px 3px 5px;
+	border-radius: 3px;
+	background: #999;
+	color: #FFF;
 }
 
 select.multi-element-list {
@@ -601,6 +608,18 @@ div.plugin {
 
 .small {
 	font-size: 80%;
+}
+
+.message-popup {
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: auto;
+	max-width: 400px;
+	margin: 20px auto;
+	border: 5px solid #CCC;
+	border-radius: 10px;
+	font-size: 120%;
 }
 
 ul.pagination li {

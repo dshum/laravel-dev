@@ -56,9 +56,7 @@ Route::get('/contacts', array('as' => 'contacts', function() {
 
 Route::get('/{url1}/{url2?}', array('as' => 'catalogue', function($url1, $url2 = null) {
 
-	$category =
-		Category::where('url', $url1)->
-		cacheTags('Category')->rememberForever()->first();
+	$category = Category::where('url', $url1)->first();
 
 	if ( ! $category) App::abort(404);
 
@@ -66,17 +64,13 @@ Route::get('/{url1}/{url2?}', array('as' => 'catalogue', function($url1, $url2 =
 		return App::make('CategoryController')->getIndex($category);
 	}
 
-	$subcategory =
-		Subcategory::where('url', $url2)->
-		cacheTags('Subcategory')->rememberForever()->first();
+	$subcategory = Subcategory::where('url', $url2)->first();
 
 	if ($subcategory) {
 		return App::make('SubcategoryController')->getIndex($category, $subcategory);
 	}
 
-	$good =
-		Good::where('url', $url2)->
-		cacheTags('Good')->rememberForever()->first();
+	$good = Good::where('url', $url2)->first();
 
 	if ( ! $good) App::abort(404);
 

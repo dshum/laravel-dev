@@ -1,12 +1,69 @@
 $(function() {
 
-	$('span[item]').click(function() {
+	$('span[sortItem]').click(function() {
+		if ($(this).attr('active') == 'true') return false;
+
+		var link = $(this);
+		var sortItem = $(this).attr('sortItem');
+
+		$('#itemListContainer').slideUp('fast', function() {
+			$.post(
+				LT.searchItemListUrl,
+				{sort: sortItem},
+				function(html) {
+					$('#itemListContainer')
+						.html(html)
+						.slideDown('fast');
+					$('span[sortItem][active="true"]')
+						.attr('active', 'false')
+						.removeClass('active')
+						.addClass('dashed hand');
+					link
+						.attr('active', 'true')
+						.removeClass('dashed hand')
+						.addClass('active');
+				},
+				'html'
+			);
+		});
+	});
+
+	$('body').on('click', 'span[sortProperty]', function() {
+		if ($(this).attr('active') == 'true') return false;
+
+		var link = $(this);
+		var item = $(this).attr('item');
+		var sortProperty = $(this).attr('sortProperty');
+
+		$('#propertyListContainer').slideUp('fast', function() {
+			$.post(
+				LT.searchPropertyListUrl,
+				{item: item, sort: sortProperty},
+				function(html) {
+					$('#propertyListContainer')
+						.html(html)
+						.slideDown('fast');
+					$('span[sortProperty][active="true"]')
+						.attr('active', 'false')
+						.removeClass('active')
+						.addClass('dashed hand');
+					link
+						.attr('active', 'true')
+						.removeClass('dashed hand')
+						.addClass('active');
+				},
+				'html'
+			);
+		});
+	});
+
+	$('body').on('click', 'span[list="item"]', function() {
 		var item = $(this).attr('item');
 
 		if (item == $('#item').val()) return false;
 
-		$('span[item]').parent().removeClass('item-search-active').addClass('item-search');
-		$('span[item]').addClass('dashed hand');
+		$('span[list="item"]').parent().removeClass('item-search-active').addClass('item-search');
+		$('span[list="item"]').addClass('dashed hand');
 
 		$(this).parent().removeClass('item-search').addClass('item-search-active');
 		$(this).removeClass('dashed hand');
@@ -64,6 +121,10 @@ $(function() {
 		input.val('');
 		inputShow.html('не определен');
 		inputName.val('').focus();
+	});
+
+	$('#searchForm').submit(function(event) {
+		if ( ! $('#item').val()) event.preventDefault();
 	});
 
 });

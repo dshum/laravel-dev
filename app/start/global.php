@@ -30,7 +30,7 @@ ClassLoader::addDirectories(array(
   |
  */
 
-Log::useFiles(storage_path() . '/logs/laravel.log');
+Log::useDailyFiles(storage_path() . '/logs/laravel.log');
 
 /*
   |--------------------------------------------------------------------------
@@ -47,6 +47,7 @@ Log::useFiles(storage_path() . '/logs/laravel.log');
 
 App::error(function(Exception $exception, $code) {
 	Log::error($exception);
+	LemonTree\ErrorMessageUtils::sendMessage($exception);
 	if (Config::get('app.debug') == false) {
 		return Response::view('error500', array(), 500);
 	}
@@ -81,8 +82,10 @@ App::down(function() {
 require app_path() . '/filters.php';
 require app_path() . '/events.php';
 
-if (file_exists($swift_init = app_path() . '/../vendor/swiftmailer/swiftmailer/lib/swift_init.php'
-	)) {
+if (file_exists(
+	$swift_init = app_path()
+		.'/../vendor/swiftmailer/swiftmailer/lib/swift_init.php'
+)) {
 	require_once $swift_init;
 }
 
