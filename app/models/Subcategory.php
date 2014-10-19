@@ -1,6 +1,8 @@
 <?php
 
-class Subcategory extends LemonTree\Element {
+class Subcategory extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 	public function getHref()
 	{

@@ -1,5 +1,7 @@
 <?php
 
-class MetroStation extends LemonTree\Element {
+class MetroStation extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

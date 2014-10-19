@@ -1,5 +1,7 @@
 <?php
 
-class BeznalAccount extends LemonTree\Element {
+class BeznalAccount extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

@@ -1,5 +1,7 @@
 <?php
 
-class QiwiAccount extends LemonTree\Element {
+class QiwiAccount extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

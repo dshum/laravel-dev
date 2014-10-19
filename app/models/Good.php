@@ -1,6 +1,8 @@
 <?php
 
-class Good extends LemonTree\Element {
+class Good extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 	public function getHref()
 	{

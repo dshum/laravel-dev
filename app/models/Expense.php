@@ -1,7 +1,7 @@
 <?php
 
-class Expense extends LemonTree\Element {
+class Expense extends Eloquent implements LemonTree\ElementInterface {
 
-
+	use LemonTree\ElementTrait;
 
 }

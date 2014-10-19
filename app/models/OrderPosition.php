@@ -1,5 +1,7 @@
 <?php
 
-class OrderPosition extends LemonTree\Element {
+class OrderPosition extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

@@ -1,5 +1,7 @@
 <?php
 
-class Photo extends LemonTree\Element {
+class Photo extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

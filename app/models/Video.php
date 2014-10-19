@@ -1,5 +1,7 @@
 <?php
 
-class Video extends LemonTree\Element {
-	
+class Video extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
+
 }
