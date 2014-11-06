@@ -1,7 +1,7 @@
 <?php
 
-class GoodBrand extends LemonTree\Element {
+class GoodBrand extends Eloquent implements LemonTree\ElementInterface {
 
-
+	use LemonTree\ElementTrait;
 
 }

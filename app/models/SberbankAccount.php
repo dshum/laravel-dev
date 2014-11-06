@@ -1,5 +1,7 @@
 <?php
 
-class SberbankAccount extends LemonTree\Element {
+class SberbankAccount extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

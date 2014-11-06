@@ -1,5 +1,7 @@
 <?php
 
-class Courier extends LemonTree\Element {
+class Courier extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

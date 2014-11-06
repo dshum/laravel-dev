@@ -5,7 +5,8 @@ composer.phar
 .DS_Store
 Thumbs.db
 /nbproject/private/
-/app/config/database.php
+/app/config/*
 /public/assets/
+/public/packages/
 /storage/*
 /vendor

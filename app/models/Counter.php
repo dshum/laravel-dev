@@ -1,7 +1,7 @@
 <?php
 
-class Counter extends LemonTree\Element {
+class Counter extends Eloquent implements LemonTree\ElementInterface {
 
-
+	use LemonTree\ElementTrait;
 
 }

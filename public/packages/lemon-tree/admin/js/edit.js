@@ -162,23 +162,44 @@ $(function() {
 			url: this.action,
 			dataType: 'json',
 			success: function(data) {
+<<<<<<< HEAD
 //				alert(data);
 				$('#message').html('').hide();
 				$('span[error]').removeClass('error');
+=======
+				$('span[error]').parent().slideUp('fast');
+>>>>>>> 1641eeb2d04778eccaf9ca3f3fea6f92a3a09985
 
-				if (data.error) {
-					for (var i in data.error) {
-						$('span[error="'+data.error[i]+'"]').addClass('error');
-					}
+				if (data.debug) {
+					LT.Alert.popup(data.debug);
 				} else if (data.logout) {
 					document.location.href = LT.adminUrl;
-				} else if (data.redirect) {
-					document.location.href = data.redirect;
+				} else if (data.error) {
+					var message = '';
+					for (var name in data.error) {
+						var errorContainer = $('span[error="'+name+'"]');
+						var propertyMessage = '';
+						for (var i in data.error[name]) {
+							propertyMessage +=
+								data.error[name][i].message
+								+'<br />';
+							message +=
+								data.error[name][i].title
+								+'. '
+								+data.error[name][i].message
+								+'.<br />';
+						}
+						errorContainer.html(propertyMessage);
+						errorContainer.parent().slideDown('fast');
+					}
+					LT.Alert.popup(message);
 				} else if (data.refresh) {
 					for (var name in data.refresh) {
 						var view = LT.urldecode(data.refresh[name]);
 						$('#'+name+'_container').html(view);
 					}
+				} else if (data.redirect) {
+					document.location.href = data.redirect;
 				}
 
 				$.unblockUI();

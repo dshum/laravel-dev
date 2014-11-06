@@ -1,5 +1,7 @@
 <?php
 
-class MailingAttachment extends LemonTree\Element {
+class MailingAttachment extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

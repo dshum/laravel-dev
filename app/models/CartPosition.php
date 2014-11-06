@@ -1,5 +1,7 @@
 <?php
 
-class CartPosition extends LemonTree\Element {
+class CartPosition extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }

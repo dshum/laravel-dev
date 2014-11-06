@@ -325,22 +325,23 @@ div.blank {
 	padding: 5px 5px;
 }
 
-span.error {
-	color: #C00;
-	font-weight: 800;
+div.error {
+	display: none;
+	padding: 6px 0 7px 0;
 }
 
-p.error span {
-	text-align: left;
+div.error span {
+	padding: 5px 10px;
 	background: orange;
 	color: #FFF;
-	font-weight: 800;
-	padding: 5px 10px;
+	font-weight: bold;
+	text-align: left;
+	border-radius: 3px;
 }
 
 p.ok {
 	color: green;
-	font-weight: 800;
+	font-weight: bold;
 }
 
 img.framed {
@@ -610,6 +611,21 @@ div.plugin {
 	font-size: 80%;
 }
 
+<<<<<<< HEAD
+=======
+.message-popup {
+	position: relative;
+	background: #FFF;
+	padding: 20px;
+	width: 500px;
+	margin: 20px auto;
+	border: 5px solid #CCC;
+	border-radius: 10px;
+	font-size: 120%;
+	overflow: auto;
+}
+
+>>>>>>> 1641eeb2d04778eccaf9ca3f3fea6f92a3a09985
 ul.pagination li {
 	display: inline;
 	margin: 0px 1px;

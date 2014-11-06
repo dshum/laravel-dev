@@ -122,7 +122,6 @@ return array(
 
 		'Cartalyst\Sentry\SentryServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-
 		'LemonTree\Admin\AdminServiceProvider',
 
 

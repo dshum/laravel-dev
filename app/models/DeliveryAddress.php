@@ -1,5 +1,7 @@
 <?php
 
-class DeliveryAddress extends LemonTree\Element {
+class DeliveryAddress extends Eloquent implements LemonTree\ElementInterface {
+
+	use LemonTree\ElementTrait;
 
 }
