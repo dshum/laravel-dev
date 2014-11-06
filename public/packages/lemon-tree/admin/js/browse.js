@@ -30,9 +30,6 @@ $(function() {
 			dataType: 'json',
 			success: function(data) {
 				document.location.reload();
-			},
-			error: function() {
-				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
@@ -59,9 +56,6 @@ $(function() {
 				}
 
 				$.unblockUI();
-			},
-			error: function() {
-				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
@@ -80,9 +74,6 @@ $(function() {
 			dataType: 'json',
 			success: function(data) {
 				document.location.reload();
-			},
-			error: function() {
-				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
@@ -305,6 +296,7 @@ $(function() {
 			url: this.action,
 			dataType: 'json',
 			success: function(data) {
+//				alert(data);
 				if (data.error) {
 					for (var classId in data.error) {
 						for (var i in data.error[classId]) {
@@ -336,9 +328,6 @@ $(function() {
 				stopToggle = false;
 
 				$.unblockUI();
-			},
-			error: function() {
-				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 

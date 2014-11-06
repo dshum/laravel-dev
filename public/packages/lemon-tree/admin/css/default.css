@@ -10,7 +10,7 @@ body {
 	font-size: 14px;
 	background: #FFF;
 	color: #000;
-//	overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 #wrapper {
@@ -608,18 +608,6 @@ div.plugin {
 
 .small {
 	font-size: 80%;
-}
-
-.message-popup {
-	position: relative;
-	background: #FFF;
-	padding: 20px;
-	width: auto;
-	max-width: 400px;
-	margin: 20px auto;
-	border: 5px solid #CCC;
-	border-radius: 10px;
-	font-size: 120%;
 }
 
 ul.pagination li {
