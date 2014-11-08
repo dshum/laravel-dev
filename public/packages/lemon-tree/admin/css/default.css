@@ -10,7 +10,7 @@ body {
 	font-size: 14px;
 	background: #FFF;
 	color: #000;
-	overflow-y: scroll;
+//	overflow-y: scroll;
 }
 
 #wrapper {
@@ -313,8 +313,14 @@ span.richtext {
 	padding: 2px 5px;
 }
 
-textarea.richtext {
+div.richtext {
+	margin: 0;
+	padding: 0;
 	width: 90%;
+}
+
+div.richtext textarea {
+	width: 100%;
 	height: 350px;
 }
 
@@ -388,7 +394,7 @@ div.path {
 
 div.form-edit {
 	margin: 15px 0px;
-	padding: 10px 10px 10px 10px;
+	padding: 15px 10px 0px 10px;
 	background: #F0F0F0;
 	border: 1px solid #CCC;
 	border-radius: 5px;
@@ -602,6 +608,9 @@ div.plugin {
 	display: block;
 }
 
+.red {
+	color: #E73;
+}
 
 .grey {
 	color: #999;
@@ -611,8 +620,6 @@ div.plugin {
 	font-size: 80%;
 }
 
-<<<<<<< HEAD
-=======
 .message-popup {
 	position: relative;
 	background: #FFF;
@@ -625,7 +632,6 @@ div.plugin {
 	overflow: auto;
 }
 
->>>>>>> 1641eeb2d04778eccaf9ca3f3fea6f92a3a09985
 ul.pagination li {
 	display: inline;
 	margin: 0px 1px;

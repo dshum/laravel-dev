@@ -15,9 +15,11 @@ $(function() {
 					document.location.href = LT.adminUrl;
 				} else if (data.error) {
 					var message = '';
+
 					for (var name in data.error) {
 						var errorContainer = $('span[error="'+name+'"]');
 						var propertyMessage = '';
+
 						for (var i in data.error[name]) {
 							propertyMessage +=
 								data.error[name][i].message
@@ -28,9 +30,11 @@ $(function() {
 								+data.error[name][i].message
 								+'.<br />';
 						}
+						
 						errorContainer.html(propertyMessage);
 						errorContainer.parent().slideDown('fast');
 					}
+
 					LT.Alert.popup(message);
 				} else if (data.redirect) {
 					document.location.href = data.redirect;

@@ -126,7 +126,7 @@ $(function() {
 
 		if (opened == 'open') {
 			$.post(
-				LT.treeOpen1Url,
+				LT.Edit.openTreeUrl,
 				{itemName: itemName, propertyName: propertyName, classId: node},
 				function(data) {
 					$('div.padding[node1="'+node+'"]').html(data).slideDown('fast', function() {
@@ -149,7 +149,79 @@ $(function() {
 		}
 	});
 
+	$('#button-up').click(function() {
+		document.location.href = LT.Edit.upUrl;
+	});
+
+	$('#button-save').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
+		$("#editForm").submit();
+	});
+
+	$('#button-copy').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
+		$('#copyingForm').submit();
+	});
+
+	$('#button-move').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
+		$('#movingForm').submit();
+	});
+
+	$('#button-delete').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+		if ( ! LT.Edit.deleteUrl) return false;
+
+		$.blockUI();
+
+		$('#message').html('').hide();
+
+		$.post(
+			LT.Edit.deleteUrl,
+			{},
+			function(data) {
+				if (data.logout) {
+					document.location.href = LT.adminUrl;
+				} else if (data.error) {
+					LT.Alert.popup(data.error);
+				} else {
+					document.location.href = LT.Edit.redirectUrl;
+				}
+			},
+			'json'
+		).fail(function() {
+			LT.Alert.popup(LT.Error.defaultMessage);
+		});
+	});
+
+	$('#button-restore').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+		if ( ! LT.Edit.restoreUrl) return false;
+
+		$.blockUI();
+
+		$.post(
+			LT.Edit.restoreUrl,
+			{},
+			function(data) {
+				if (data.logout) {
+					document.location.href = LT.adminUrl;
+				} else {
+					document.location.reload();
+				}
+			},
+			'json'
+		).fail(function() {
+			LT.Alert.popup(LT.Error.defaultMessage);
+		});
+	});
+
 	$('#editForm').submit(function(event) {
+		if ($(this).attr('disabled')) return false;
+
 		$.blockUI();
 
 		$('textarea[tinymce="true"]').each(function() {
@@ -162,13 +234,7 @@ $(function() {
 			url: this.action,
 			dataType: 'json',
 			success: function(data) {
-<<<<<<< HEAD
-//				alert(data);
-				$('#message').html('').hide();
-				$('span[error]').removeClass('error');
-=======
 				$('span[error]').parent().slideUp('fast');
->>>>>>> 1641eeb2d04778eccaf9ca3f3fea6f92a3a09985
 
 				if (data.debug) {
 					LT.Alert.popup(data.debug);
@@ -176,9 +242,11 @@ $(function() {
 					document.location.href = LT.adminUrl;
 				} else if (data.error) {
 					var message = '';
+
 					for (var name in data.error) {
 						var errorContainer = $('span[error="'+name+'"]');
 						var propertyMessage = '';
+
 						for (var i in data.error[name]) {
 							propertyMessage +=
 								data.error[name][i].message
@@ -189,9 +257,11 @@ $(function() {
 								+data.error[name][i].message
 								+'.<br />';
 						}
+
 						errorContainer.html(propertyMessage);
 						errorContainer.parent().slideDown('fast');
 					}
+
 					LT.Alert.popup(message);
 				} else if (data.refresh) {
 					for (var name in data.refresh) {
@@ -203,6 +273,9 @@ $(function() {
 				}
 
 				$.unblockUI();
+			},
+			error: function() {
+				LT.Alert.popup(LT.Error.defaultMessage);
 			}
 		});
 
