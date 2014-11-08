@@ -126,7 +126,7 @@ $(function() {
 
 		if (opened == 'open') {
 			$.post(
-				LT.treeOpen1Url,
+				LT.Edit.openTreeUrl,
 				{itemName: itemName, propertyName: propertyName, classId: node},
 				function(data) {
 					$('div.padding[node1="'+node+'"]').html(data).slideDown('fast', function() {
@@ -154,37 +154,25 @@ $(function() {
 	});
 
 	$('#button-save').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
 		$("#editForm").submit();
 	});
 
 	$('#button-copy').click(function() {
-		if ( ! LT.Edit.copyUrl) return false;
+		if ($(this).hasClass('disabled')) return false;
 
-		$.blockUI();
-
-		$('#message').html('').hide();
-
-		$.post(
-			LT.Edit.copyUrl,
-			{},
-			function(data) {
-				if (data.logout) {
-					document.location.href = LT.adminUrl;
-				} else if (data.redirect) {
-					document.location.href = data.redirect;
-				}
-			},
-			'json'
-		).fail(function() {
-			LT.Alert.popup(LT.Error.defaultMessage);
-		});
+		$('#copyingForm').submit();
 	});
 
 	$('#button-move').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
 		$('#movingForm').submit();
 	});
 
 	$('#button-delete').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! LT.Edit.deleteUrl) return false;
 
 		$.blockUI();
@@ -210,6 +198,7 @@ $(function() {
 	});
 
 	$('#button-restore').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! LT.Edit.restoreUrl) return false;
 
 		$.blockUI();
@@ -231,6 +220,8 @@ $(function() {
 	});
 
 	$('#editForm').submit(function(event) {
+		if ($(this).attr('disabled')) return false;
+
 		$.blockUI();
 
 		$('textarea[tinymce="true"]').each(function() {
@@ -251,9 +242,11 @@ $(function() {
 					document.location.href = LT.adminUrl;
 				} else if (data.error) {
 					var message = '';
+
 					for (var name in data.error) {
 						var errorContainer = $('span[error="'+name+'"]');
 						var propertyMessage = '';
+
 						for (var i in data.error[name]) {
 							propertyMessage +=
 								data.error[name][i].message
@@ -264,9 +257,11 @@ $(function() {
 								+data.error[name][i].message
 								+'.<br />';
 						}
+
 						errorContainer.html(propertyMessage);
 						errorContainer.parent().slideDown('fast');
 					}
+
 					LT.Alert.popup(message);
 				} else if (data.refresh) {
 					for (var name in data.refresh) {

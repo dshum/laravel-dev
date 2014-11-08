@@ -1,14 +1,18 @@
 $(function() {
 
 	var itemChecked = [], itemCountChecked = [], countChecked = 0;
+	var countCopyableChecked = 0, countUpdatableChecked = 0, countDeletableChecked = 0;
 	var countChanged = 0;
 	var stopToggle = false;
 
 	$('#button-save').click(function() {
+		if ($(this).hasClass('disabled')) return false;
+
 		$("#browseForm").submit();
 	});
 
 	$('#button-move').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! countChecked) return false;
 
 		var form = $('#browseForm').clone();
@@ -19,27 +23,18 @@ $(function() {
 	});
 
 	$('#button-copy').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! countChecked) return false;
 
-		$.blockUI();
+		var form = $('#browseForm').clone();
 
-		$('#message').html('').hide();
+		form.attr('action', LT.copyingUrl);
 
-		$('#browseForm').ajaxSubmit({
-			url: LT.copyUrl,
-			dataType: 'json',
-			success: function(data) {
-				document.location.reload();
-			},
-			error: function() {
-				LT.Alert.popup(LT.Error.defaultMessage);
-			}
-		});
-
-		event.preventDefault();
+		form.submit();
 	});
 
 	$('#button-delete').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! countChecked) return false;
 
 		$.blockUI();
@@ -50,10 +45,8 @@ $(function() {
 			url: LT.deleteUrl,
 			dataType: 'json',
 			success: function(data) {
-//				alert(data);
 				if (data.error) {
-					$('#message').html(data.error).show();
-					$.unblockUI();
+					LT.Alert.popup(data.error);
 				} else {
 					document.location.reload();
 				}
@@ -69,6 +62,7 @@ $(function() {
 	});
 
 	$('#button-restore').click(function() {
+		if ($(this).hasClass('disabled')) return false;
 		if ( ! countChecked) return false;
 
 		$.blockUI();
@@ -156,10 +150,21 @@ $(function() {
 		var itemName = $(this).attr('item');
 		if (this.checked) {
 			$('input:checkbox[name="check[]"][item="'+itemName+'"]').each(function() {
+				var copyable = $(this).attr('copyable');
+				var updatable = $(this).attr('updatable');
+				var deletable = $(this).attr('deletable');
+
 				if( ! this.checked && ! this.disabled) {
 					this.checked = true;
+
 					$(this).parents('tr').addClass('light');
+
 					countChecked++;
+
+					if (copyable == 'true') countCopyableChecked++;
+					if (updatable == 'true') countUpdatableChecked++;
+					if (deletable == 'true') countDeletableChecked++;
+
 					if (itemCountChecked[itemName]) {
 						itemCountChecked[itemName]++;
 					} else {
@@ -170,13 +175,25 @@ $(function() {
 			});
 		} else {
 			$('input:checkbox[name="check[]"][item="'+itemName+'"]').each(function() {
+				var copyable = $(this).attr('copyable');
+				var updatable = $(this).attr('updatable');
+				var deletable = $(this).attr('deletable');
+
 				if (this.checked && ! this.disabled) {
 					this.checked = false;
+
 					$(this).parents('tr').removeClass('light');
+
 					countChecked--;
+
+					if (copyable == 'true') countCopyableChecked--;
+					if (updatable == 'true') countUpdatableChecked--;
+					if (deletable == 'true') countDeletableChecked--;
+
 					if (itemCountChecked[itemName]) {
 						itemCountChecked[itemName]--;
 					}
+
 					if ( ! itemCountChecked[itemName]) {
 						itemChecked--;
 					}
@@ -184,59 +201,84 @@ $(function() {
 			});
 		}
 
-		if (countChecked > 0) {
-			$('#button-copy').removeClass('disabled');
+		if (countDeletableChecked > 0) {
 			$('#button-delete').removeClass('disabled');
-		} else {
-			$('#button-copy').addClass('disabled', 'disabled');
-			$('#button-delete').addClass('disabled', 'disabled');
-		}
-
-		if (itemChecked == 1) {
-			$('#button-move').removeClass('disabled');
 			$('#button-restore').removeClass('disabled');
 		} else {
-			$('#button-move').addClass('disabled', 'disabled');
+			$('#button-delete').addClass('disabled', 'disabled');
 			$('#button-restore').addClass('disabled', 'disabled');
+		}
+
+		if (itemChecked == 1 && countCopyableChecked > 0) {
+			$('#button-copy').removeClass('disabled');
+		} else {
+			$('#button-copy').addClass('disabled', 'disabled');
+		}
+
+		if (itemChecked == 1 && countUpdatableChecked > 0) {
+			$('#button-move').removeClass('disabled');
+		} else {
+			$('#button-move').addClass('disabled', 'disabled');
 		}
 	});
 
 	$('body').on('click', 'input:checkbox[name="check[]"]', function() {
 		var itemName = $(this).attr('item');
-		if (this.checked) {
+		var copyable = $(this).attr('copyable');
+		var updatable = $(this).attr('updatable');
+		var deletable = $(this).attr('deletable');
+
+		if (this.checked && ! this.disabled) {
 			$(this).parents('tr').addClass('light');
+
 			countChecked++;
+
+			if (copyable == 'true') countCopyableChecked++;
+			if (updatable == 'true') countUpdatableChecked++;
+			if (deletable == 'true') countDeletableChecked++;
+
 			if (itemCountChecked[itemName]) {
 				itemCountChecked[itemName]++;
 			} else {
 				itemCountChecked[itemName] = 1;
 				itemChecked++;
 			}
-		} else {
+		} else if (! this.disabled) {
 			$(this).parents('tr').removeClass('light');
+
 			countChecked--;
+
+			if (copyable == 'true') countCopyableChecked--;
+			if (updatable == 'true') countUpdatableChecked--;
+			if (deletable == 'true') countDeletableChecked--;
+
 			if (itemCountChecked[itemName]) {
 				itemCountChecked[itemName]--;
 			}
+
 			if ( ! itemCountChecked[itemName]) {
 				itemChecked--;
 			}
 		}
 
-		if (countChecked > 0) {
-			$('#button-copy').removeClass('disabled');
+		if (countDeletableChecked > 0) {
 			$('#button-delete').removeClass('disabled');
-		} else {
-			$('#button-copy').addClass('disabled', 'disabled');
-			$('#button-delete').addClass('disabled', 'disabled');
-		}
-
-		if (itemChecked == 1) {
-			$('#button-move').removeClass('disabled');
 			$('#button-restore').removeClass('disabled');
 		} else {
-			$('#button-move').addClass('disabled', 'disabled');
+			$('#button-delete').addClass('disabled', 'disabled');
 			$('#button-restore').addClass('disabled', 'disabled');
+		}
+
+		if (itemChecked == 1 && countCopyableChecked > 0) {
+			$('#button-copy').removeClass('disabled');
+		} else {
+			$('#button-copy').addClass('disabled', 'disabled');
+		}
+
+		if (itemChecked == 1 && countUpdatableChecked > 0) {
+			$('#button-move').removeClass('disabled');
+		} else {
+			$('#button-move').addClass('disabled', 'disabled');
 		}
 	}).on('mouseover', 'input:checkbox[name="check[]"]', function() {
 		$(this).parents('tr').addClass('light-hover');
@@ -304,16 +346,34 @@ $(function() {
 		$('#browseForm').ajaxSubmit({
 			url: this.action,
 			dataType: 'json',
+//			dataType: 'html',
 			success: function(data) {
+//				alert(LT.urldecode(data));
 				if (data.error) {
+					var message = '';
+
 					for (var classId in data.error) {
-						for (var i in data.error[classId]) {
-							var propertyName = data.error[classId][i];
-							var td = $('td[edit="true"][classId="'+classId+'"][propertyName="'+propertyName+'"]');
-							var input = td.find(':input');
-							input.css({border: '2px solid #E99'});
+						for (var name in data.error[classId]) {
+							var errorContainer = $('span[error="'+classId+'.'+name+'"]');
+							var propertyMessage = '';
+
+							for (var i in data.error[classId][name]) {
+								propertyMessage +=
+									data.error[classId][name][i].message
+									+'<br />';
+								message +=
+									data.error[classId][name][i].title
+									+'. '
+									+data.error[classId][name][i].message
+									+'.<br />';
+							}
+
+							errorContainer.html(propertyMessage);
+							errorContainer.parent().slideDown('fast');
 						}
 					}
+
+					LT.Alert.popup(message);
 				}
 
 				if (data.refresh) {

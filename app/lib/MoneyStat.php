@@ -2,19 +2,19 @@
 
 class MoneyStat extends BaseController {
 
-	public function postSend2(LemonTree\Element $element)
+	public function postSend2(LemonTree\ElementInterface $element)
 	{
 		$scope['hi'] = 'Welcome!';
 
 		return json_encode($scope);
 	}
 
-	public function postSend(LemonTree\Element $element)
+	public function postSend(LemonTree\ElementInterface $element)
 	{
 		return Redirect::to($element->getEditUrl());
 	}
 
-	public function getIndex(LemonTree\Element $element)
+	public function getIndex(LemonTree\ElementInterface $element)
 	{
 		$scope = array();
 

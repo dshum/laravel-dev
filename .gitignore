@@ -7,6 +7,8 @@ Thumbs.db
 /nbproject/private/
 /app/config/*
 /public/assets/
+/public/filemanager/
+/public/filemanager.thumbs/
 /public/packages/
 /storage/*
 /vendor

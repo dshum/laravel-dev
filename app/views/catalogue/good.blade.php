@@ -12,4 +12,8 @@
 <p>Бренд: {{ $currentElement->brand->name }}</p>
 <p>Цена: {{ $currentElement->price }} руб.</p>
 <p><span good="{{ $currentElement->id }}" class="btn">Заказать</span></p>
+@if ($currentElement->fullcontent)
+<h3><span>Описание</span></h3>
+{{ $currentElement->fullcontent }}
+@endif
 @stop
